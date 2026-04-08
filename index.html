@@ -4,6 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Formation HTML & CSS Professionnelle</title>
+  <meta name="description" content="Apprenez HTML, CSS et JavaScript pour créer des sites web professionnels">
+  <meta name="theme-color" content="#3B82F6">
+  <link rel="manifest" href="manifest.json">
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
@@ -23,21 +26,25 @@
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
     body { font-family: 'Inter', sans-serif; }
-    
     .code-editor textarea:focus { outline: none; }
     .collapsible-content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; }
     .collapsible-content.open { max-height: 5000px; }
-    .fade-in { opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease, transform 0.5s ease; }
+    .fade-in { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
     .fade-in.visible { opacity: 1; transform: translateY(0); }
-    .nav-item.active { background: linear-gradient(90deg, #3B82F6 0%, #8B5CF6 100%); color: white; }
+    .nav-btn.active { background: linear-gradient(90deg, #3B82F6 0%, #8B5CF6 100%); color: white; }
     .progress-fill { transition: width 0.5s ease; }
-    .tooltip { position: relative; }
-    .tooltip::after { content: attr(data-tip); position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); background: #1F2937; color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px; white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity 0.2s; }
-    .tooltip:hover::after { opacity: 1; }
     .correct-answer { animation: pulse 0.5s ease; }
     @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
     .shake { animation: shake 0.5s ease; }
     @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
+    body.night-reading { filter: sepia(0.3) brightness(0.9); }
+    .scrollbar-thin::-webkit-scrollbar { width: 6px; height: 6px; }
+    .scrollbar-thin::-webkit-scrollbar-track { background: transparent; }
+    .scrollbar-thin::-webkit-scrollbar-thumb { background: #9CA3AF; border-radius: 3px; }
+    .badge-item { transition: all 0.2s ease; }
+    .badge-item:hover { transform: scale(1.1); }
+    .badge-locked { opacity: 0.4; filter: grayscale(1); }
+    .badge-unlocked { box-shadow: 0 0 10px rgba(251, 191, 36, 0.5); }
   </style>
 </head>
 
@@ -48,23 +55,106 @@
     <div id="progressFill" class="progress-fill h-full bg-gradient-to-r from-primary to-secondary" style="width: 0%"></div>
   </div>
 
+  <!-- Search Modal -->
+  <div id="searchModal" class="fixed inset-0 bg-black/50 z-50 hidden">
+    <div class="max-w-lg mx-auto mt-20 bg-white dark:bg-gray-800 rounded-2xl shadow-2xl overflow-hidden">
+      <div class="p-4 border-b dark:border-gray-700">
+        <div class="flex items-center gap-3">
+          <span class="text-gray-400">🔍</span>
+          <input type="text" id="searchInput" placeholder="Rechercher dans le cours..." class="flex-1 bg-transparent border-none outline-none text-lg">
+          <kbd class="px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded text-xs">ESC</kbd>
+        </div>
+      </div>
+      <div class="p-2 max-h-80 overflow-y-auto scrollbar-thin">
+        <div class="search-result p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer flex items-center gap-3" data-section="intro" onclick="APP.navigateTo('intro'); APP.closeSearch();">
+          <span>🏠</span><span>Introduction</span>
+        </div>
+        <div class="search-result p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer flex items-center gap-3" data-section="internet" onclick="APP.navigateTo('internet'); APP.closeSearch();">
+          <span>🌐</span><span>Internet & Web</span>
+        </div>
+        <div class="search-result p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer flex items-center gap-3" data-section="html" onclick="APP.navigateTo('html'); APP.closeSearch();">
+          <span>🏗️</span><span>HTML - Le Squelette</span>
+        </div>
+        <div class="search-result p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer flex items-center gap-3" data-section="css" onclick="APP.navigateTo('css'); APP.closeSearch();">
+          <span>🎨</span><span>CSS - Le Style</span>
+        </div>
+        <div class="search-result p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer flex items-center gap-3" data-section="box" onclick="APP.navigateTo('box'); APP.closeSearch();">
+          <span>📦</span><span>Box Model</span>
+        </div>
+        <div class="search-result p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer flex items-center gap-3" data-section="flex" onclick="APP.navigateTo('flex'); APP.closeSearch();">
+          <span>📐</span><span>Flexbox</span>
+        </div>
+        <div class="search-result p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer flex items-center gap-3" data-section="responsive" onclick="APP.navigateTo('responsive'); APP.closeSearch();">
+          <span>📱</span><span>Responsive Design</span>
+        </div>
+        <div class="search-result p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer flex items-center gap-3" data-section="js" onclick="APP.navigateTo('js'); APP.closeSearch();">
+          <span>⚡</span><span>JavaScript</span>
+        </div>
+        <div class="search-result p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer flex items-center gap-3" data-section="projects" onclick="APP.navigateTo('projects'); APP.closeSearch();">
+          <span>🏆</span><span>Mini-Projets</span>
+        </div>
+        <div class="search-result p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer flex items-center gap-3" data-section="exercises" onclick="APP.navigateTo('exercises'); APP.closeSearch();">
+          <span>✏️</span><span>Exercices</span>
+        </div>
+        <div class="search-result p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer flex items-center gap-3" data-section="editor" onclick="APP.navigateTo('editor'); APP.closeSearch();">
+          <span>▶️</span><span>Éditeur de Code</span>
+        </div>
+      </div>
+      <div class="p-3 border-t dark:border-gray-700 text-xs text-gray-500 flex justify-between">
+        <span>↑↓ naviguer</span>
+        <span>↵ sélectionner</span>
+        <span>ESC fermer</span>
+      </div>
+    </div>
+  </div>
+
   <!-- Header Mobile -->
-  <header class="md:hidden fixed top-0 right-0 z-40 p-4">
-    <button onclick="toggleDark()" class="bg-white dark:bg-gray-800 p-3 rounded-full shadow-lg">
+  <header class="md:hidden fixed top-0 right-0 z-40 p-4 flex gap-2">
+    <button onclick="APP.openSearch()" class="bg-white dark:bg-gray-800 p-3 rounded-full shadow-lg">
+      🔍
+    </button>
+    <button onclick="APP.toggleDark()" class="bg-white dark:bg-gray-800 p-3 rounded-full shadow-lg">
       <span id="darkIcon">🌙</span>
     </button>
   </header>
 
+  <!-- Mobile Menu Button -->
+  <button onclick="APP.toggleMobileMenu()" class="md:hidden fixed top-0 left-0 z-40 p-4">
+    <div class="w-8 h-1 bg-gray-600 mb-1"></div>
+    <div class="w-8 h-1 bg-gray-600 mb-1"></div>
+    <div class="w-8 h-1 bg-gray-600"></div>
+  </button>
+
+  <!-- Mobile Menu -->
+  <div id="mobileMenu" class="fixed inset-0 bg-black/50 z-40 hidden md:hidden">
+    <div class="absolute left-0 top-0 bottom-0 w-72 bg-white dark:bg-gray-800 p-6 overflow-auto">
+      <h2 class="text-xl font-bold mb-4">Navigation</h2>
+      <nav class="space-y-2">
+        <button onclick="APP.navigateTo('intro')" class="w-full text-left p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">🏠 Introduction</button>
+        <button onclick="APP.navigateTo('internet')" class="w-full text-left p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">🌐 Internet & Web</button>
+        <button onclick="APP.navigateTo('html')" class="w-full text-left p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">🏗️ HTML</button>
+        <button onclick="APP.navigateTo('css')" class="w-full text-left p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">🎨 CSS</button>
+        <button onclick="APP.navigateTo('js')" class="w-full text-left p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">⚡ JavaScript</button>
+        <button onclick="APP.navigateTo('projects')" class="w-full text-left p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">🏆 Projets</button>
+        <button onclick="APP.navigateTo('exercises')" class="w-full text-left p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">✏️ Exercices</button>
+        <button onclick="APP.navigateTo('editor')" class="w-full text-left p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">▶️ Code</button>
+      </nav>
+      <button onclick="APP.resetProgress()" class="mt-6 w-full text-red-500 p-3 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/30">
+        🗑️ Réinitialiser
+      </button>
+    </div>
+  </div>
+
   <div class="flex min-h-screen pb-16 lg:pb-0">
 
     <!-- SIDEBAR -->
-    <aside id="sidebar" class="w-72 h-screen sticky top-0 bg-white dark:bg-gray-800 shadow-xl p-6 hidden lg:block overflow-auto z-30">
+    <aside id="sidebar" class="w-72 h-screen sticky top-0 bg-white dark:bg-gray-800 shadow-xl p-6 hidden lg:block overflow-auto z-30 scrollbar-thin">
       <div class="mb-6">
         <div class="flex items-center gap-3 mb-2">
           <div class="w-10 h-10 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center text-white font-bold">H</div>
           <div>
-            <h1 class="text-lg font-bold">HTML & CSS</h1>
-            <p class="text-xs text-gray-500 dark:text-gray-400">Formation Pro</p>
+            <h1 class="text-lg font-bold">Formation Web</h1>
+            <p class="text-xs text-gray-500 dark:text-gray-400">HTML • CSS • JS</p>
           </div>
         </div>
         <div class="mt-4">
@@ -78,49 +168,83 @@
         </div>
       </div>
 
+      <!-- Badges Navbar -->
+      <div class="mb-4">
+        <div class="flex items-center justify-between mb-2">
+          <h3 class="text-xs font-semibold text-gray-500 uppercase">🏆 Badges</h3>
+          <span id="badgeCount" class="text-xs bg-yellow-100 dark:bg-yellow-900 text-yellow-700 dark:text-yellow-300 px-2 py-0.5 rounded-full">0/9</span>
+        </div>
+        <div id="badgesContainer" class="flex gap-2 overflow-x-auto pb-2 scrollbar-thin">
+          <!-- Badges will be inserted here -->
+        </div>
+      </div>
+
       <nav class="space-y-1">
-        <button onclick="navigateTo('intro')" class="nav-btn nav-item w-full text-left px-4 py-3 rounded-lg transition-all duration-200 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-3" data-section="intro">
+        <button onclick="APP.navigateTo('intro')" class="nav-btn w-full text-left px-4 py-3 rounded-lg transition-all duration-200 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-3" data-section="intro">
           <span class="w-6 h-6 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center text-xs font-bold text-blue-600 dark:text-blue-300">1</span>
           <span>Introduction</span>
         </button>
-        <button onclick="navigateTo('internet')" class="nav-btn nav-item w-full text-left px-4 py-3 rounded-lg transition-all duration-200 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-3" data-section="internet">
+        <button onclick="APP.navigateTo('internet')" class="nav-btn w-full text-left px-4 py-3 rounded-lg transition-all duration-200 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-3" data-section="internet">
           <span class="w-6 h-6 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center text-xs font-bold text-blue-600 dark:text-blue-300">2</span>
           <span>Internet & Web</span>
         </button>
-        <button onclick="navigateTo('html')" class="nav-btn nav-item w-full text-left px-4 py-3 rounded-lg transition-all duration-200 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-3" data-section="html">
+        <button onclick="APP.navigateTo('html')" class="nav-btn w-full text-left px-4 py-3 rounded-lg transition-all duration-200 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-3" data-section="html">
           <span class="w-6 h-6 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center text-xs font-bold text-blue-600 dark:text-blue-300">3</span>
           <span>HTML</span>
         </button>
-        <button onclick="navigateTo('css')" class="nav-btn nav-item w-full text-left px-4 py-3 rounded-lg transition-all duration-200 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-3" data-section="css">
+        <button onclick="APP.navigateTo('css')" class="nav-btn w-full text-left px-4 py-3 rounded-lg transition-all duration-200 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-3" data-section="css">
           <span class="w-6 h-6 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center text-xs font-bold text-blue-600 dark:text-blue-300">4</span>
           <span>CSS</span>
         </button>
-        <button onclick="navigateTo('box')" class="nav-btn nav-item w-full text-left px-4 py-3 rounded-lg transition-all duration-200 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-3" data-section="box">
+        <button onclick="APP.navigateTo('box')" class="nav-btn w-full text-left px-4 py-3 rounded-lg transition-all duration-200 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-3" data-section="box">
           <span class="w-6 h-6 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center text-xs font-bold text-blue-600 dark:text-blue-300">5</span>
           <span>Box Model</span>
         </button>
-        <button onclick="navigateTo('flex')" class="nav-btn nav-item w-full text-left px-4 py-3 rounded-lg transition-all duration-200 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-3" data-section="flex">
+        <button onclick="APP.navigateTo('flex')" class="nav-btn w-full text-left px-4 py-3 rounded-lg transition-all duration-200 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-3" data-section="flex">
           <span class="w-6 h-6 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center text-xs font-bold text-blue-600 dark:text-blue-300">6</span>
           <span>Flexbox</span>
         </button>
-        <button onclick="navigateTo('responsive')" class="nav-btn nav-item w-full text-left px-4 py-3 rounded-lg transition-all duration-200 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-3" data-section="responsive">
+        <button onclick="APP.navigateTo('responsive')" class="nav-btn w-full text-left px-4 py-3 rounded-lg transition-all duration-200 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-3" data-section="responsive">
           <span class="w-6 h-6 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center text-xs font-bold text-blue-600 dark:text-blue-300">7</span>
           <span>Responsive</span>
         </button>
-        <button onclick="navigateTo('exercises')" class="nav-btn nav-item w-full text-left px-4 py-3 rounded-lg transition-all duration-200 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-3" data-section="exercises">
-          <span class="w-6 h-6 bg-purple-100 dark:bg-purple-900 rounded-full flex items-center justify-center text-xs font-bold text-purple-600 dark:text-purple-300">✎</span>
+        <button onclick="APP.navigateTo('js')" class="nav-btn w-full text-left px-4 py-3 rounded-lg transition-all duration-200 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-3" data-section="js">
+          <span class="w-6 h-6 bg-yellow-100 dark:bg-yellow-900 rounded-full flex items-center justify-center text-xs font-bold text-yellow-600 dark:text-yellow-300">8</span>
+          <span>JavaScript</span>
+        </button>
+        <button onclick="APP.navigateTo('projects')" class="nav-btn w-full text-left px-4 py-3 rounded-lg transition-all duration-200 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-3" data-section="projects">
+          <span class="w-6 h-6 bg-purple-100 dark:bg-purple-900 rounded-full flex items-center justify-center text-xs font-bold text-purple-600 dark:text-purple-300">9</span>
+          <span>Mini-Projets</span>
+        </button>
+        <button onclick="APP.navigateTo('exercises')" class="nav-btn w-full text-left px-4 py-3 rounded-lg transition-all duration-200 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-3" data-section="exercises">
+          <span class="w-6 h-6 bg-rose-100 dark:bg-rose-900 rounded-full flex items-center justify-center text-xs font-bold text-rose-600 dark:text-rose-300">✎</span>
           <span>Exercices</span>
         </button>
-        <button onclick="navigateTo('editor')" class="nav-btn nav-item w-full text-left px-4 py-3 rounded-lg transition-all duration-200 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-3" data-section="editor">
+        <button onclick="APP.navigateTo('editor')" class="nav-btn w-full text-left px-4 py-3 rounded-lg transition-all duration-200 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-3" data-section="editor">
           <span class="w-6 h-6 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center text-xs font-bold text-green-600 dark:text-green-300">▶</span>
           <span>Éditeur Code</span>
         </button>
       </nav>
 
-      <button onclick="toggleDark()" class="mt-6 w-full bg-gray-100 dark:bg-gray-700 px-4 py-3 rounded-lg flex items-center justify-center gap-2 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
-        <span id="sidebarDarkIcon">🌙</span>
-        <span>Mode Sombre</span>
-      </button>
+      <div class="mt-6 space-y-2">
+        <button onclick="APP.toggleDark()" class="w-full bg-gray-100 dark:bg-gray-700 px-4 py-3 rounded-lg flex items-center justify-center gap-2 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
+          <span id="sidebarDarkIcon">🌙</span>
+          <span>Mode Sombre</span>
+        </button>
+        <button onclick="APP.toggleNightMode()" class="w-full bg-gray-100 dark:bg-gray-700 px-4 py-3 rounded-lg flex items-center justify-center gap-2 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
+          🌙
+          <span>Mode Lecture</span>
+        </button>
+        <button onclick="APP.resetProgress()" class="w-full text-red-500 bg-red-50 dark:bg-red-900/30 px-4 py-3 rounded-lg flex items-center justify-center gap-2 hover:bg-red-100 dark:hover:bg-red-900/50 transition-colors">
+          🗑️ Réinitialiser
+        </button>
+      </div>
+
+      <div class="mt-6 p-3 bg-gray-100 dark:bg-gray-700 rounded-lg text-xs text-gray-500">
+        <p><kbd class="px-1 bg-gray-200 dark:bg-gray-600 rounded">/</kbd> Recherche</p>
+        <p class="mt-1"><kbd class="px-1 bg-gray-200 dark:bg-gray-600 rounded">←</kbd><kbd class="px-1 bg-gray-200 dark:bg-gray-600 rounded">→</kbd> Navigation</p>
+        <p class="mt-1"><kbd class="px-1 bg-gray-200 dark:bg-gray-600 rounded">Alt+N</kbd> Mode nuit</p>
+      </div>
     </aside>
 
     <!-- MAIN CONTENT -->
@@ -134,8 +258,8 @@
             <span>•</span>
             <span>10 min</span>
           </div>
-          <h1 class="text-3xl font-bold mb-2">Bienvenue dans la Formation HTML & CSS</h1>
-          <p class="text-blue-100">Apprenez à créer des sites web professionnels depuis zéro</p>
+          <h1 class="text-3xl font-bold mb-2">Bienvenue dans la Formation Web</h1>
+          <p class="text-blue-100">Apprenez à créer des sites web professionnels</p>
         </div>
         
         <div class="p-6 space-y-6">
@@ -145,25 +269,50 @@
               <li>Comprendre le fonctionnement d'Internet et du Web</li>
               <li>Maîtriser la structure HTML des pages web</li>
               <li>Apprendre à styliser avec CSS</li>
-              <li>Créer des layouts responsives</li>
+              <li>Créer des layouts responsives avec Flexbox</li>
+              <li>Ajouter de l'interactivité avec JavaScript</li>
+              <li>Réaliser des mini-projets concrets</li>
             </ul>
           </div>
 
           <div class="grid md:grid-cols-3 gap-4">
             <div class="bg-gray-50 dark:bg-gray-700/50 p-4 rounded-xl text-center">
               <div class="text-3xl mb-2">📚</div>
-              <h4 class="font-semibold">8 Chapitres</h4>
+              <h4 class="font-semibold">10 Chapitres</h4>
               <p class="text-sm text-gray-500">Cours progressifs</p>
             </div>
             <div class="bg-gray-50 dark:bg-gray-700/50 p-4 rounded-xl text-center">
               <div class="text-3xl mb-2">✏️</div>
-              <h4 class="font-semibold">5 Exercices</h4>
+              <h4 class="font-semibold">15 Exercices</h4>
               <p class="text-sm text-gray-500">Pratiquez en live</p>
             </div>
             <div class="bg-gray-50 dark:bg-gray-700/50 p-4 rounded-xl text-center">
-              <div class="text-3xl mb-2">🎓</div>
-              <h4 class="font-semibold">Quiz Final</h4>
-              <p class="text-sm text-gray-500">Testez vos acquis</p>
+              <div class="text-3xl mb-2">🏆</div>
+              <h4 class="font-semibold">3 Projets</h4>
+              <p class="text-sm text-gray-500">Applications concrètes</p>
+            </div>
+          </div>
+
+          <!-- Badges Showcase -->
+          <div class="bg-gradient-to-r from-yellow-50 to-orange-50 dark:from-yellow-900/20 dark:to-orange-900/20 p-5 rounded-xl border border-yellow-200 dark:border-yellow-800">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="font-bold text-yellow-800 dark:text-yellow-300 flex items-center gap-2">
+                🏆 Badges à Débloquer
+              </h3>
+              <span id="badgeCountIntro" class="text-xs bg-yellow-200 dark:bg-yellow-800 text-yellow-800 dark:text-yellow-200 px-3 py-1 rounded-full font-semibold">0/9</span>
+            </div>
+            <div id="badgesShowcase" class="grid grid-cols-3 sm:grid-cols-5 md:grid-cols-9 gap-3">
+              <!-- Badges will be populated by JS -->
+            </div>
+          </div>
+
+          <!-- Notes -->
+          <div class="border-t dark:border-gray-700 pt-4">
+            <button onclick="APP.toggleNotes('intro')" id="notes-btn-intro" class="notes-btn flex items-center gap-2 text-sm text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
+              📝 Notes personnelles
+            </button>
+            <div id="notes-panel-intro" class="notes-panel hidden mt-3">
+              <textarea id="note-intro" onblur="APP.saveNote('intro')" placeholder="Ajoutez vos notes ici..." class="w-full h-24 p-3 border rounded-lg dark:bg-gray-700 dark:border-gray-600 text-sm resize-none"></textarea>
             </div>
           </div>
         </div>
@@ -181,105 +330,58 @@
         </div>
         
         <div class="p-6 space-y-6">
-          <!-- Analogie -->
           <div class="bg-gradient-to-r from-yellow-50 to-orange-50 dark:from-yellow-900/20 dark:to-orange-900/20 p-5 rounded-xl border border-yellow-200 dark:border-yellow-800">
-            <h3 class="font-bold text-yellow-800 dark:text-yellow-300 mb-3 flex items-center gap-2">
-              💡 Analogie Simple
-            </h3>
+            <h3 class="font-bold text-yellow-800 dark:text-yellow-300 mb-3 flex items-center gap-2">💡 Analogie Simple</h3>
             <p class="text-yellow-700 dark:text-yellow-400">
-              Imaginez <strong>Internet</strong> comme le <strong>réseau routier</strong> d'un pays. 
-              Et le <strong>Web</strong> comme les <strong>voitures</strong> qui circulent sur ces routes, transportant des informations.
+              Imaginez <strong>Internet</strong> comme le <strong>réseau routier</strong> d'un pays. Et le <strong>Web</strong> comme les <strong>voitures</strong> qui circulent sur ces routes.
             </p>
           </div>
 
-          <!-- Définitions -->
-          <div class="space-y-4">
-            <div class="collapsible">
-              <button onclick="toggleCollapsible(this)" class="w-full flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
-                <div class="flex items-center gap-3">
-                  <div class="w-8 h-8 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center text-blue-600">🌐</div>
-                  <span class="font-semibold">Internet</span>
-                </div>
-                <svg class="w-5 h-5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-              </button>
-              <div class="collapsible-content">
-                <div class="p-4 space-y-3">
-                  <p><strong>Définition :</strong> Internet est un <strong>réseau mondial d'ordinateurs</strong> connectés entre eux, permettant la communication et l'échange de données.</p>
-                  <p><strong>Analogie :</strong> C'est comme un <strong>réseau postal</strong> qui permet d'envoyer des lettres (données) partout dans le monde.</p>
-                  <div class="bg-blue-50 dark:bg-blue-900/30 p-3 rounded-lg text-sm">
-                    <strong>Exemples d'utilisation :</strong>
-                    <ul class="list-disc list-inside mt-1 text-blue-700 dark:text-blue-400">
-                      <li>Email (Gmail, Outlook)</li>
-                      <li>Streaming (Netflix, Spotify)</li>
-                      <li>Jeux en ligne</li>
-                      <li>Téléchargement de fichiers</li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
+          <div class="grid md:grid-cols-2 gap-4">
+            <div class="bg-blue-50 dark:bg-blue-900/30 p-5 rounded-xl">
+              <h4 class="font-bold text-blue-700 dark:text-blue-400 mb-3">🌐 Internet</h4>
+              <p class="text-sm text-blue-600 dark:text-blue-500 mb-3">Réseau mondial d'ordinateurs connectés permettant la communication et l'échange de données.</p>
+              <p class="text-xs text-blue-600 dark:text-blue-500">Email, Streaming, Jeux en ligne, Fichiers...</p>
             </div>
-
-            <div class="collapsible">
-              <button onclick="toggleCollapsible(this)" class="w-full flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
-                <div class="flex items-center gap-3">
-                  <div class="w-8 h-8 bg-purple-100 dark:bg-purple-900 rounded-lg flex items-center justify-center text-purple-600">🕸️</div>
-                  <span class="font-semibold">Le Web</span>
-                </div>
-                <svg class="w-5 h-5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-              </button>
-              <div class="collapsible-content">
-                <div class="p-4 space-y-3">
-                  <p><strong>Définition :</strong> Le Web (World Wide Web) est un <strong>service d'Internet</strong> qui permet d'accéder à des pages via un navigateur.</p>
-                  <p><strong>Analogie :</strong> C'est une <strong>bibliothèque géante</strong> où chaque livre est une page web, et les liens sont les références entre livres.</p>
-                </div>
-              </div>
-            </div>
-
-            <div class="collapsible">
-              <button onclick="toggleCollapsible(this)" class="w-full flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
-                <div class="flex items-center gap-3">
-                  <div class="w-8 h-8 bg-green-100 dark:bg-green-900 rounded-lg flex items-center justify-center text-green-600">💻</div>
-                  <span class="font-semibold">Client & Serveur</span>
-                </div>
-                <svg class="w-5 h-5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-              </button>
-              <div class="collapsible-content">
-                <div class="p-4 space-y-3">
-                  <div class="grid md:grid-cols-2 gap-4">
-                    <div class="bg-green-50 dark:bg-green-900/30 p-4 rounded-lg">
-                      <h4 class="font-bold text-green-700 dark:text-green-400 mb-2">🖥️ Client</h4>
-                      <p class="text-sm text-green-600 dark:text-green-500">C'est <strong>vous</strong> ! L'ordinateur/navigateur qui demande et affiche les pages web.</p>
-                      <p class="text-xs mt-2 text-green-600 dark:text-green-500">Exemples : Chrome, Firefox, Safari</p>
-                    </div>
-                    <div class="bg-orange-50 dark:bg-orange-900/30 p-4 rounded-lg">
-                      <h4 class="font-bold text-orange-700 dark:text-orange-400 mb-2">🖧 Serveur</h4>
-                      <p class="text-sm text-orange-600 dark:text-orange-500">C'est l'ordinateur <strong>distant</strong> qui stocke les fichiers du site et les envoie.</p>
-                      <p class="text-xs mt-2 text-orange-600 dark:text-orange-500">Exemples : Apache, Nginx</p>
-                    </div>
-                  </div>
-                  <div class="bg-gray-100 dark:bg-gray-700 p-3 rounded-lg text-sm">
-                    <strong>Flux :</strong> Client (demande) → Internet → Serveur (répond) → Internet → Client (affiche)
-                  </div>
-                </div>
-              </div>
+            <div class="bg-purple-50 dark:bg-purple-900/30 p-5 rounded-xl">
+              <h4 class="font-bold text-purple-700 dark:text-purple-400 mb-3">🕸️ Le Web</h4>
+              <p class="text-sm text-purple-600 dark:text-purple-500 mb-3">Service d'Internet permettant d'accéder à des pages via un navigateur.</p>
+              <p class="text-xs text-purple-600 dark:text-purple-500">Sites web, Applications en ligne...</p>
             </div>
           </div>
 
-          <!-- Mini quiz -->
+          <div class="bg-green-50 dark:bg-green-900/30 p-5 rounded-xl">
+            <h4 class="font-bold text-green-700 dark:text-green-400 mb-3">💻 Client & Serveur</h4>
+            <div class="grid md:grid-cols-2 gap-4">
+              <div>
+                <p class="text-sm font-semibold text-green-600 dark:text-green-500">🖥️ Client = Vous</p>
+                <p class="text-xs text-green-600 dark:text-green-500 mt-1">Navigateur qui demande et affiche (Chrome, Firefox...)</p>
+              </div>
+              <div>
+                <p class="text-sm font-semibold text-orange-600 dark:text-orange-500">🖧 Serveur = Distant</p>
+                <p class="text-xs text-orange-600 dark:text-orange-500 mt-1">Machine qui stocke et envoie les fichiers (Apache, Nginx...)</p>
+              </div>
+            </div>
+            <p class="text-xs text-gray-500 mt-3">Flux : Client → Internet → Serveur → Internet → Client</p>
+          </div>
+
           <div class="bg-gray-50 dark:bg-gray-700/50 p-5 rounded-xl">
-            <h3 class="font-bold mb-3 flex items-center gap-2">
-              <span class="text-xl">🧠</span> Quiz Rapide
-            </h3>
-            <p class="mb-3 text-sm">Quel navigateur utilisez-vous actuellement ?</p>
+            <h3 class="font-bold mb-3 flex items-center gap-2">🧠 Quiz Rapide</h3>
+            <p class="text-sm mb-3">Quel navigateur utilisez-vous actuellement ?</p>
             <div class="space-y-2">
-              <button onclick="checkQuiz(this, false, 'q1')" class="quiz-btn w-full text-left p-3 bg-white dark:bg-gray-600 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/50 transition-colors text-sm" data-quiz="q1">
-                Le serveur
-              </button>
-              <button onclick="checkQuiz(this, true, 'q1')" class="quiz-btn w-full text-left p-3 bg-white dark:bg-gray-600 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/50 transition-colors text-sm" data-quiz="q1">
-                Le client
-              </button>
+              <button onclick="APP.checkQuiz(this, false, 'q1')" class="quiz-btn w-full text-left p-3 bg-white dark:bg-gray-600 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/50 transition-colors text-sm" data-quiz="q1">Le serveur</button>
+              <button onclick="APP.checkQuiz(this, true, 'q1')" class="quiz-btn w-full text-left p-3 bg-white dark:bg-gray-600 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/50 transition-colors text-sm" data-quiz="q1">Le client</button>
             </div>
             <p id="result-q1" class="mt-2 text-sm font-semibold"></p>
+          </div>
+
+          <div class="border-t dark:border-gray-700 pt-4">
+            <button onclick="APP.toggleNotes('internet')" id="notes-btn-internet" class="notes-btn flex items-center gap-2 text-sm text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
+              📝 Notes personnelles
+            </button>
+            <div id="notes-panel-internet" class="notes-panel hidden mt-3">
+              <textarea id="note-internet" onblur="APP.saveNote('internet')" placeholder="Ajoutez vos notes ici..." class="w-full h-24 p-3 border rounded-lg dark:bg-gray-700 dark:border-gray-600 text-sm resize-none"></textarea>
+            </div>
           </div>
         </div>
       </section>
@@ -296,57 +398,36 @@
         </div>
         
         <div class="p-6 space-y-6">
-          <!-- Définition -->
           <div class="bg-gradient-to-r from-green-50 to-teal-50 dark:from-green-900/20 dark:to-teal-900/20 p-5 rounded-xl border border-green-200 dark:border-green-800">
-            <h3 class="font-bold text-green-800 dark:text-green-300 mb-3 flex items-center gap-2">
-              📖 Définition
-            </h3>
-            <p class="text-green-700 dark:text-green-400">
-              <strong>HTML</strong> (HyperText Markup Language) est le <strong>langage de balisage</strong> qui définit la <strong>structure</strong> et le <strong>contenu</strong> d'une page web.
-            </p>
-            <p class="text-green-600 dark:text-green-500 mt-2 text-sm">
-              💡 C'est comme la <strong>charpente d'une maison</strong> : elle définit les murs, les portes, les fenêtres... mais pas la couleur ni le style !
-            </p>
+            <h3 class="font-bold text-green-800 dark:text-green-300 mb-3 flex items-center gap-2">📖 Définition</h3>
+            <p class="text-green-700 dark:text-green-400"><strong>HTML</strong> (HyperText Markup Language) est le langage de balisage qui définit la structure et le contenu d'une page web.</p>
+            <p class="text-green-600 dark:text-green-500 mt-2 text-sm">💡 C'est comme la <strong>charpente d'une maison</strong> : murs, portes, fenêtres... mais pas la couleur ni le style !</p>
           </div>
 
-          <!-- Les Balises -->
           <div class="collapsible">
-            <button onclick="toggleCollapsible(this)" class="w-full flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
-              <div class="flex items-center gap-3">
-                <div class="w-8 h-8 bg-teal-100 dark:bg-teal-900 rounded-lg flex items-center justify-center text-teal-600 font-bold">&lt;/&gt;</div>
-                <span class="font-semibold">Comprendre les Balises</span>
-              </div>
+            <button onclick="APP.toggleCollapsible(this)" class="w-full flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+              <span class="font-semibold">&lt;/&gt; Comprendre les Balises</span>
               <svg class="w-5 h-5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
             </button>
             <div class="collapsible-content">
               <div class="p-4 space-y-4">
                 <div class="bg-blue-50 dark:bg-blue-900/30 p-4 rounded-lg">
                   <h4 class="font-bold text-blue-700 dark:text-blue-400 mb-2">🔤 Qu'est-ce qu'une balise ?</h4>
-                  <p class="text-blue-600 dark:text-blue-500 text-sm mb-3">
-                    Une balise est un <strong>mot-clé entre crochets</strong> qui indique au navigateur comment afficher le contenu.
-                  </p>
-                  <div class="bg-gray-800 text-green-400 p-3 rounded-lg font-mono text-sm">
-                    &lt;nom_balise&gt;Contenu&lt;/nom_balise&gt;
-                  </div>
+                  <p class="text-blue-600 dark:text-blue-500 text-sm mb-3">Un mot-clé entre crochets qui indique au navigateur comment afficher le contenu.</p>
+                  <div class="bg-gray-800 text-green-400 p-3 rounded-lg font-mono text-sm">&lt;nom_balise&gt;Contenu&lt;/nom_balise&gt;</div>
                 </div>
-
                 <div class="grid md:grid-cols-2 gap-4">
                   <div class="bg-green-50 dark:bg-green-900/30 p-4 rounded-lg">
                     <h4 class="font-bold text-green-700 dark:text-green-400 mb-2">✅ Balise avec contenu</h4>
-                    <div class="bg-gray-800 text-green-400 p-2 rounded font-mono text-xs mb-2">
-                      &lt;p&gt;Bonjour&lt;/p&gt;
-                    </div>
-                    <p class="text-xs text-green-600 dark:text-green-500">S'ouvre, contient du texte, se ferme</p>
+                    <div class="bg-gray-800 text-green-400 p-2 rounded font-mono text-xs">&lt;p&gt;Bonjour&lt;/p&gt;</div>
+                    <p class="text-xs text-green-600 dark:text-green-500 mt-2">S'ouvre, contient du texte, se ferme</p>
                   </div>
                   <div class="bg-purple-50 dark:bg-purple-900/30 p-4 rounded-lg">
                     <h4 class="font-bold text-purple-700 dark:text-purple-400 mb-2">🔲 Balise auto-fermante</h4>
-                    <div class="bg-gray-800 text-green-400 p-2 rounded font-mono text-xs mb-2">
-                      &lt;br&gt;
-                    </div>
-                    <p class="text-xs text-purple-600 dark:text-purple-500">Pas de contenu, se ferme sur elle-même</p>
+                    <div class="bg-gray-800 text-green-400 p-2 rounded font-mono text-xs">&lt;br&gt;</div>
+                    <p class="text-xs text-purple-600 dark:text-purple-500 mt-2">Pas de contenu</p>
                   </div>
                 </div>
-
                 <div class="bg-red-50 dark:bg-red-900/30 p-4 rounded-lg border border-red-200 dark:border-red-800">
                   <h4 class="font-bold text-red-700 dark:text-red-400 mb-2">⚠️ Erreurs fréquentes</h4>
                   <ul class="text-red-600 dark:text-red-500 text-sm space-y-1">
@@ -359,76 +440,35 @@
             </div>
           </div>
 
-          <!-- Balises principales -->
           <div class="collapsible">
-            <button onclick="toggleCollapsible(this)" class="w-full flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
-              <div class="flex items-center gap-3">
-                <div class="w-8 h-8 bg-orange-100 dark:bg-orange-900 rounded-lg flex items-center justify-center text-orange-600">📋</div>
-                <span class="font-semibold">Balises Principales</span>
-              </div>
+            <button onclick="APP.toggleCollapsible(this)" class="w-full flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+              <span class="font-semibold">📋 Balises Principales</span>
               <svg class="w-5 h-5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
             </button>
             <div class="collapsible-content">
-              <div class="p-4 space-y-4">
-                <div class="overflow-x-auto">
-                  <table class="w-full text-sm">
-                    <thead>
-                      <tr class="bg-gray-100 dark:bg-gray-700">
-                        <th class="p-3 text-left">Balise</th>
-                        <th class="p-3 text-left">Rôle</th>
-                        <th class="p-3 text-left">Exemple</th>
-                      </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
-                      <tr>
-                        <td class="p-3 font-mono text-blue-600 dark:text-blue-400">&lt;h1&gt;</td>
-                        <td class="p-3">Titre principal</td>
-                        <td class="p-3">Le plus grand titre</td>
-                      </tr>
-                      <tr>
-                        <td class="p-3 font-mono text-blue-600 dark:text-blue-400">&lt;h2&gt; à &lt;h6&gt;</td>
-                        <td class="p-3">Sous-titres</td>
-                        <td class="p-3">Hiérarchie des titres</td>
-                      </tr>
-                      <tr>
-                        <td class="p-3 font-mono text-blue-600 dark:text-blue-400">&lt;p&gt;</td>
-                        <td class="p-3">Paragraphe</td>
-                        <td class="p-3">Bloc de texte</td>
-                      </tr>
-                      <tr>
-                        <td class="p-3 font-mono text-blue-600 dark:text-blue-400">&lt;a&gt;</td>
-                        <td class="p-3">Lien hypertexte</td>
-                        <td class="p-3">Cliquez ici</td>
-                      </tr>
-                      <tr>
-                        <td class="p-3 font-mono text-blue-600 dark:text-blue-400">&lt;img&gt;</td>
-                        <td class="p-3">Image</td>
-                        <td class="p-3">Afficher une photo</td>
-                      </tr>
-                      <tr>
-                        <td class="p-3 font-mono text-blue-600 dark:text-blue-400">&lt;ul&gt;, &lt;ol&gt;</td>
-                        <td class="p-3">Listes</td>
-                        <td class="p-3">Listes à puces/numérotées</td>
-                      </tr>
-                      <tr>
-                        <td class="p-3 font-mono text-blue-600 dark:text-blue-400">&lt;div&gt;</td>
-                        <td class="p-3">Bloc generic</td>
-                        <td class="p-3">Conteneur</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
+              <div class="p-4">
+                <table class="w-full text-sm">
+                  <thead><tr class="bg-gray-100 dark:bg-gray-700"><th class="p-3 text-left">Balise</th><th class="p-3 text-left">Rôle</th></tr></thead>
+                  <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+                    <tr><td class="p-3 font-mono text-blue-600">&lt;h1&gt;</td><td class="p-3">Titre principal</td></tr>
+                    <tr><td class="p-3 font-mono text-blue-600">&lt;h2&gt; à &lt;h6&gt;</td><td class="p-3">Sous-titres</td></tr>
+                    <tr><td class="p-3 font-mono text-blue-600">&lt;p&gt;</td><td class="p-3">Paragraphe</td></tr>
+                    <tr><td class="p-3 font-mono text-blue-600">&lt;a&gt;</td><td class="p-3">Lien hypertexte</td></tr>
+                    <tr><td class="p-3 font-mono text-blue-600">&lt;img&gt;</td><td class="p-3">Image</td></tr>
+                    <tr><td class="p-3 font-mono text-blue-600">&lt;ul&gt;, &lt;ol&gt;</td><td class="p-3">Listes</td></tr>
+                    <tr><td class="p-3 font-mono text-blue-600">&lt;div&gt;</td><td class="p-3">Bloc générique</td></tr>
+                    <tr><td class="p-3 font-mono text-blue-600">&lt;span&gt;</td><td class="p-3">Texte inline</td></tr>
+                    <tr><td class="p-3 font-mono text-blue-600">&lt;button&gt;</td><td class="p-3">Bouton cliquable</td></tr>
+                    <tr><td class="p-3 font-mono text-blue-600">&lt;input&gt;</td><td class="p-3">Champ de saisie</td></tr>
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
 
-          <!-- Structure complète -->
           <div class="collapsible">
-            <button onclick="toggleCollapsible(this)" class="w-full flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
-              <div class="flex items-center gap-3">
-                <div class="w-8 h-8 bg-indigo-100 dark:bg-indigo-900 rounded-lg flex items-center justify-center text-indigo-600">🏠</div>
-                <span class="font-semibold">Structure d'une Page HTML</span>
-              </div>
+            <button onclick="APP.toggleCollapsible(this)" class="w-full flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+              <span class="font-semibold">🏠 Structure d'une Page HTML</span>
               <svg class="w-5 h-5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
             </button>
             <div class="collapsible-content">
@@ -445,43 +485,36 @@
   &lt;p&gt;Bienvenue sur ma première page.&lt;/p&gt;
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
-
-                <div class="space-y-2">
-                  <div class="bg-blue-50 dark:bg-blue-900/30 p-3 rounded-lg text-sm">
-                    <code class="text-blue-600 dark:text-blue-400">&lt;!DOCTYPE html&gt;</code> → Indique que c'est du HTML5
-                  </div>
-                  <div class="bg-green-50 dark:bg-green-900/30 p-3 rounded-lg text-sm">
-                    <code class="text-green-600 dark:text-green-400">&lt;html lang="fr"&gt;</code> → Balise racine, langue française
-                  </div>
-                  <div class="bg-purple-50 dark:bg-purple-900/30 p-3 rounded-lg text-sm">
-                    <code class="text-purple-600 dark:text-purple-400">&lt;head&gt;</code> → Métadonnées (infos invisibles)
-                  </div>
-                  <div class="bg-orange-50 dark:bg-orange-900/30 p-3 rounded-lg text-sm">
-                    <code class="text-orange-600 dark:text-orange-400">&lt;body&gt;</code> → Contenu visible de la page
-                  </div>
+                <div class="space-y-2 text-sm">
+                  <div class="bg-blue-50 dark:bg-blue-900/30 p-3 rounded-lg"><code class="text-blue-600 dark:text-blue-400">&lt;!DOCTYPE html&gt;</code> → Indique HTML5</div>
+                  <div class="bg-green-50 dark:bg-green-900/30 p-3 rounded-lg"><code class="text-green-600 dark:text-green-400">&lt;html lang="fr"&gt;</code> → Racine, langue FR</div>
+                  <div class="bg-purple-50 dark:bg-purple-900/30 p-3 rounded-lg"><code class="text-purple-600 dark:text-purple-400">&lt;head&gt;</code> → Métadonnées (invisibles)</div>
+                  <div class="bg-orange-50 dark:bg-orange-900/30 p-3 rounded-lg"><code class="text-orange-600 dark:text-orange-400">&lt;body&gt;</code> → Contenu visible</div>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- Exercice -->
           <div class="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 p-5 rounded-xl border border-purple-200 dark:border-purple-800">
-            <h3 class="font-bold text-purple-800 dark:text-purple-300 mb-3 flex items-center gap-2">
-              ✏️ Exercice Pratique
-            </h3>
-            <p class="text-purple-700 dark:text-purple-400 text-sm mb-3">
-              Complétez le code pour afficher "Mon Site" comme titre principal :
-            </p>
+            <h3 class="font-bold text-purple-800 dark:text-purple-300 mb-3 flex items-center gap-2">✏️ Exercice Pratique</h3>
+            <p class="text-purple-700 dark:text-purple-400 text-sm mb-3">Complétez pour afficher "Mon Site" comme titre principal :</p>
             <div class="bg-gray-800 text-green-400 p-4 rounded-lg font-mono text-sm mb-3">
               <span class="text-gray-500">&lt;h1&gt;</span><span id="exo1-answer" class="bg-yellow-500/30 px-1">???</span><span class="text-gray-500">&lt;/h1&gt;</span>
             </div>
             <div class="flex gap-2">
               <input type="text" id="exo1-input" placeholder="Votre réponse..." class="flex-1 px-3 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 text-sm">
-              <button onclick="checkExo1()" class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors text-sm font-semibold">
-                Vérifier
-              </button>
+              <button onclick="APP.checkExo1()" class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors text-sm font-semibold">Vérifier</button>
             </div>
             <p id="exo1-result" class="mt-2 text-sm font-semibold"></p>
+          </div>
+
+          <div class="border-t dark:border-gray-700 pt-4">
+            <button onclick="APP.toggleNotes('html')" id="notes-btn-html" class="notes-btn flex items-center gap-2 text-sm text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
+              📝 Notes personnelles
+            </button>
+            <div id="notes-panel-html" class="notes-panel hidden mt-3">
+              <textarea id="note-html" onblur="APP.saveNote('html')" placeholder="Ajoutez vos notes ici..." class="w-full h-24 p-3 border rounded-lg dark:bg-gray-700 dark:border-gray-600 text-sm resize-none"></textarea>
+            </div>
           </div>
         </div>
       </section>
@@ -498,26 +531,15 @@
         </div>
         
         <div class="p-6 space-y-6">
-          <!-- Définition -->
           <div class="bg-gradient-to-r from-pink-50 to-rose-50 dark:from-pink-900/20 dark:to-rose-900/20 p-5 rounded-xl border border-pink-200 dark:border-pink-800">
-            <h3 class="font-bold text-pink-800 dark:text-pink-300 mb-3 flex items-center gap-2">
-              📖 Définition
-            </h3>
-            <p class="text-pink-700 dark:text-pink-400">
-              <strong>CSS</strong> (Cascading Style Sheets) est le langage qui permet de <strong>styliser</strong> et <strong>mise en page</strong> les éléments HTML.
-            </p>
-            <p class="text-pink-600 dark:text-pink-500 mt-2 text-sm">
-              💡 C'est comme la <strong>décoration intérieure</strong> d'une maison : couleurs des murs,样式 des meubles, placement des objets.
-            </p>
+            <h3 class="font-bold text-pink-800 dark:text-pink-300 mb-3 flex items-center gap-2">📖 Définition</h3>
+            <p class="text-pink-700 dark:text-pink-400"><strong>CSS</strong> (Cascading Style Sheets) permet de styliser et mettre en page les éléments HTML.</p>
+            <p class="text-pink-600 dark:text-pink-500 mt-2 text-sm">💡 C'est la <strong>décoration intérieure</strong> : couleurs, meubles, placement.</p>
           </div>
 
-          <!-- Syntaxe -->
           <div class="collapsible">
-            <button onclick="toggleCollapsible(this)" class="w-full flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
-              <div class="flex items-center gap-3">
-                <div class="w-8 h-8 bg-pink-100 dark:bg-pink-900 rounded-lg flex items-center justify-center text-pink-600">📝</div>
-                <span class="font-semibold">Syntaxe CSS</span>
-              </div>
+            <button onclick="APP.toggleCollapsible(this)" class="w-full flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+              <span class="font-semibold">📝 Syntaxe CSS</span>
               <svg class="w-5 h-5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
             </button>
             <div class="collapsible-content">
@@ -528,118 +550,78 @@
                   <div class="pl-4 text-yellow-400">propriété: valeur;</div>
                   <div>}</div>
                 </div>
-
-                <div class="bg-blue-50 dark:bg-blue-900/30 p-4 rounded-lg">
-                  <h4 class="font-bold text-blue-700 dark:text-blue-400 mb-2">🔍 Explication ligne par ligne</h4>
-                  <div class="space-y-2 text-sm text-blue-600 dark:text-blue-500">
-                    <p><strong>sélecteur</strong> → Qui doit être stylisé ? (p, .ma-classe, #mon-id)</p>
-                    <p><strong>propriété</strong> → Quelle propriété modifier ? (color, font-size...)</p>
-                    <p><strong>valeur</strong> → Quelle valeur appliquer ? (red, 16px...)</p>
-                  </div>
+                <div class="bg-blue-50 dark:bg-blue-900/30 p-4 rounded-lg text-sm">
+                  <p><strong>sélecteur</strong> → Qui styliser ? (p, .ma-classe, #mon-id)</p>
+                  <p><strong>propriété</strong> → Quelle propriété ? (color, font-size...)</p>
+                  <p><strong>valeur</strong> → Quelle valeur ? (red, 16px...)</p>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- Sélecteurs -->
           <div class="collapsible">
-            <button onclick="toggleCollapsible(this)" class="w-full flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
-              <div class="flex items-center gap-3">
-                <div class="w-8 h-8 bg-violet-100 dark:bg-violet-900 rounded-lg flex items-center justify-center text-violet-600">🎯</div>
-                <span class="font-semibold">Les Sélecteurs</span>
-              </div>
+            <button onclick="APP.toggleCollapsible(this)" class="w-full flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+              <span class="font-semibold">🎯 Les Sélecteurs</span>
               <svg class="w-5 h-5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
             </button>
             <div class="collapsible-content">
               <div class="p-4 space-y-4">
-                <div class="grid gap-3">
-                  <div class="bg-gray-100 dark:bg-gray-700 p-4 rounded-lg">
-                    <div class="font-mono text-pink-600 dark:text-pink-400 mb-2">p { ... }</div>
-                    <p class="text-sm">Sélectionne <strong>tous</strong> les paragraphes</p>
-                  </div>
-                  <div class="bg-gray-100 dark:bg-gray-700 p-4 rounded-lg">
-                    <div class="font-mono text-pink-600 dark:text-pink-400 mb-2">.bouton { ... }</div>
-                    <p class="text-sm">Sélectionne les éléments avec <code class="bg-gray-200 dark:bg-gray-600 px-1 rounded">class="bouton"</code></p>
-                  </div>
-                  <div class="bg-gray-100 dark:bg-gray-700 p-4 rounded-lg">
-                    <div class="font-mono text-pink-600 dark:text-pink-400 mb-2">#header { ... }</div>
-                    <p class="text-sm">Sélectionne l'élément avec <code class="bg-gray-200 dark:bg-gray-600 px-1 rounded">id="header"</code></p>
-                  </div>
-                </div>
-
+                <div class="bg-gray-100 dark:bg-gray-700 p-4 rounded-lg"><div class="font-mono text-pink-600 dark:text-pink-400">p { ... }</div><p class="text-sm mt-2">Sélectionne tous les paragraphes</p></div>
+                <div class="bg-gray-100 dark:bg-gray-700 p-4 rounded-lg"><div class="font-mono text-pink-600 dark:text-pink-400">.bouton { ... }</div><p class="text-sm mt-2">Sélectionne <code class="bg-gray-200 dark:bg-gray-600 px-1 rounded">class="bouton"</code></p></div>
+                <div class="bg-gray-100 dark:bg-gray-700 p-4 rounded-lg"><div class="font-mono text-pink-600 dark:text-pink-400">#header { ... }</div><p class="text-sm mt-2">Sélectionne <code class="bg-gray-200 dark:bg-gray-600 px-1 rounded">id="header"</code></p></div>
                 <div class="bg-yellow-50 dark:bg-yellow-900/30 p-4 rounded-lg border border-yellow-200 dark:border-yellow-800">
                   <h4 class="font-bold text-yellow-700 dark:text-yellow-400 mb-2">💡 Bonnes pratiques</h4>
                   <ul class="text-yellow-600 dark:text-yellow-500 text-sm space-y-1">
-                    <li>✓ Utilisez des classes (.ma-classe) pour le style</li>
-                    <li>✓ Utilisez des IDs (#mon-id) pour le JavaScript</li>
-                    <li>✓ Donnez des noms explicites : .btn-primary pas .bp</li>
+                    <li>✓ Classes (.ma-classe) pour le style</li>
+                    <li>✓ IDs (#mon-id) pour le JavaScript</li>
+                    <li>✓ Noms explicites : .btn-primary pas .bp</li>
                   </ul>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- Propriétés courantes -->
           <div class="collapsible">
-            <button onclick="toggleCollapsible(this)" class="w-full flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
-              <div class="flex items-center gap-3">
-                <div class="w-8 h-8 bg-fuchsia-100 dark:bg-fuchsia-900 rounded-lg flex items-center justify-center text-fuchsia-600">🎨</div>
-                <span class="font-semibold">Propriétés Courantes</span>
-              </div>
+            <button onclick="APP.toggleCollapsible(this)" class="w-full flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+              <span class="font-semibold">🎨 Propriétés Courantes</span>
               <svg class="w-5 h-5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
             </button>
             <div class="collapsible-content">
-              <div class="p-4 space-y-3">
+              <div class="p-4">
                 <div class="grid md:grid-cols-2 gap-3">
-                  <div class="bg-gray-100 dark:bg-gray-700 p-3 rounded-lg">
-                    <code class="text-pink-600 dark:text-pink-400">color: red;</code>
-                    <p class="text-xs mt-1 text-gray-500">Couleur du texte</p>
-                  </div>
-                  <div class="bg-gray-100 dark:bg-gray-700 p-3 rounded-lg">
-                    <code class="text-pink-600 dark:text-pink-400">font-size: 16px;</code>
-                    <p class="text-xs mt-1 text-gray-500">Taille du texte</p>
-                  </div>
-                  <div class="bg-gray-100 dark:bg-gray-700 p-3 rounded-lg">
-                    <code class="text-pink-600 dark:text-pink-400">background: blue;</code>
-                    <p class="text-xs mt-1 text-gray-500">Couleur de fond</p>
-                  </div>
-                  <div class="bg-gray-100 dark:bg-gray-700 p-3 rounded-lg">
-                    <code class="text-pink-600 dark:text-pink-400">margin: 10px;</code>
-                    <p class="text-xs mt-1 text-gray-500">Espace extérieur</p>
-                  </div>
-                  <div class="bg-gray-100 dark:bg-gray-700 p-3 rounded-lg">
-                    <code class="text-pink-600 dark:text-pink-400">padding: 20px;</code>
-                    <p class="text-xs mt-1 text-gray-500">Espace intérieur</p>
-                  </div>
-                  <div class="bg-gray-100 dark:bg-gray-700 p-3 rounded-lg">
-                    <code class="text-pink-600 dark:text-pink-400">border: 1px solid;</code>
-                    <p class="text-xs mt-1 text-gray-500">Bordure</p>
-                  </div>
+                  <div class="bg-gray-100 dark:bg-gray-700 p-3 rounded-lg"><code class="text-pink-600 dark:text-pink-400">color: red;</code><p class="text-xs mt-1 text-gray-500">Couleur du texte</p></div>
+                  <div class="bg-gray-100 dark:bg-gray-700 p-3 rounded-lg"><code class="text-pink-600 dark:text-pink-400">font-size: 16px;</code><p class="text-xs mt-1 text-gray-500">Taille du texte</p></div>
+                  <div class="bg-gray-100 dark:bg-gray-700 p-3 rounded-lg"><code class="text-pink-600 dark:text-pink-400">background: blue;</code><p class="text-xs mt-1 text-gray-500">Couleur de fond</p></div>
+                  <div class="bg-gray-100 dark:bg-gray-700 p-3 rounded-lg"><code class="text-pink-600 dark:text-pink-400">margin: 10px;</code><p class="text-xs mt-1 text-gray-500">Espace extérieur</p></div>
+                  <div class="bg-gray-100 dark:bg-gray-700 p-3 rounded-lg"><code class="text-pink-600 dark:text-pink-400">padding: 20px;</code><p class="text-xs mt-1 text-gray-500">Espace intérieur</p></div>
+                  <div class="bg-gray-100 dark:bg-gray-700 p-3 rounded-lg"><code class="text-pink-600 dark:text-pink-400">border: 1px solid;</code><p class="text-xs mt-1 text-gray-500">Bordure</p></div>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- Exercice Code -->
           <div class="bg-gradient-to-r from-violet-50 to-purple-50 dark:from-violet-900/20 dark:to-purple-900/20 p-5 rounded-xl border border-violet-200 dark:border-violet-800">
-            <h3 class="font-bold text-violet-800 dark:text-violet-300 mb-3 flex items-center gap-2">
-              ✏️ Exercice : Corrigez le code
-            </h3>
-            <p class="text-violet-700 dark:text-violet-400 text-sm mb-3">
-              Ce code a des erreurs. Cliquez pour voir les solutions !
-            </p>
-            <button onclick="checkCSSExo()" class="bg-violet-600 text-white px-4 py-2 rounded-lg hover:bg-violet-700 transition-colors text-sm font-semibold">
-              Révéler les erreurs
-            </button>
+            <h3 class="font-bold text-violet-800 dark:text-violet-300 mb-3 flex items-center gap-2">✏️ Exercice : Corrigez le code</h3>
+            <p class="text-violet-700 dark:text-violet-400 text-sm mb-3">Ce code a des erreurs. Cliquez pour voir !</p>
+            <button onclick="APP.checkCSSExo()" class="bg-violet-600 text-white px-4 py-2 rounded-lg hover:bg-violet-700 transition-colors text-sm font-semibold">Révéler les erreurs</button>
             <div id="css-exo-errors" class="mt-3 hidden">
-              <div class="bg-gray-800 text-red-400 p-3 rounded-lg font-mono text-xs mb-3">
+              <div class="bg-gray-800 text-red-400 p-3 rounded-lg font-mono text-xs">
                 <div>p {</div>
-                <div class="text-red-300">  color: blue  <span class="text-yellow-400">/* ← point-virgule manquant */</span></div>
-                <div class="text-red-300">  fontSize: 16px  <span class="text-yellow-400">/* ← kebab-case requis */</span></div>
+                <div class="text-red-300">  color: blue  <span class="text-yellow-400">/* ← ; manquant */</span></div>
+                <div class="text-red-300">  fontSize: 16px  <span class="text-yellow-400">/* ← kebab-case */</span></div>
                 <div>}</div>
               </div>
             </div>
             <p id="css-exo-result" class="mt-2 text-sm font-semibold"></p>
+          </div>
+
+          <div class="border-t dark:border-gray-700 pt-4">
+            <button onclick="APP.toggleNotes('css')" id="notes-btn-css" class="notes-btn flex items-center gap-2 text-sm text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
+              📝 Notes personnelles
+            </button>
+            <div id="notes-panel-css" class="notes-panel hidden mt-3">
+              <textarea id="note-css" onblur="APP.saveNote('css')" placeholder="Ajoutez vos notes ici..." class="w-full h-24 p-3 border rounded-lg dark:bg-gray-700 dark:border-gray-600 text-sm resize-none"></textarea>
+            </div>
           </div>
         </div>
       </section>
@@ -656,29 +638,19 @@
         </div>
         
         <div class="p-6 space-y-6">
-          <!-- Définition -->
           <div class="bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20 p-5 rounded-xl border border-amber-200 dark:border-amber-800">
-            <h3 class="font-bold text-amber-800 dark:text-amber-300 mb-3 flex items-center gap-2">
-              📖 Définition
-            </h3>
-            <p class="text-amber-700 dark:text-amber-400">
-              Chaque élément HTML est une <strong>boîte rectangulaire</strong> composée de 4 couches concentriques.
-            </p>
-            <p class="text-amber-600 dark:text-amber-500 mt-2 text-sm">
-              💡 C'est comme envoyer un <strong>colis par la poste</strong> : le contenu (margin), le papier bulles (padding), la boîte (border), et l'espace entre boîtes (margin).
-            </p>
+            <h3 class="font-bold text-amber-800 dark:text-amber-300 mb-3 flex items-center gap-2">📖 Définition</h3>
+            <p class="text-amber-700 dark:text-amber-400">Chaque élément HTML est une <strong>boîte rectangulaire</strong> composée de 4 couches.</p>
+            <p class="text-amber-600 dark:text-amber-500 mt-2 text-sm">💡 Comme envoyer un <strong>colis</strong> : contenu, papier bulles (padding), boîte (border), espace entre boîtes (margin).</p>
           </div>
 
-          <!-- Visualisation -->
           <div class="bg-gray-900 p-6 rounded-xl">
             <div class="flex items-center justify-center">
               <div class="text-center">
                 <div class="inline-block bg-amber-600 p-8 rounded-lg mb-4 relative">
                   <div class="absolute inset-0 border-4 border-dashed border-amber-300 rounded-lg" style="margin: -4px;"></div>
                   <div class="inline-block bg-orange-500 p-6 rounded-lg">
-                    <div class="inline-block bg-orange-200 text-orange-800 px-4 py-2 rounded font-bold text-sm">
-                      CONTENU
-                    </div>
+                    <div class="inline-block bg-orange-200 text-orange-800 px-4 py-2 rounded font-bold text-sm">CONTENU</div>
                   </div>
                   <div class="text-amber-200 text-xs mt-2">padding</div>
                   <div class="text-amber-100 text-xs mt-1">border</div>
@@ -686,66 +658,51 @@
                 <div class="text-amber-300 text-sm">margin</div>
               </div>
             </div>
-            <div class="grid md:grid-cols-4 gap-4 mt-6 text-sm">
-              <div class="bg-amber-900/50 p-3 rounded-lg text-center">
-                <div class="text-amber-400 font-bold">Content</div>
-                <div class="text-amber-300 mt-1">Texte/Image</div>
-              </div>
-              <div class="bg-orange-900/50 p-3 rounded-lg text-center">
-                <div class="text-orange-400 font-bold">Padding</div>
-                <div class="text-orange-300 mt-1">Espace intérieur</div>
-              </div>
-              <div class="bg-amber-800/50 p-3 rounded-lg text-center">
-                <div class="text-amber-400 font-bold">Border</div>
-                <div class="text-amber-300 mt-1">Bordure</div>
-              </div>
-              <div class="bg-gray-700/50 p-3 rounded-lg text-center">
-                <div class="text-gray-400 font-bold">Margin</div>
-                <div class="text-gray-300 mt-1">Espace extérieur</div>
-              </div>
+            <div class="grid grid-cols-4 gap-4 mt-6 text-sm">
+              <div class="bg-amber-900/50 p-3 rounded-lg text-center"><div class="text-amber-400 font-bold">Content</div><div class="text-amber-300 mt-1">Texte/Image</div></div>
+              <div class="bg-orange-900/50 p-3 rounded-lg text-center"><div class="text-orange-400 font-bold">Padding</div><div class="text-orange-300 mt-1">Intérieur</div></div>
+              <div class="bg-amber-800/50 p-3 rounded-lg text-center"><div class="text-amber-400 font-bold">Border</div><div class="text-amber-300 mt-1">Bordure</div></div>
+              <div class="bg-gray-700/50 p-3 rounded-lg text-center"><div class="text-gray-400 font-bold">Margin</div><div class="text-gray-300 mt-1">Extérieur</div></div>
             </div>
           </div>
 
-          <!-- Code -->
           <div class="collapsible">
-            <button onclick="toggleCollapsible(this)" class="w-full flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+            <button onclick="APP.toggleCollapsible(this)" class="w-full flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
               <span class="font-semibold">Code CSS</span>
               <svg class="w-5 h-5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
             </button>
             <div class="collapsible-content">
               <div class="p-4">
                 <pre class="bg-gray-900 text-green-400 p-4 rounded-lg overflow-x-auto text-sm"><code>div {
-  /* Espace intérieur */
-  padding-top: 20px;
-  padding-right: 20px;
-  padding-bottom: 20px;
-  padding-left: 20px;
+  padding: 20px;           /* Tous les côtés */
+  padding: 10px 20px;      /* Haut/Bas Gauche/Droite */
+  padding: 5px 10px 15px 20px; /* Haut Droit Bas Gauche */
   
-  /* Raccourci : tous les côtés */
-  padding: 20px;
-  
-  /* Haut/Droite/Bas/Gauche */
-  padding: 10px 20px 10px 20px;
-  
-  /* Bordure */
   border: 2px solid #333;
   
-  /* Espace extérieur */
-  margin: 10px;
+  margin: 10px;            /* Tous les côtés */
 }</code></pre>
               </div>
             </div>
           </div>
 
-          <!-- Erreurs fréquentes -->
           <div class="bg-red-50 dark:bg-red-900/30 p-5 rounded-xl border border-red-200 dark:border-red-800">
             <h3 class="font-bold text-red-700 dark:text-red-400 mb-3">⚠️ Erreurs fréquentes</h3>
             <ul class="text-red-600 dark:text-red-500 text-sm space-y-2">
               <li>❌ Confondre margin et padding</li>
-              <li>❌ Margin ne fonctionne pas sur les éléments inline</li>
-              <li>❌ Marges verticales qui se chevauchent (margin collapse)</li>
-              <li>❌ Oublier que padding ajoute à la taille de l'élément</li>
+              <li>❌ Margin ne fonctionne pas sur inline</li>
+              <li>❌ Marges verticales qui se chevauchent</li>
+              <li>❌ Padding qui agrandit l'élément</li>
             </ul>
+          </div>
+
+          <div class="border-t dark:border-gray-700 pt-4">
+            <button onclick="APP.toggleNotes('box')" id="notes-btn-box" class="notes-btn flex items-center gap-2 text-sm text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
+              📝 Notes personnelles
+            </button>
+            <div id="notes-panel-box" class="notes-panel hidden mt-3">
+              <textarea id="note-box" onblur="APP.saveNote('box')" placeholder="Ajoutez vos notes ici..." class="w-full h-24 p-3 border rounded-lg dark:bg-gray-700 dark:border-gray-600 text-sm resize-none"></textarea>
+            </div>
           </div>
         </div>
       </section>
@@ -762,20 +719,12 @@
         </div>
         
         <div class="p-6 space-y-6">
-          <!-- Définition -->
           <div class="bg-gradient-to-r from-cyan-50 to-blue-50 dark:from-cyan-900/20 dark:to-blue-900/20 p-5 rounded-xl border border-cyan-200 dark:border-cyan-800">
-            <h3 class="font-bold text-cyan-800 dark:text-cyan-300 mb-3 flex items-center gap-2">
-              📖 Définition
-            </h3>
-            <p class="text-cyan-700 dark:text-cyan-400">
-              <strong>Flexbox</strong> est un système de disposition qui permet d'<strong>aligner et distribuer</strong> facilement les éléments dans un conteneur.
-            </p>
-            <p class="text-cyan-600 dark:text-cyan-500 mt-2 text-sm">
-              💡 C'est comme un <strong>chef d'orchestre</strong> qui décide comment chaque instrument (élément) doit se placer sur scène.
-            </p>
+            <h3 class="font-bold text-cyan-800 dark:text-cyan-300 mb-3 flex items-center gap-2">📖 Définition</h3>
+            <p class="text-cyan-700 dark:text-cyan-400"><strong>Flexbox</strong> permet d'aligner et distribuer facilement les éléments dans un conteneur.</p>
+            <p class="text-cyan-600 dark:text-cyan-500 mt-2 text-sm">💡 C'est un <strong>chef d'orchestre</strong> qui décide comment chaque instrument doit se placer.</p>
           </div>
 
-          <!-- Principe -->
           <div class="bg-gray-100 dark:bg-gray-700 p-5 rounded-xl">
             <h4 class="font-bold mb-3">🎯 Principe</h4>
             <div class="bg-gray-200 dark:bg-gray-600 p-4 rounded-lg mb-3">
@@ -786,27 +735,19 @@
                 <div class="w-12 h-12 bg-purple-500 rounded flex items-center justify-center text-white text-sm font-bold">3</div>
               </div>
             </div>
-            <p class="text-sm text-gray-600 dark:text-gray-300">
-              <strong>Container</strong> = parent avec <code class="bg-gray-300 dark:bg-gray-500 px-1 rounded">display: flex</code><br>
-              <strong>Items</strong> = enfants qui se disposent automatiquement
-            </p>
+            <p class="text-sm text-gray-600 dark:text-gray-300"><strong>Container</strong> = parent avec <code class="bg-gray-300 dark:bg-gray-500 px-1 rounded">display: flex</code><br><strong>Items</strong> = enfants qui se disposent automatiquement</p>
           </div>
 
-          <!-- Propriétés -->
           <div class="grid gap-3">
             <div class="collapsible">
-              <button onclick="toggleCollapsible(this)" class="w-full flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-left">
-                <span class="font-semibold">justify-content (axe principal)</span>
+              <button onclick="APP.toggleCollapsible(this)" class="w-full flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-left">
+                <span class="font-semibold">justify-content (axe horizontal)</span>
                 <svg class="w-5 h-5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
               </button>
               <div class="collapsible-content">
                 <div class="p-4 space-y-3">
-                  <div class="flex gap-2 justify-center bg-gray-100 dark:bg-gray-700 p-2 rounded">
-                    <div class="w-8 h-8 bg-blue-500 rounded"></div>
-                    <div class="w-8 h-8 bg-blue-500 rounded"></div>
-                    <div class="w-8 h-8 bg-blue-500 rounded"></div>
-                  </div>
-                  <div class="grid grid-cols-2 md:grid-cols-4 gap-2 text-sm">
+                  <div class="flex gap-2 justify-center bg-gray-100 dark:bg-gray-700 p-2 rounded"><div class="w-8 h-8 bg-blue-500 rounded"></div><div class="w-8 h-8 bg-blue-500 rounded"></div><div class="w-8 h-8 bg-blue-500 rounded"></div></div>
+                  <div class="grid grid-cols-4 gap-2 text-sm">
                     <code class="bg-gray-200 dark:bg-gray-600 p-2 rounded text-center">flex-start</code>
                     <code class="bg-gray-200 dark:bg-gray-600 p-2 rounded text-center">center</code>
                     <code class="bg-gray-200 dark:bg-gray-600 p-2 rounded text-center">flex-end</code>
@@ -817,17 +758,13 @@
             </div>
 
             <div class="collapsible">
-              <button onclick="toggleCollapsible(this)" class="w-full flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-left">
-                <span class="font-semibold">align-items (axe secondaire)</span>
+              <button onclick="APP.toggleCollapsible(this)" class="w-full flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-left">
+                <span class="font-semibold">align-items (axe vertical)</span>
                 <svg class="w-5 h-5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
               </button>
               <div class="collapsible-content">
                 <div class="p-4 space-y-3">
-                  <div class="flex items-center gap-2 bg-gray-100 dark:bg-gray-700 p-2 rounded h-20">
-                    <div class="w-8 h-12 bg-green-500 rounded"></div>
-                    <div class="w-8 h-16 bg-green-500 rounded"></div>
-                    <div class="w-8 h-10 bg-green-500 rounded"></div>
-                  </div>
+                  <div class="flex items-center gap-2 bg-gray-100 dark:bg-gray-700 p-2 rounded h-20"><div class="w-8 h-12 bg-green-500 rounded"></div><div class="w-8 h-16 bg-green-500 rounded"></div><div class="w-8 h-10 bg-green-500 rounded"></div></div>
                   <div class="grid grid-cols-3 gap-2 text-sm">
                     <code class="bg-gray-200 dark:bg-gray-600 p-2 rounded text-center">flex-start</code>
                     <code class="bg-gray-200 dark:bg-gray-600 p-2 rounded text-center">center</code>
@@ -838,9 +775,8 @@
             </div>
           </div>
 
-          <!-- Code complet -->
           <div class="collapsible">
-            <button onclick="toggleCollapsible(this)" class="w-full flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+            <button onclick="APP.toggleCollapsible(this)" class="w-full flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
               <span class="font-semibold">Code complet</span>
               <svg class="w-5 h-5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
             </button>
@@ -851,8 +787,18 @@
   justify-content: center;  /* Horizontal */
   align-items: center;       /* Vertical */
   gap: 20px;                /* Espace entre items */
+  flex-wrap: wrap;          /* Retour à la ligne */
 }</code></pre>
               </div>
+            </div>
+          </div>
+
+          <div class="border-t dark:border-gray-700 pt-4">
+            <button onclick="APP.toggleNotes('flex')" id="notes-btn-flex" class="notes-btn flex items-center gap-2 text-sm text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
+              📝 Notes personnelles
+            </button>
+            <div id="notes-panel-flex" class="notes-panel hidden mt-3">
+              <textarea id="note-flex" onblur="APP.saveNote('flex')" placeholder="Ajoutez vos notes ici..." class="w-full h-24 p-3 border rounded-lg dark:bg-gray-700 dark:border-gray-600 text-sm resize-none"></textarea>
             </div>
           </div>
         </div>
@@ -870,91 +816,293 @@
         </div>
         
         <div class="p-6 space-y-6">
-          <!-- Définition -->
           <div class="bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20 p-5 rounded-xl border border-emerald-200 dark:border-emerald-800">
-            <h3 class="font-bold text-emerald-800 dark:text-emerald-300 mb-3 flex items-center gap-2">
-              📖 Définition
-            </h3>
-            <p class="text-emerald-700 dark:text-emerald-400">
-              Le <strong>responsive design</strong> permet à un site de <strong>s'adapter</strong> automatiquement à tous les écrans (mobile, tablette, ordinateur).
-            </p>
-            <p class="text-emerald-600 dark:text-emerald-500 mt-2 text-sm">
-              💡 C'est comme un <strong>vêtement extensible</strong> qui s'ajuste parfaitement quelle que soit la taille de la personne.
-            </p>
+            <h3 class="font-bold text-emerald-800 dark:text-emerald-300 mb-3 flex items-center gap-2">📖 Définition</h3>
+            <p class="text-emerald-700 dark:text-emerald-400">Le <strong>responsive design</strong> permet à un site de <strong>s'adapter</strong> automatiquement à tous les écrans.</p>
+            <p class="text-emerald-600 dark:text-emerald-500 mt-2 text-sm">💡 C'est un <strong>vêtement extensible</strong> qui s'ajuste parfaitement.</p>
           </div>
 
-          <!-- Viewport -->
           <div class="bg-blue-50 dark:bg-blue-900/30 p-5 rounded-xl">
-            <h4 class="font-bold text-blue-700 dark:text-blue-400 mb-3">🔍 Meta Viewport</h4>
-            <p class="text-blue-600 dark:text-blue-500 text-sm mb-3">
-              Cette balise est <strong>indispensable</strong> pour le responsive :
-            </p>
+            <h4 class="font-bold text-blue-700 dark:text-blue-400 mb-3">🔍 Meta Viewport (Obligatoire !)</h4>
             <pre class="bg-gray-800 text-green-400 p-3 rounded-lg font-mono text-sm">&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</pre>
           </div>
 
-          <!-- Media Queries -->
           <div class="collapsible">
-            <button onclick="toggleCollapsible(this)" class="w-full flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
-              <div class="flex items-center gap-3">
-                <div class="w-8 h-8 bg-teal-100 dark:bg-teal-900 rounded-lg flex items-center justify-center text-teal-600">📺</div>
-                <span class="font-semibold">Media Queries</span>
-              </div>
+            <button onclick="APP.toggleCollapsible(this)" class="w-full flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+              <span class="font-semibold">📺 Media Queries</span>
               <svg class="w-5 h-5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
             </button>
             <div class="collapsible-content">
               <div class="p-4 space-y-4">
-                <pre class="bg-gray-900 text-green-400 p-4 rounded-lg overflow-x-auto text-sm"><code>/* Par défaut (mobile) */
-body {
-  background: blue;
-}
+                <pre class="bg-gray-900 text-green-400 p-4 rounded-lg overflow-x-auto text-sm"><code>/* Mobile (défaut) */
+body { background: blue; }
 
-/* Tablette et plus */
+/* Tablette */
 @media (min-width: 768px) {
-  body {
-    background: green;
-  }
+  body { background: green; }
 }
 
 /* Desktop */
 @media (min-width: 1024px) {
-  body {
-    background: red;
-  }
+  body { background: red; }
 }</code></pre>
-
                 <div class="grid grid-cols-3 gap-3 text-sm">
-                  <div class="bg-gray-100 dark:bg-gray-700 p-3 rounded-lg text-center">
-                    <div class="text-2xl">📱</div>
-                    <div class="font-bold mt-1">&lt; 768px</div>
-                    <div class="text-xs text-gray-500">Mobile</div>
-                  </div>
-                  <div class="bg-gray-100 dark:bg-gray-700 p-3 rounded-lg text-center">
-                    <div class="text-2xl">📱</div>
-                    <div class="font-bold mt-1">768px+</div>
-                    <div class="text-xs text-gray-500">Tablette</div>
-                  </div>
-                  <div class="bg-gray-100 dark:bg-gray-700 p-3 rounded-lg text-center">
-                    <div class="text-2xl">💻</div>
-                    <div class="font-bold mt-1">1024px+</div>
-                    <div class="text-xs text-gray-500">Desktop</div>
-                  </div>
+                  <div class="bg-gray-100 dark:bg-gray-700 p-3 rounded-lg text-center"><div class="text-2xl">📱</div><div class="font-bold mt-1">&lt; 768px</div><div class="text-xs text-gray-500">Mobile</div></div>
+                  <div class="bg-gray-100 dark:bg-gray-700 p-3 rounded-lg text-center"><div class="text-2xl">📱</div><div class="font-bold mt-1">768px+</div><div class="text-xs text-gray-500">Tablette</div></div>
+                  <div class="bg-gray-100 dark:bg-gray-700 p-3 rounded-lg text-center"><div class="text-2xl">💻</div><div class="font-bold mt-1">1024px+</div><div class="text-xs text-gray-500">Desktop</div></div>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- Breakpoints Tailwind -->
           <div class="bg-purple-50 dark:bg-purple-900/30 p-5 rounded-xl">
             <h4 class="font-bold text-purple-700 dark:text-purple-400 mb-3">⚡ Breakpoints Tailwind</h4>
-            <div class="space-y-2 text-sm">
-              <div><code class="bg-gray-200 dark:bg-gray-600 px-2 py-1 rounded">sm:</code> → 640px+</div>
-              <div><code class="bg-gray-200 dark:bg-gray-600 px-2 py-1 rounded">md:</code> → 768px+</div>
-              <div><code class="bg-gray-200 dark:bg-gray-600 px-2 py-1 rounded">lg:</code> → 1024px+</div>
-              <div><code class="bg-gray-200 dark:bg-gray-600 px-2 py-1 rounded">xl:</code> → 1280px+</div>
+            <div class="grid grid-cols-4 gap-2 text-sm">
+              <div><code class="bg-gray-200 dark:bg-gray-600 px-2 py-1 rounded block text-center">sm:</code><span class="text-xs">640px+</span></div>
+              <div><code class="bg-gray-200 dark:bg-gray-600 px-2 py-1 rounded block text-center">md:</code><span class="text-xs">768px+</span></div>
+              <div><code class="bg-gray-200 dark:bg-gray-600 px-2 py-1 rounded block text-center">lg:</code><span class="text-xs">1024px+</span></div>
+              <div><code class="bg-gray-200 dark:bg-gray-600 px-2 py-1 rounded block text-center">xl:</code><span class="text-xs">1280px+</span></div>
             </div>
-            <p class="text-purple-600 dark:text-purple-500 text-xs mt-3">
-              Exemple : <code class="bg-gray-200 dark:bg-gray-600 px-1 rounded">md:flex</code> = flex sur tablette et plus
-            </p>
+          </div>
+
+          <div class="border-t dark:border-gray-700 pt-4">
+            <button onclick="APP.toggleNotes('responsive')" id="notes-btn-responsive" class="notes-btn flex items-center gap-2 text-sm text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
+              📝 Notes personnelles
+            </button>
+            <div id="notes-panel-responsive" class="notes-panel hidden mt-3">
+              <textarea id="note-responsive" onblur="APP.saveNote('responsive')" placeholder="Ajoutez vos notes ici..." class="w-full h-24 p-3 border rounded-lg dark:bg-gray-700 dark:border-gray-600 text-sm resize-none"></textarea>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== JAVASCRIPT ==================== -->
+      <section id="js" class="fade-in bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden">
+        <div class="bg-gradient-to-r from-yellow-500 to-amber-500 p-6 text-white">
+          <div class="flex items-center gap-2 text-yellow-200 text-sm mb-2">
+            <span>Chapitre 8</span>
+            <span>•</span>
+            <span>25 min</span>
+          </div>
+          <h1 class="text-3xl font-bold">⚡ JavaScript - L'Interactivité</h1>
+        </div>
+        
+        <div class="p-6 space-y-6">
+          <div class="bg-gradient-to-r from-yellow-50 to-amber-50 dark:from-yellow-900/20 dark:to-amber-900/20 p-5 rounded-xl border border-yellow-200 dark:border-yellow-800">
+            <h3 class="font-bold text-yellow-800 dark:text-yellow-300 mb-3 flex items-center gap-2">📖 Définition</h3>
+            <p class="text-yellow-700 dark:text-yellow-400"><strong>JavaScript</strong> est le langage de programmation qui rend les pages web <strong>interactives</strong>.</p>
+            <p class="text-yellow-600 dark:text-yellow-500 mt-2 text-sm">💡 HTML = Structure, CSS = Apparence, <strong>JS = Comportement</strong></p>
+          </div>
+
+          <div class="collapsible">
+            <button onclick="APP.toggleCollapsible(this)" class="w-full flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+              <span class="font-semibold">📝 Variables</span>
+              <svg class="w-5 h-5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+            </button>
+            <div class="collapsible-content">
+              <div class="p-4 space-y-4">
+                <pre class="bg-gray-900 text-green-400 p-4 rounded-lg overflow-x-auto text-sm"><code>// Déclarer une variable
+let nom = "Marie";      // Peut changer
+const age = 25;          // Ne peut pas changer
+
+// Types de données
+let texte = "Bonjour";   // String
+let nombre = 42;         // Number
+let estVrai = true;      // Boolean
+let rien = null;         // Null
+let indefini;            // Undefined</code></pre>
+                <div class="bg-blue-50 dark:bg-blue-900/30 p-4 rounded-lg text-sm">
+                  <p><strong>let</strong> = variable modifiable</p>
+                  <p><strong>const</strong> = constante (ne change jamais)</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="collapsible">
+            <button onclick="APP.toggleCollapsible(this)" class="w-full flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+              <span class="font-semibold">🔧 Fonctions</span>
+              <svg class="w-5 h-5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+            </button>
+            <div class="collapsible-content">
+              <div class="p-4 space-y-4">
+                <pre class="bg-gray-900 text-green-400 p-4 rounded-lg overflow-x-auto text-sm"><code>// Fonction classique
+function direBonjour(nom) {
+  return "Bonjour " + nom + " !";
+}
+
+// Fonction fléchée
+const direAurevoir = (nom) => {
+  return "Au revoir " + nom;
+};
+
+// Utilisation
+direBonjour("Marie");  // "Bonjour Marie !"</code></pre>
+              </div>
+            </div>
+          </div>
+
+          <div class="collapsible">
+            <button onclick="APP.toggleCollapsible(this)" class="w-full flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+              <span class="font-semibold">🎯 Événements</span>
+              <svg class="w-5 h-5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+            </button>
+            <div class="collapsible-content">
+              <div class="p-4 space-y-4">
+                <pre class="bg-gray-900 text-green-400 p-4 rounded-lg overflow-x-auto text-sm"><code>// Quand on clique sur un bouton
+bouton.addEventListener('click', function() {
+  alert('Vous avez cliqué !');
+});
+
+// Syntaxe moderne
+bouton.addEventListener('click', () => {
+  monElement.classList.toggle('actif');
+});</code></pre>
+                <div class="grid grid-cols-2 gap-2 text-sm">
+                  <div class="bg-gray-100 dark:bg-gray-700 p-2 rounded-lg"><code class="text-yellow-600">click</code><p class="text-xs">Clic</p></div>
+                  <div class="bg-gray-100 dark:bg-gray-700 p-2 rounded-lg"><code class="text-yellow-600">mouseover</code><p class="text-xs">Survol</p></div>
+                  <div class="bg-gray-100 dark:bg-gray-700 p-2 rounded-lg"><code class="text-yellow-600">keydown</code><p class="text-xs">Touche</p></div>
+                  <div class="bg-gray-100 dark:bg-gray-700 p-2 rounded-lg"><code class="text-yellow-600">submit</code><p class="text-xs">Formulaire</p></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="collapsible">
+            <button onclick="APP.toggleCollapsible(this)" class="w-full flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+              <span class="font-semibold">🎮 Manipuler le DOM</span>
+              <svg class="w-5 h-5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+            </button>
+            <div class="collapsible-content">
+              <div class="p-4 space-y-4">
+                <pre class="bg-gray-900 text-green-400 p-4 rounded-lg overflow-x-auto text-sm"><code>// Sélectionner un élément
+const titre = document.getElementById('titre');
+const boutons = document.querySelectorAll('.btn');
+
+// Modifier le contenu
+titre.textContent = "Nouveau titre";
+titre.innerHTML = "<strong>Gras</strong>";
+
+// Modifier le style
+titre.style.color = "red";
+titre.classList.add('actif');
+titre.classList.toggle('cache');</code></pre>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-gray-50 dark:bg-gray-700/50 p-5 rounded-xl">
+            <h3 class="font-bold mb-3 flex items-center gap-2">🧠 Quiz JavaScript</h3>
+            <p class="text-sm mb-3">Quelle méthode sélectionne tous les éléments avec une classe ?</p>
+            <div class="space-y-2 mb-3">
+              <button onclick="APP.checkJSQuiz(this, false, 1)" class="quiz-js-1 w-full text-left p-3 bg-white dark:bg-gray-600 rounded-lg hover:bg-gray-100 transition-colors text-sm">getElementById()</button>
+              <button onclick="APP.checkJSQuiz(this, false, 1)" class="quiz-js-1 w-full text-left p-3 bg-white dark:bg-gray-600 rounded-lg hover:bg-gray-100 transition-colors text-sm">getElementsByTagName()</button>
+              <button onclick="APP.checkJSQuiz(this, true, 1)" class="quiz-js-1 w-full text-left p-3 bg-white dark:bg-gray-600 rounded-lg hover:bg-gray-100 transition-colors text-sm">querySelectorAll()</button>
+            </div>
+            <p id="result-js-quiz-1" class="text-sm font-semibold"></p>
+          </div>
+
+          <div class="border-t dark:border-gray-700 pt-4">
+            <button onclick="APP.toggleNotes('js')" id="notes-btn-js" class="notes-btn flex items-center gap-2 text-sm text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
+              📝 Notes personnelles
+            </button>
+            <div id="notes-panel-js" class="notes-panel hidden mt-3">
+              <textarea id="note-js" onblur="APP.saveNote('js')" placeholder="Ajoutez vos notes ici..." class="w-full h-24 p-3 border rounded-lg dark:bg-gray-700 dark:border-gray-600 text-sm resize-none"></textarea>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== MINI-PROJETS ==================== -->
+      <section id="projects" class="fade-in bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden">
+        <div class="bg-gradient-to-r from-purple-600 to-indigo-600 p-6 text-white">
+          <div class="flex items-center gap-2 text-purple-200 text-sm mb-2">
+            <span>Chapitre 9</span>
+            <span>•</span>
+            <span>Pratique</span>
+          </div>
+          <h1 class="text-3xl font-bold">🏆 Mini-Projets</h1>
+        </div>
+        
+        <div class="p-6 space-y-6">
+          <p class="text-gray-600 dark:text-gray-400">Mettez en pratique vos connaissances avec ces 3 projets concrets !</p>
+
+          <!-- Projet 1 : Carte -->
+          <div class="bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20 p-6 rounded-xl border border-blue-200 dark:border-blue-800">
+            <div class="flex items-center gap-3 mb-4">
+              <span class="text-3xl">💳</span>
+              <div>
+                <h3 class="font-bold text-lg">Projet 1 : Carte de Profil</h3>
+                <span class="text-xs bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 px-2 py-1 rounded-full">Facile</span>
+              </div>
+            </div>
+            <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">Créez une carte avec une photo, un nom, un titre et des liens sociaux.</p>
+            <div class="bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-4">
+              <pre class="text-xs text-gray-600 dark:text-gray-300">Éléments à inclure :
+• Photo ronde
+• Nom et titre
+• 2-3 liens sociaux (icônes)
+• Bouton "Contact"
+• Ombre portée</pre>
+            </div>
+            <button onclick="APP.loadExample('card')" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm font-semibold">
+              📝 Charger l'exemple
+            </button>
+          </div>
+
+          <!-- Projet 2 : Navigation -->
+          <div class="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 p-6 rounded-xl border border-green-200 dark:border-green-800">
+            <div class="flex items-center gap-3 mb-4">
+              <span class="text-3xl">🧭</span>
+              <div>
+                <h3 class="font-bold text-lg">Projet 2 : Barre de Navigation</h3>
+                <span class="text-xs bg-yellow-100 dark:bg-yellow-900 text-yellow-700 dark:text-yellow-300 px-2 py-1 rounded-full">Moyen</span>
+              </div>
+            </div>
+            <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">Créez un header avec logo, liens et menu responsive.</p>
+            <div class="bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-4">
+              <pre class="text-xs text-gray-600 dark:text-gray-300">Éléments à inclure :
+• Logo à gauche
+• Liens de navigation au centre
+• Bouton à droite
+• Hover effects
+• Flexbox pour l'alignement</pre>
+            </div>
+            <button onclick="APP.loadExample('navbar')" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors text-sm font-semibold">
+              📝 Charger l'exemple
+            </button>
+          </div>
+
+          <!-- Projet 3 : Formulaire -->
+          <div class="bg-gradient-to-r from-orange-50 to-red-50 dark:from-orange-900/20 dark:to-red-900/20 p-6 rounded-xl border border-orange-200 dark:border-orange-800">
+            <div class="flex items-center gap-3 mb-4">
+              <span class="text-3xl">📋</span>
+              <div>
+                <h3 class="font-bold text-lg">Projet 3 : Formulaire de Contact</h3>
+                <span class="text-xs bg-yellow-100 dark:bg-yellow-900 text-yellow-700 dark:text-yellow-300 px-2 py-1 rounded-full">Moyen</span>
+              </div>
+            </div>
+            <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">Créez un formulaire avec validation visuelle.</p>
+            <div class="bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-4">
+              <pre class="text-xs text-gray-600 dark:text-gray-300">Éléments à inclure :
+• Champs : Nom, Email, Message
+• Labels associés
+• Placeholders
+• Bouton Envoyer stylisé
+• États : focus, hover, valid</pre>
+            </div>
+            <button onclick="APP.loadExample('form')" class="bg-orange-600 text-white px-4 py-2 rounded-lg hover:bg-orange-700 transition-colors text-sm font-semibold">
+              📝 Charger l'exemple
+            </button>
+          </div>
+
+          <div class="border-t dark:border-gray-700 pt-4">
+            <button onclick="APP.toggleNotes('projects')" id="notes-btn-projects" class="notes-btn flex items-center gap-2 text-sm text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
+              📝 Notes personnelles
+            </button>
+            <div id="notes-panel-projects" class="notes-panel hidden mt-3">
+              <textarea id="note-projects" onblur="APP.saveNote('projects')" placeholder="Ajoutez vos notes ici..." class="w-full h-24 p-3 border rounded-lg dark:bg-gray-700 dark:border-gray-600 text-sm resize-none"></textarea>
+            </div>
           </div>
         </div>
       </section>
@@ -965,7 +1113,7 @@ body {
           <div class="flex items-center gap-2 text-rose-200 text-sm mb-2">
             <span>Pratique</span>
             <span>•</span>
-            <span>5 Exercices</span>
+            <span>Exercices</span>
           </div>
           <h1 class="text-3xl font-bold">✏️ Exercices Pratiques</h1>
         </div>
@@ -975,16 +1123,14 @@ body {
           <div class="bg-gray-50 dark:bg-gray-700/50 p-5 rounded-xl">
             <div class="flex items-center gap-2 mb-3">
               <span class="bg-rose-500 text-white w-6 h-6 rounded-full flex items-center justify-center text-sm font-bold">1</span>
-              <h3 class="font-bold">Créer un titre</h3>
+              <h3 class="font-bold">Créer un titre HTML</h3>
               <span class="text-xs bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 px-2 py-1 rounded-full">Facile</span>
             </div>
-            <p class="text-sm mb-3">Écrivez le HTML pour afficher "Bienvenue" comme titre principal.</p>
+            <p class="text-sm mb-3">Écrivez "Bienvenue" comme titre principal :</p>
             <div class="bg-gray-100 dark:bg-gray-800 p-3 rounded-lg mb-3">
               <span class="text-gray-400">&lt;h1&gt;</span><input type="text" id="ex-html-1" class="bg-transparent w-24 text-center border-b-2 border-blue-500 focus:outline-none dark:text-white" placeholder="?"><span class="text-gray-400">&lt;/h1&gt;</span>
             </div>
-            <button onclick="checkExHTML(1)" class="bg-rose-600 text-white px-4 py-2 rounded-lg hover:bg-rose-700 transition-colors text-sm font-semibold">
-              Vérifier
-            </button>
+            <button onclick="APP.checkExHTML(1)" class="bg-rose-600 text-white px-4 py-2 rounded-lg hover:bg-rose-700 transition-colors text-sm font-semibold">Vérifier</button>
             <p id="result-ex-html-1" class="mt-2 text-sm font-semibold"></p>
           </div>
 
@@ -992,22 +1138,16 @@ body {
           <div class="bg-gray-50 dark:bg-gray-700/50 p-5 rounded-xl">
             <div class="flex items-center gap-2 mb-3">
               <span class="bg-rose-500 text-white w-6 h-6 rounded-full flex items-center justify-center text-sm font-bold">2</span>
-              <h3 class="font-bold">Style CSS</h3>
+              <h3 class="font-bold">Propriété couleur CSS</h3>
               <span class="text-xs bg-yellow-100 dark:bg-yellow-900 text-yellow-700 dark:text-yellow-300 px-2 py-1 rounded-full">Moyen</span>
             </div>
-            <p class="text-sm mb-3">Quelle propriété CSS change la couleur du texte ?</p>
+            <p class="text-sm mb-3">Quelle propriété change la couleur du texte ?</p>
             <div class="space-y-2 mb-3">
-              <button onclick="checkCSSQuiz(this, false)" class="quiz-css w-full text-left p-3 bg-white dark:bg-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-500 transition-colors text-sm">
-                background-color
-              </button>
-              <button onclick="checkCSSQuiz(this, true)" class="quiz-css w-full text-left p-3 bg-white dark:bg-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-500 transition-colors text-sm">
-                color
-              </button>
-              <button onclick="checkCSSQuiz(this, false)" class="quiz-css w-full text-left p-3 bg-white dark:bg-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-500 transition-colors text-sm">
-                font-weight
-              </button>
+              <button onclick="APP.checkCSSQuiz(this, false, 1)" class="quiz-css-1 w-full text-left p-3 bg-white dark:bg-gray-600 rounded-lg hover:bg-gray-100 transition-colors text-sm">background-color</button>
+              <button onclick="APP.checkCSSQuiz(this, true, 1)" class="quiz-css-1 w-full text-left p-3 bg-white dark:bg-gray-600 rounded-lg hover:bg-gray-100 transition-colors text-sm">color</button>
+              <button onclick="APP.checkCSSQuiz(this, false, 1)" class="quiz-css-1 w-full text-left p-3 bg-white dark:bg-gray-600 rounded-lg hover:bg-gray-100 transition-colors text-sm">font-weight</button>
             </div>
-            <p id="result-css-quiz" class="text-sm font-semibold"></p>
+            <p id="result-css-quiz-1" class="text-sm font-semibold"></p>
           </div>
 
           <!-- Exercice 3 -->
@@ -1017,23 +1157,44 @@ body {
               <h3 class="font-bold">Box Model</h3>
               <span class="text-xs bg-yellow-100 dark:bg-yellow-900 text-yellow-700 dark:text-yellow-300 px-2 py-1 rounded-full">Moyen</span>
             </div>
-            <p class="text-sm mb-3">Quel propriété ajoute de l'espace À L'INTÉRIEUR de la bordure ?</p>
+            <p class="text-sm mb-3">Espace À L'INTÉRIEUR de la bordure ?</p>
             <div class="space-y-2 mb-3">
-              <button onclick="checkBoxQuiz(this, false)" class="quiz-box w-full text-left p-3 bg-white dark:bg-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-500 transition-colors text-sm">
-                margin
-              </button>
-              <button onclick="checkBoxQuiz(this, true)" class="quiz-box w-full text-left p-3 bg-white dark:bg-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-500 transition-colors text-sm">
-                padding
-              </button>
+              <button onclick="APP.checkBoxQuiz(this, false, 1)" class="quiz-box-1 w-full text-left p-3 bg-white dark:bg-gray-600 rounded-lg hover:bg-gray-100 transition-colors text-sm">margin</button>
+              <button onclick="APP.checkBoxQuiz(this, true, 1)" class="quiz-box-1 w-full text-left p-3 bg-white dark:bg-gray-600 rounded-lg hover:bg-gray-100 transition-colors text-sm">padding</button>
             </div>
-            <p id="result-box-quiz" class="text-sm font-semibold"></p>
+            <p id="result-box-quiz-1" class="text-sm font-semibold"></p>
+          </div>
+
+          <!-- Exercice 4 -->
+          <div class="bg-gray-50 dark:bg-gray-700/50 p-5 rounded-xl">
+            <div class="flex items-center gap-2 mb-3">
+              <span class="bg-rose-500 text-white w-6 h-6 rounded-full flex items-center justify-center text-sm font-bold">4</span>
+              <h3 class="font-bold">Flexbox</h3>
+              <span class="text-xs bg-yellow-100 dark:bg-yellow-900 text-yellow-700 dark:text-yellow-300 px-2 py-1 rounded-full">Moyen</span>
+            </div>
+            <p class="text-sm mb-3">Quelle propriété active Flexbox sur un conteneur ?</p>
+            <div class="space-y-2 mb-3">
+              <button onclick="APP.checkFlexQuiz(this, true, 1)" class="quiz-flex-1 w-full text-left p-3 bg-white dark:bg-gray-600 rounded-lg hover:bg-gray-100 transition-colors text-sm">display: flex</button>
+              <button onclick="APP.checkFlexQuiz(this, false, 1)" class="quiz-flex-1 w-full text-left p-3 bg-white dark:bg-gray-600 rounded-lg hover:bg-gray-100 transition-colors text-sm">flex-direction: row</button>
+              <button onclick="APP.checkFlexQuiz(this, false, 1)" class="quiz-flex-1 w-full text-left p-3 bg-white dark:bg-gray-600 rounded-lg hover:bg-gray-100 transition-colors text-sm">align-items: center</button>
+            </div>
+            <p id="result-flex-quiz-1" class="text-sm font-semibold"></p>
           </div>
 
           <!-- Score -->
           <div class="bg-gradient-to-r from-purple-100 to-pink-100 dark:from-purple-900/30 dark:to-pink-900/30 p-5 rounded-xl text-center">
             <h3 class="font-bold mb-2">Score des Exercices</h3>
-            <div class="text-4xl font-bold text-purple-600 dark:text-purple-400" id="exerciseScore">0/3</div>
-            <p class="text-sm text-gray-500 mt-2" id="scoreMessage">Complétez tous les exercices !</p>
+            <div class="text-4xl font-bold text-purple-600 dark:text-purple-400" id="exerciseScore">0/15</div>
+            <p class="text-sm text-gray-500 mt-2" id="scoreMessage">Commencez les exercices !</p>
+          </div>
+
+          <div class="border-t dark:border-gray-700 pt-4">
+            <button onclick="APP.toggleNotes('exercises')" id="notes-btn-exercises" class="notes-btn flex items-center gap-2 text-sm text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
+              📝 Notes personnelles
+            </button>
+            <div id="notes-panel-exercises" class="notes-panel hidden mt-3">
+              <textarea id="note-exercises" onblur="APP.saveNote('exercises')" placeholder="Ajoutez vos notes ici..." class="w-full h-24 p-3 border rounded-lg dark:bg-gray-700 dark:border-gray-600 text-sm resize-none"></textarea>
+            </div>
           </div>
         </div>
       </section>
@@ -1050,22 +1211,15 @@ body {
         </div>
         
         <div class="p-6 space-y-4">
-          <p class="text-sm text-gray-600 dark:text-gray-400">
-            Écrivez votre HTML/CSS et voyez le résultat en temps réel !
-          </p>
+          <p class="text-sm text-gray-600 dark:text-gray-400">Écrivez votre HTML/CSS et voyez le résultat en temps réel !</p>
           
           <div class="grid lg:grid-cols-2 gap-4">
-            <!-- Code Input -->
             <div class="bg-gray-900 rounded-xl overflow-hidden">
               <div class="bg-gray-800 px-4 py-2 flex items-center gap-2">
-                <div class="flex gap-1.5">
-                  <div class="w-3 h-3 bg-red-500 rounded-full"></div>
-                  <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
-                  <div class="w-3 h-3 bg-green-500 rounded-full"></div>
-                </div>
+                <div class="flex gap-1.5"><div class="w-3 h-3 bg-red-500 rounded-full"></div><div class="w-3 h-3 bg-yellow-500 rounded-full"></div><div class="w-3 h-3 bg-green-500 rounded-full"></div></div>
                 <span class="text-gray-400 text-sm ml-2">Code</span>
               </div>
-              <textarea id="codeEditor" class="code-editor w-full h-64 bg-gray-900 text-green-400 p-4 font-mono text-sm resize-none focus:outline-none" placeholder="Écrivez votre HTML ici...">&lt;h1&gt;Hello World!&lt;/h1&gt;
+              <textarea id="codeEditor" oninput="APP.runCode()" class="w-full h-64 bg-gray-900 text-green-400 p-4 font-mono text-sm resize-none focus:outline-none">&lt;h1&gt;Hello World!&lt;/h1&gt;
 &lt;p&gt;Bienvenue sur ma page !&lt;/p&gt;
 &lt;style&gt;
   body {
@@ -1084,43 +1238,37 @@ body {
 &lt;/style&gt;</textarea>
             </div>
 
-            <!-- Preview -->
             <div class="bg-white dark:bg-gray-900 rounded-xl overflow-hidden border-2 border-gray-200 dark:border-gray-700">
               <div class="bg-gray-100 dark:bg-gray-800 px-4 py-2 flex items-center justify-between">
                 <span class="text-gray-500 text-sm">Aperçu</span>
-                <button onclick="openInNewTab()" class="text-xs bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 transition-colors">
-                  ↗️ Plein écran
-                </button>
+                <button onclick="APP.openInNewTab()" class="text-xs bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 transition-colors">↗️ Plein écran</button>
               </div>
               <iframe id="previewFrame" class="w-full h-64 bg-white"></iframe>
             </div>
           </div>
 
           <div class="flex gap-3">
-            <button onclick="runCode()" class="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition-colors font-semibold flex items-center gap-2">
-              ▶️ Exécuter
-            </button>
-            <button onclick="resetCode()" class="bg-gray-200 dark:bg-gray-700 px-6 py-3 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors">
-              🔄 Réinitialiser
-            </button>
+            <button onclick="APP.runCode()" class="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition-colors font-semibold flex items-center gap-2">▶️ Exécuter</button>
+            <button onclick="APP.resetCode()" class="bg-gray-200 dark:bg-gray-700 px-6 py-3 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors">🔄 Réinitialiser</button>
           </div>
 
-          <!-- Exemples -->
           <div class="mt-6">
             <h3 class="font-bold mb-3">📚 Exemples à essayer</h3>
-            <div class="grid md:grid-cols-3 gap-3">
-              <button onclick="loadExample('card')" class="p-3 bg-gray-100 dark:bg-gray-700 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors text-sm text-left">
-                <span class="font-bold">Card</span>
-                <p class="text-xs text-gray-500">Carte simple</p>
-              </button>
-              <button onclick="loadExample('layout')" class="p-3 bg-gray-100 dark:bg-gray-700 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors text-sm text-left">
-                <span class="font-bold">Layout</span>
-                <p class="text-xs text-gray-500">Disposition Flexbox</p>
-              </button>
-              <button onclick="loadExample('button')" class="p-3 bg-gray-100 dark:bg-gray-700 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors text-sm text-left">
-                <span class="font-bold">Button</span>
-                <p class="text-xs text-gray-500">Bouton animé</p>
-              </button>
+            <div class="grid md:grid-cols-5 gap-3">
+              <button onclick="APP.loadExample('card')" class="p-3 bg-gray-100 dark:bg-gray-700 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors text-sm text-left"><span class="font-bold">💳 Card</span><p class="text-xs text-gray-500">Carte</p></button>
+              <button onclick="APP.loadExample('layout')" class="p-3 bg-gray-100 dark:bg-gray-700 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors text-sm text-left"><span class="font-bold">📐 Layout</span><p class="text-xs text-gray-500">Flexbox</p></button>
+              <button onclick="APP.loadExample('button')" class="p-3 bg-gray-100 dark:bg-gray-700 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors text-sm text-left"><span class="font-bold">🔘 Button</span><p class="text-xs text-gray-500">Bouton</p></button>
+              <button onclick="APP.loadExample('navbar')" class="p-3 bg-gray-100 dark:bg-gray-700 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors text-sm text-left"><span class="font-bold">🧭 Navbar</span><p class="text-xs text-gray-500">Navigation</p></button>
+              <button onclick="APP.loadExample('form')" class="p-3 bg-gray-100 dark:bg-gray-700 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors text-sm text-left"><span class="font-bold">📋 Form</span><p class="text-xs text-gray-500">Formulaire</p></button>
+            </div>
+          </div>
+
+          <div class="border-t dark:border-gray-700 pt-4">
+            <button onclick="APP.toggleNotes('editor')" id="notes-btn-editor" class="notes-btn flex items-center gap-2 text-sm text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
+              📝 Notes personnelles
+            </button>
+            <div id="notes-panel-editor" class="notes-panel hidden mt-3">
+              <textarea id="note-editor" onblur="APP.saveNote('editor')" placeholder="Ajoutez vos notes ici..." class="w-full h-24 p-3 border rounded-lg dark:bg-gray-700 dark:border-gray-600 text-sm resize-none"></textarea>
             </div>
           </div>
         </div>
@@ -1128,12 +1276,8 @@ body {
 
       <!-- Navigation -->
       <div class="flex justify-between items-center py-4">
-        <button onclick="navigatePrev()" id="btnPrev" class="flex items-center gap-2 px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors opacity-50" disabled>
-          ← Précédent
-        </button>
-        <button onclick="navigateNext()" id="btnNext" class="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
-          Suivant →
-        </button>
+        <button onclick="APP.navigatePrev()" id="btnPrev" class="flex items-center gap-2 px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors opacity-50" disabled>← Précédent</button>
+        <button onclick="APP.navigateNext()" id="btnNext" class="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">Suivant →</button>
       </div>
 
     </main>
@@ -1142,326 +1286,14 @@ body {
   <!-- Mobile Navigation -->
   <nav class="lg:hidden fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 shadow-lg border-t dark:border-gray-700 z-40">
     <div class="flex justify-around py-2">
-      <button onclick="navigateTo('intro')" class="p-2 text-gray-500 dark:text-gray-400">
-        <span class="text-xl">🏠</span>
-        <span class="block text-xs">Intro</span>
-      </button>
-      <button onclick="navigateTo('html')" class="p-2 text-gray-500 dark:text-gray-400">
-        <span class="text-xl">🏗️</span>
-        <span class="block text-xs">HTML</span>
-      </button>
-      <button onclick="navigateTo('css')" class="p-2 text-gray-500 dark:text-gray-400">
-        <span class="text-xl">🎨</span>
-        <span class="block text-xs">CSS</span>
-      </button>
-      <button onclick="navigateTo('exercises')" class="p-2 text-gray-500 dark:text-gray-400">
-        <span class="text-xl">✏️</span>
-        <span class="block text-xs">Exos</span>
-      </button>
-      <button onclick="navigateTo('editor')" class="p-2 text-gray-500 dark:text-gray-400">
-        <span class="text-xl">▶️</span>
-        <span class="block text-xs">Code</span>
-      </button>
+      <button onclick="APP.navigateTo('intro')" class="p-2 text-gray-500 dark:text-gray-400"><span class="text-xl">🏠</span><span class="block text-xs">Intro</span></button>
+      <button onclick="APP.navigateTo('html')" class="p-2 text-gray-500 dark:text-gray-400"><span class="text-xl">🏗️</span><span class="block text-xs">HTML</span></button>
+      <button onclick="APP.navigateTo('css')" class="p-2 text-gray-500 dark:text-gray-400"><span class="text-xl">🎨</span><span class="block text-xs">CSS</span></button>
+      <button onclick="APP.navigateTo('js')" class="p-2 text-gray-500 dark:text-gray-400"><span class="text-xl">⚡</span><span class="block text-xs">JS</span></button>
+      <button onclick="APP.navigateTo('editor')" class="p-2 text-gray-500 dark:text-gray-400"><span class="text-xl">▶️</span><span class="block text-xs">Code</span></button>
     </div>
   </nav>
 
-<script>
-const sections = ['intro', 'internet', 'html', 'css', 'box', 'flex', 'responsive', 'exercises', 'editor'];
-let currentSection = 0;
-let completedSections = new Set();
-let exerciseScore = 0;
-
-const examples = {
-  card: `<div style="max-width: 300px; padding: 20px; background: white; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); font-family: Arial; margin: 20px;">
-  <h2 style="color: #333; margin-top: 0;">Ma Carte</h2>
-  <p style="color: #666;">Ceci est une belle carte avec du CSS moderne.</p>
-  <button style="background: #3B82F6; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">Cliquez-moi</button>
-</div>`,
-  layout: `<div style="display: flex; gap: 20px; padding: 20px; font-family: Arial; background: #f3f4f6; min-height: 200px; align-items: center; justify-content: center;">
-  <div style="background: #3B82F6; width: 100px; height: 100px; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">1</div>
-  <div style="background: #10B981; width: 100px; height: 100px; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">2</div>
-  <div style="background: #8B5CF6; width: 100px; height: 100px; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">3</div>
-</div>`,
-  button: `<div style="display: flex; flex-direction: column; gap: 20px; padding: 40px; align-items: center; font-family: Arial; background: #1F2937; min-height: 200px; justify-content: center;">
-  <button style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 15px 30px; border-radius: 25px; font-size: 16px; cursor: pointer; transition: transform 0.2s; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);">
-    Bouton Cool
-  </button>
-  <p style="color: #9CA3AF; font-size: 14px;">Survolez le bouton !</p>
-</div>`
-};
-
-function toggleDark() {
-  document.documentElement.classList.toggle('dark');
-  const isDark = document.documentElement.classList.contains('dark');
-  localStorage.setItem('darkMode', isDark);
-  document.getElementById('darkIcon').textContent = isDark ? '☀️' : '🌙';
-  document.getElementById('sidebarDarkIcon').textContent = isDark ? '☀️' : '🌙';
-}
-
-if (localStorage.getItem('darkMode') === 'true' || 
-    (!localStorage.getItem('darkMode') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-  document.documentElement.classList.add('dark');
-}
-
-function navigateTo(sectionId) {
-  const section = document.getElementById(sectionId);
-  if (section) {
-    section.scrollIntoView({ behavior: 'smooth' });
-    currentSection = sections.indexOf(sectionId);
-    updateNavActive();
-    updateProgress();
-    saveProgress();
-  }
-}
-
-function navigateNext() {
-  if (currentSection < sections.length - 1) {
-    currentSection++;
-    navigateTo(sections[currentSection]);
-  }
-}
-
-function navigatePrev() {
-  if (currentSection > 0) {
-    currentSection--;
-    navigateTo(sections[currentSection]);
-  }
-}
-
-function updateNavActive() {
-  document.querySelectorAll('.nav-btn').forEach(btn => {
-    btn.classList.remove('active');
-    if (btn.dataset.section === sections[currentSection]) {
-      btn.classList.add('active');
-    }
-  });
-  
-  document.getElementById('btnPrev').disabled = currentSection === 0;
-  document.getElementById('btnPrev').classList.toggle('opacity-50', currentSection === 0);
-  document.getElementById('btnNext').disabled = currentSection === sections.length - 1;
-  document.getElementById('btnNext').classList.toggle('opacity-50', currentSection === sections.length - 1);
-}
-
-function setupScrollSpy() {
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const id = entry.target.id;
-        currentSection = sections.indexOf(id);
-        updateNavActive();
-        completedSections.add(id);
-        updateProgress();
-        saveProgress();
-      }
-    });
-  }, { threshold: 0.3 });
-  
-  sections.forEach(id => {
-    const el = document.getElementById(id);
-    if (el) observer.observe(el);
-  });
-}
-
-function updateProgress() {
-  const progress = (completedSections.size / sections.length) * 100;
-  document.getElementById('progressFill').style.width = progress + '%';
-  document.getElementById('progressBarSidebar').style.width = progress + '%';
-  document.getElementById('progressPercent').textContent = Math.round(progress) + '%';
-}
-
-function saveProgress() {
-  localStorage.setItem('courseProgress', JSON.stringify([...completedSections]));
-  localStorage.setItem('currentSection', currentSection);
-}
-
-function loadProgress() {
-  const saved = localStorage.getItem('courseProgress');
-  if (saved) {
-    completedSections = new Set(JSON.parse(saved));
-    updateProgress();
-  }
-  const savedSection = localStorage.getItem('currentSection');
-  if (savedSection) {
-    currentSection = parseInt(savedSection);
-    updateNavActive();
-  }
-}
-
-function toggleCollapsible(btn) {
-  const content = btn.nextElementSibling;
-  const icon = btn.querySelector('svg');
-  content.classList.toggle('open');
-  icon.style.transform = content.classList.contains('open') ? 'rotate(180deg)' : 'rotate(0deg)';
-}
-
-function checkQuiz(btn, correct, quizId) {
-  const result = document.getElementById('result-' + quizId);
-  const allBtns = document.querySelectorAll(`[data-quiz="${quizId}"]`);
-  
-  allBtns.forEach(b => b.classList.remove('bg-green-200', 'bg-red-200'));
-  
-  if (correct) {
-    btn.classList.add('bg-green-200', 'correct-answer');
-    result.textContent = '✅ Bonne réponse !';
-    result.className = 'mt-2 text-sm font-semibold text-green-600';
-    completedSections.add('internet');
-    updateProgress();
-    saveProgress();
-  } else {
-    btn.classList.add('bg-red-200', 'shake');
-    result.textContent = '❌ Réessayez !';
-    result.className = 'mt-2 text-sm font-semibold text-red-600';
-  }
-}
-
-function checkExo1() {
-  const input = document.getElementById('exo1-input');
-  const answer = document.getElementById('exo1-answer');
-  const result = document.getElementById('exo1-result');
-  
-  if (input.value.trim() === 'Mon Site') {
-    answer.textContent = 'Mon Site';
-    result.textContent = '✅ Correct !';
-    result.className = 'mt-2 text-sm font-semibold text-green-600';
-    completedSections.add('html');
-    updateProgress();
-    saveProgress();
-  } else {
-    result.textContent = '❌ La réponse est "Mon Site"';
-    result.className = 'mt-2 text-sm font-semibold text-red-600';
-  }
-}
-
-function checkCSSExo() {
-  const errorsDiv = document.getElementById('css-exo-errors');
-  const result = document.getElementById('css-exo-result');
-  errorsDiv.classList.remove('hidden');
-  result.innerHTML = '✅ Erreurs à corriger :<br>• Ligne 2 : ajouter <code class="bg-red-200 px-1 rounded">;</code><br>• Ligne 3 : <code class="bg-red-200 px-1 rounded">fontSize</code> → <code class="bg-green-200 px-1 rounded">font-size</code>';
-  result.className = 'mt-2 text-sm font-semibold text-green-600';
-}
-
-function checkExHTML(num) {
-  const input = document.getElementById('ex-html-' + num);
-  const result = document.getElementById('result-ex-html-' + num);
-  
-  if (input.value.trim() === 'Bienvenue') {
-    result.textContent = '✅ Correct !';
-    result.className = 'mt-2 text-sm font-semibold text-green-600';
-    exerciseScore = Math.min(exerciseScore + 1, 3);
-    updateExerciseScore();
-  } else {
-    result.textContent = '❌ La réponse est "Bienvenue"';
-    result.className = 'mt-2 text-sm font-semibold text-red-600';
-  }
-}
-
-function checkCSSQuiz(btn, correct) {
-  const result = document.getElementById('result-css-quiz');
-  const allBtns = document.querySelectorAll('.quiz-css');
-  
-  allBtns.forEach(b => b.classList.remove('bg-green-200', 'bg-red-200'));
-  
-  if (correct) {
-    btn.classList.add('bg-green-200', 'correct-answer');
-    result.textContent = '✅ Correct ! color est la propriété pour la couleur du texte.';
-    result.className = 'mt-2 text-sm font-semibold text-green-600';
-    exerciseScore = Math.min(exerciseScore + 1, 3);
-    updateExerciseScore();
-  } else {
-    btn.classList.add('bg-red-200', 'shake');
-    result.textContent = '❌ Réessayez !';
-    result.className = 'mt-2 text-sm font-semibold text-red-600';
-  }
-}
-
-function checkBoxQuiz(btn, correct) {
-  const result = document.getElementById('result-box-quiz');
-  const allBtns = document.querySelectorAll('.quiz-box');
-  
-  allBtns.forEach(b => b.classList.remove('bg-green-200', 'bg-red-200'));
-  
-  if (correct) {
-    btn.classList.add('bg-green-200', 'correct-answer');
-    result.textContent = '✅ Correct ! padding = espace INTÉRIEUR, margin = espace EXTÉRIEUR.';
-    result.className = 'mt-2 text-sm font-semibold text-green-600';
-    exerciseScore = Math.min(exerciseScore + 1, 3);
-    updateExerciseScore();
-  } else {
-    btn.classList.add('bg-red-200', 'shake');
-    result.textContent = '❌ Réessayez !';
-    result.className = 'mt-2 text-sm font-semibold text-red-600';
-  }
-}
-
-function updateExerciseScore() {
-  document.getElementById('exerciseScore').textContent = exerciseScore + '/3';
-  const messages = ['Continuez !', 'Bien joué !', 'Presque parfait !', '🎉 Score parfait !'];
-  document.getElementById('scoreMessage').textContent = messages[exerciseScore];
-}
-
-function runCode() {
-  const code = document.getElementById('codeEditor').value;
-  const frame = document.getElementById('previewFrame');
-  frame.srcdoc = code;
-}
-
-function resetCode() {
-  document.getElementById('codeEditor').value = `<h1>Hello World!</h1>
-<p>Bienvenue sur ma page !</p>
-<style>
-  body {
-    font-family: Arial;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    margin: 0;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-  }
-  h1 { font-size: 3rem; }
-  p { font-size: 1.2rem; opacity: 0.9; }
-</style>`;
-  runCode();
-}
-
-function loadExample(name) {
-  document.getElementById('codeEditor').value = examples[name];
-  runCode();
-}
-
-function openInNewTab() {
-  const code = document.getElementById('codeEditor').value;
-  const newWindow = window.open('', '_blank');
-  newWindow.document.write(code);
-  newWindow.document.close();
-}
-
-function setupFadeIn() {
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-      }
-    });
-  }, { threshold: 0.1 });
-  
-  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-  loadProgress();
-  setupScrollSpy();
-  setupFadeIn();
-  runCode();
-  updateNavActive();
-  updateExerciseScore();
-  
-  document.getElementById('darkIcon').textContent = document.documentElement.classList.contains('dark') ? '☀️' : '🌙';
-  document.getElementById('sidebarDarkIcon').textContent = document.documentElement.classList.contains('dark') ? '☀️' : '🌙';
-});
-</script>
-
+  <script src="app.js"></script>
 </body>
 </html>
