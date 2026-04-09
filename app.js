@@ -26,6 +26,8 @@ const APP = {
     this.updateExerciseScore();
     this.checkBadges();
     this.runCode();
+    this.updateLineNumbers();
+    this.setupBackToTop();
     this.initFirstVisit();
   },
 
@@ -287,10 +289,73 @@ const APP = {
   toggleNotes(sectionId) {
     const panel = document.getElementById('notes-panel-' + sectionId);
     const btn = document.getElementById('notes-btn-' + sectionId);
-    if (panel) panel.classList.toggle('hidden');
+    if (panel) {
+      panel.classList.toggle('hidden');
+      if (!panel.classList.contains('hidden')) {
+        const noteEl = document.getElementById('note-' + sectionId);
+        if (noteEl) noteEl.focus();
+      }
+    }
     if (btn) {
       btn.classList.toggle('bg-yellow-100');
       btn.classList.toggle('dark:bg-yellow-900');
+    }
+  },
+
+  checkExo1() {
+    const input = document.getElementById('exo1-input');
+    const result = document.getElementById('exo1-result');
+    const answer = document.getElementById('exo1-answer');
+    if (!input || !result) return;
+    const value = input.value.trim();
+    if (value.toLowerCase() === 'mon site' || value.toLowerCase() === 'Bienvenue') {
+      result.textContent = '✅ Correct !';
+      result.className = 'mt-2 text-sm font-semibold text-green-600';
+      if (answer) answer.textContent = value;
+      if (!this.exerciseCompleted.has('html-exo1')) {
+        this.exerciseCompleted.add('html-exo1');
+        this.exerciseScore = Math.min(this.exerciseScore + 1, 15);
+        this.updateExerciseScore();
+        this.confetti();
+      }
+    } else {
+      result.textContent = '❌ Réessayez ! (indice: le titre principal)';
+      result.className = 'mt-2 text-sm font-semibold text-red-600';
+      input.classList.add('shake');
+      setTimeout(() => input.classList.remove('shake'), 500);
+    }
+    this.saveProgress();
+    this.checkBadges();
+  },
+
+  checkCSSExo() {
+    const errorsDiv = document.getElementById('css-exo-errors');
+    const result = document.getElementById('css-exo-result');
+    if (errorsDiv) errorsDiv.classList.remove('hidden');
+    if (result) {
+      result.textContent = '⚠️ Erreurs détectées: point-virgule manquant et kebab-case incorrect';
+      result.className = 'mt-2 text-sm font-semibold text-yellow-600';
+    }
+    if (!this.exerciseCompleted.has('css-exo1')) {
+      this.exerciseCompleted.add('css-exo1');
+      this.exerciseScore = Math.min(this.exerciseScore + 1, 15);
+      this.updateExerciseScore();
+    }
+    this.saveProgress();
+    this.checkBadges();
+  },
+
+  changeJustify(value) {
+    const demo = document.getElementById('justifyDemo');
+    if (demo) {
+      demo.style.justifyContent = value;
+    }
+  },
+
+  changeAlign(value) {
+    const demo = document.getElementById('alignDemo');
+    if (demo) {
+      demo.style.alignItems = value;
     }
   },
 
@@ -451,14 +516,17 @@ const APP = {
     this.checkBadges();
   },
 
-  checkFormQuiz(btn, correct) {
-    const result = document.getElementById('result-form-quiz');
-    const allBtns = document.querySelectorAll('.quiz-form');
+  checkFormQuiz(btn, correct, quizId = '') {
+    const resultId = quizId ? 'result-form-quiz-' + quizId : 'result-form-quiz';
+    const btnClass = quizId ? '.quiz-form-' + quizId : '.quiz-form';
+    const result = document.getElementById(resultId);
+    const allBtns = document.querySelectorAll(btnClass);
     allBtns.forEach(b => b.classList.remove('bg-green-200', 'bg-red-200'));
     if (correct) {
       btn.classList.add('bg-green-200');
-      if (!this.exerciseCompleted.has('form-1')) {
-        this.exerciseCompleted.add('form-1');
+      const key = 'form-' + (quizId || '1');
+      if (!this.exerciseCompleted.has(key)) {
+        this.exerciseCompleted.add(key);
         this.exerciseScore = Math.min(this.exerciseScore + 1, 10);
         this.updateExerciseScore();
         this.confetti();
@@ -478,14 +546,17 @@ const APP = {
     this.checkBadges();
   },
 
-  checkTableQuiz(btn, correct) {
-    const result = document.getElementById('result-table-quiz');
-    const allBtns = document.querySelectorAll('.quiz-table');
+  checkTableQuiz(btn, correct, quizId = '') {
+    const resultId = quizId ? 'result-table-quiz-' + quizId : 'result-table-quiz';
+    const btnClass = quizId ? '.quiz-table-' + quizId : '.quiz-table';
+    const result = document.getElementById(resultId);
+    const allBtns = document.querySelectorAll(btnClass);
     allBtns.forEach(b => b.classList.remove('bg-green-200', 'bg-red-200'));
     if (correct) {
       btn.classList.add('bg-green-200');
-      if (!this.exerciseCompleted.has('table-1')) {
-        this.exerciseCompleted.add('table-1');
+      const key = 'table-' + (quizId || '1');
+      if (!this.exerciseCompleted.has(key)) {
+        this.exerciseCompleted.add(key);
         this.exerciseScore = Math.min(this.exerciseScore + 1, 10);
         this.updateExerciseScore();
         this.confetti();
@@ -591,8 +662,8 @@ const APP = {
     const scoreEl = document.getElementById('exerciseScore');
     const scoreDisplayEl = document.getElementById('exerciseScoreDisplay');
     const messageEl = document.getElementById('scoreMessage');
-    if (scoreEl) scoreEl.textContent = this.exerciseScore + '/10';
-    if (scoreDisplayEl) scoreDisplayEl.textContent = this.exerciseScore + '/10';
+    if (scoreEl) scoreEl.textContent = this.exerciseScore + '/15';
+    if (scoreDisplayEl) scoreDisplayEl.textContent = this.exerciseScore + '/15';
     if (messageEl) {
       const messages = ['Commencez les exercices !', 'Bien commencé !', 'Continuez comme ça !', 'Vous êtes sur la bonne voie !', 'Impressionnant !', 'Proche de la perfection !', '🎉 Score parfait !'];
       const level = Math.min(this.exerciseScore, 9);
@@ -610,7 +681,7 @@ const APP = {
       { id: 'responsive-guru', condition: () => this.completedSections.has('responsive') },
       { id: 'js-novice', condition: () => this.completedSections.has('js') },
       { id: 'project-builder', condition: () => this.completedSections.has('projects') },
-      { id: 'perfectionist', condition: () => this.exerciseScore >= 8 },
+      { id: 'perfectionist', condition: () => this.exerciseScore >= 12 },
       { id: 'course-complete', condition: () => this.completedSections.size >= this.sections.length }
     ];
     badgeDefinitions.forEach(badge => {
@@ -671,7 +742,7 @@ const APP = {
     const badgeHTML = badgeDefinitions.map(badge => {
       const isUnlocked = this.badges.includes(badge.id);
       return `
-        <div class="badge-item flex-shrink-0 w-10 h-10 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center cursor-pointer relative group" title="${badge.name}">
+        <div class="badge-item flex-shrink-0 w-10 h-10 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center cursor-pointer relative group" title="${badge.name}" data-badge="${badge.id}">
           <span class="text-lg">${isUnlocked ? badge.icon : '🔒'}</span>
         </div>
       `;
@@ -681,7 +752,7 @@ const APP = {
       showcaseContainer.innerHTML = badgeDefinitions.map(badge => {
         const isUnlocked = this.badges.includes(badge.id);
         return `
-          <div class="flex flex-col items-center gap-1 p-2 rounded-lg ${isUnlocked ? 'bg-yellow-100 dark:bg-yellow-900/30' : 'bg-gray-100 dark:bg-gray-700/50'}">
+          <div class="flex flex-col items-center gap-1 p-2 rounded-lg ${isUnlocked ? 'bg-yellow-100 dark:bg-yellow-900/30' : 'bg-gray-100 dark:bg-gray-700/50'}" data-badge="${badge.id}">
             <span class="text-2xl ${isUnlocked ? '' : 'grayscale opacity-50'}">${isUnlocked ? badge.icon : '🔒'}</span>
             <span class="text-xs text-center text-gray-600 dark:text-gray-400 truncate w-full">${badge.name}</span>
           </div>
@@ -713,21 +784,24 @@ const APP = {
     if (editor) {
       editor.value = '<h1>Hello World!</h1>\n<p>Bienvenue sur ma page !</p>\n<style>\n  body {\n    font-family: Arial;\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n    justify-content: center;\n    min-height: 100vh;\n    margin: 0;\n    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);\n    color: white;\n  }\n  h1 { font-size: 3rem; }\n  p { font-size: 1.2rem; opacity: 0.9; }\n</style>';
       this.runCode();
+      this.updateLineNumbers();
     }
   },
 
   loadExample(name) {
     const examples = {
-      card: '<div style="max-width:300px;padding:20px;background:white;border-radius:10px;box-shadow:0 4px 6px rgba(0,0,0,0.1);font-family:Arial"><h2 style="color:#333">Ma Carte</h2><p style="color:#666">Ceci est une carte.</p><button style="background:#3B82F6;color:white;border:none;padding:10px 20px;border-radius:5px">Cliquez-moi</button></div>',
-      layout: '<div style="display:flex;gap:20px;padding:20px;font-family:Arial;background:#f3f4f6;min-height:200px;align-items:center;justify-content:center"><div style="background:#3B82F6;width:100px;height:100px;border-radius:10px;display:flex;align-items:center;justify-content:center;color:white;font-weight:bold">1</div><div style="background:#10B981;width:100px;height:100px;border-radius:10px;display:flex;align-items:center;justify-content:center;color:white;font-weight:bold">2</div><div style="background:#8B5CF6;width:100px;height:100px;border-radius:10px;display:flex;align-items:center;justify-content:center;color:white;font-weight:bold">3</div></div>',
-      button: '<div style="display:flex;flex-direction:column;gap:20px;padding:40px;align-items:center;font-family:Arial;background:#1F2937;min-height:200px;justify-content:center"><button style="background:linear-gradient(135deg,#667eea,#764ba2);color:white;border:none;padding:15px 30px;border-radius:25px;font-size:16px;cursor:pointer">Bouton Cool</button><p style="color:#9CA3AF;font-size:14px">Survolez le bouton !</p></div>',
-      navbar: '<nav style="display:flex;justify-content:space-between;align-items:center;padding:1rem 2rem;background:#1F2937;color:white;font-family:Arial"><div style="font-weight:bold;font-size:1.5rem">MonSite</div><div style="display:flex;gap:20px"><a href="#" style="color:white;text-decoration:none">Accueil</a><a href="#" style="color:white;text-decoration:none">À propos</a><a href="#" style="color:white;text-decoration:none">Contact</a></div></nav>',
-      form: '<form style="max-width:400px;padding:20px;background:white;border-radius:10px;box-shadow:0 4px 6px rgba(0,0,0,0.1);font-family:Arial"><h2 style="margin-top:0">Contactez-moi</h2><div style="margin-bottom:15px"><label style="display:block;margin-bottom:5px;font-weight:bold">Nom</label><input type="text" placeholder="Votre nom" style="width:100%;padding:10px;border:1px solid #ddd;border-radius:5px;box-sizing:border-box"></div><button type="submit" style="width:100%;padding:12px;background:#3B82F6;color:white;border:none;border-radius:5px;cursor:pointer;font-size:16px">Envoyer</button></form>'
+      card: '<h2 style="color:#333;margin:0">Ma Carte</h2>\n<p style="color:#666;margin:10px 0">Ceci est une carte stylisée avec CSS inline.</p>\n<button style="background:#3B82F6;color:white;border:none;padding:10px 20px;border-radius:5px;cursor:pointer">Cliquez-moi</button>\n<style>\n  .card { max-width:300px;padding:20px;background:white;border-radius:10px;box-shadow:0 4px 6px rgba(0,0,0,0.1);font-family:Arial }\n</style>',
+      layout: '<div style="display:flex;gap:20px;padding:20px;background:#f3f4f6;min-height:200px;align-items:center;justify-content:center">\n  <div style="background:#3B82F6;width:100px;height:100px;border-radius:10px;display:flex;align-items:center;justify-content:center;color:white;font-weight:bold;font-size:24px">1</div>\n  <div style="background:#10B981;width:100px;height:100px;border-radius:10px;display:flex;align-items:center;justify-content:center;color:white;font-weight:bold;font-size:24px">2</div>\n  <div style="background:#8B5CF6;width:100px;height:100px;border-radius:10px;display:flex;align-items:center;justify-content:center;color:white;font-weight:bold;font-size:24px">3</div>\n</div>',
+      button: '<button style="background:linear-gradient(135deg,#667eea,#764ba2);color:white;border:none;padding:15px 30px;border-radius:25px;font-size:16px;cursor:pointer">Bouton Cool</button>\n<p style="color:#666;font-size:14px;margin-top:20px">Survolez le bouton !</p>\n<style>\n  button:hover { transform: scale(1.05); transition: transform 0.2s; }\n</style>',
+      navbar: '<nav style="display:flex;justify-content:space-between;align-items:center;padding:1rem 2rem;background:#1F2937;color:white;font-family:Arial">\n  <div style="font-weight:bold;font-size:1.5rem">MonSite</div>\n  <div style="display:flex;gap:20px">\n    <a href="#" style="color:white;text-decoration:none">Accueil</a>\n    <a href="#" style="color:white;text-decoration:none">À propos</a>\n    <a href="#" style="color:white;text-decoration:none">Contact</a>\n  </div>\n</nav>',
+      form: '<form style="max-width:400px;padding:20px;background:white;border-radius:10px;box-shadow:0 4px 6px rgba(0,0,0,0.1);font-family:Arial;margin:20px auto">\n  <h2 style="margin:0 0 15px">Contactez-moi</h2>\n  <div style="margin-bottom:15px">\n    <label style="display:block;margin-bottom:5px;font-weight:bold">Nom</label>\n    <input type="text" placeholder="Votre nom" style="width:100%;padding:10px;border:1px solid #ddd;border-radius:5px;box-sizing:border-box">\n  </div>\n  <div style="margin-bottom:15px">\n    <label style="display:block;margin-bottom:5px;font-weight:bold">Email</label>\n    <input type="email" placeholder="votre@email.com" style="width:100%;padding:10px;border:1px solid #ddd;border-radius:5px;box-sizing:border-box">\n  </div>\n  <button type="submit" style="width:100%;padding:12px;background:#3B82F6;color:white;border:none;border-radius:5px;cursor:pointer;font-size:16px">Envoyer</button>\n</form>'
     };
     const editor = document.getElementById('codeEditor');
     if (editor && examples[name]) {
       editor.value = examples[name];
       this.runCode();
+      this.updateLineNumbers();
+      this.navigateTo('editor');
     }
   },
 
@@ -755,6 +829,107 @@ const APP = {
   toggleMobileMenu() {
     const menu = document.getElementById('mobileMenu');
     if (menu) menu.classList.toggle('hidden');
+  },
+
+  copyCode() {
+    const editor = document.getElementById('codeEditor');
+    if (editor) {
+      navigator.clipboard.writeText(editor.value).then(() => {
+        this.showToast('Code copié !');
+      });
+    }
+  },
+
+  copyCodeBlock(btn) {
+    const codeBlock = btn.closest('.code-block');
+    const code = codeBlock.querySelector('code');
+    if (code) {
+      navigator.clipboard.writeText(code.textContent).then(() => {
+        btn.innerHTML = '<svg class="w-4 h-4 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Copié !';
+        btn.classList.add('copied');
+        setTimeout(() => {
+          btn.innerHTML = '<svg class="w-4 h-4 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg> Copier';
+          btn.classList.remove('copied');
+        }, 2000);
+      });
+    }
+  },
+
+  updateLineNumbers() {
+    const editor = document.getElementById('codeEditor');
+    const lineNumbers = document.getElementById('lineNumbers');
+    if (editor && lineNumbers) {
+      const lines = editor.value.split('\n').length;
+      lineNumbers.innerHTML = Array.from({ length: lines }, (_, i) => i + 1).join('<br>');
+    }
+  },
+
+  scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  },
+
+  setupBackToTop() {
+    const btn = document.getElementById('backToTop');
+    if (btn) {
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > 500) {
+          btn.classList.remove('opacity-0', 'pointer-events-none');
+          btn.classList.add('opacity-100');
+        } else {
+          btn.classList.add('opacity-0', 'pointer-events-none');
+          btn.classList.remove('opacity-100');
+        }
+      });
+    }
+  },
+
+  showToast(message) {
+    const toast = document.createElement('div');
+    toast.className = 'fixed bottom-24 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-4 py-2 rounded-lg shadow-lg z-50';
+    toast.textContent = message;
+    document.body.appendChild(toast);
+    setTimeout(() => toast.remove(), 2000);
+  },
+
+  animateBadge(badgeId) {
+    const badges = document.querySelectorAll(`[data-badge="${badgeId}"]`);
+    badges.forEach(badge => {
+      badge.classList.add('badge-unlock-anim');
+      setTimeout(() => badge.classList.remove('badge-unlock-anim'), 600);
+    });
+  },
+
+  showBadgeNotification(badgeId) {
+    const names = {
+      'first-step': 'Premier Pas', 'html-master': 'Maître HTML', 'css-artist': 'Artiste CSS',
+      'flex-wizard': 'Magicien Flexbox', 'responsive-guru': 'Guru Responsive',
+      'js-novice': 'Novice JavaScript', 'project-builder': 'Bâtisseur', 'perfectionist': 'Perfectionniste', 'course-complete': 'Diplômé'
+    };
+    const icons = {
+      'first-step': '🚀', 'html-master': '🏗️', 'css-artist': '🎨',
+      'flex-wizard': '📐', 'responsive-guru': '📱', 'js-novice': '⚡',
+      'project-builder': '🏆', 'perfectionist': '⭐', 'course-complete': '🎓'
+    };
+    const notification = document.createElement('div');
+    notification.className = 'fixed bottom-8 right-8 bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-6 py-4 rounded-xl shadow-2xl z-50';
+    notification.innerHTML = `
+      <div class="flex items-center gap-3">
+        <span class="text-3xl animate-bounce">${icons[badgeId] || '🏆'}</span>
+        <div>
+          <div class="font-bold">Nouveau Badge !</div>
+          <div class="text-sm opacity-90">${names[badgeId] || badgeId}</div>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(notification);
+    this.animateBadge(badgeId);
+    this.confetti();
+    setTimeout(() => {
+      notification.style.opacity = '0';
+      notification.style.transform = 'translateY(20px)';
+      notification.style.transition = 'all 0.5s ease';
+      setTimeout(() => notification.remove(), 500);
+    }, 3000);
   }
 };
 

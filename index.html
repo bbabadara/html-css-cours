@@ -46,15 +46,26 @@
     .badge-item:hover { transform: scale(1.1); }
     .badge-locked { opacity: 0.4; filter: grayscale(1); }
     .badge-unlocked { box-shadow: 0 0 10px rgba(251, 191, 36, 0.5); }
+    .code-block { position: relative; }
+    .code-block .copy-btn { position: absolute; top: 8px; right: 8px; opacity: 0; transition: opacity 0.2s; }
+    .code-block:hover .copy-btn { opacity: 1; }
+    .code-block .copy-btn.copied { color: #22c55e; }
+    @keyframes badgeUnlock { 0% { transform: scale(1); } 50% { transform: scale(1.3); } 100% { transform: scale(1); } }
+    .badge-unlock-anim { animation: badgeUnlock 0.6s ease; }
   </style>
 </head>
 
 <body class="bg-gray-50 text-gray-800 dark:bg-gray-900 dark:text-gray-100 transition-colors duration-300">
 
   <!-- Progress Bar -->
-  <div id="progressBar" class="fixed top-0 left-0 w-full h-1 bg-gray-300 dark:bg-gray-700 z-50">
+  <div id="progressBar" class="fixed top-0 left-0 w-full h-1 bg-gray-300 dark:bg-gray-700 z-50" role="progressbar" aria-label="Progression du cours">
     <div id="progressFill" class="progress-fill h-full bg-gradient-to-r from-primary to-secondary" style="width: 0%"></div>
   </div>
+
+  <!-- Back to Top Button -->
+  <button id="backToTop" onclick="APP.scrollToTop()" class="fixed bottom-24 lg:bottom-8 right-4 z-40 w-12 h-12 bg-blue-600 text-white rounded-full shadow-lg hover:bg-blue-700 transition-all duration-300 opacity-0 pointer-events-none flex items-center justify-center" aria-label="Retour en haut">
+    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"/></svg>
+  </button>
 
   <!-- Search Modal -->
   <div id="searchModal" class="fixed inset-0 bg-black/50 z-50 hidden">
@@ -191,56 +202,56 @@
         </div>
       </div>
 
-      <nav class="space-y-1">
-        <button onclick="APP.navigateTo('intro')" class="nav-btn w-full text-left px-4 py-3 rounded-lg transition-all duration-200 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-3" data-section="intro">
+      <nav class="space-y-1" role="navigation" aria-label="Navigation du cours">
+        <button onclick="APP.navigateTo('intro')" class="nav-btn w-full text-left px-4 py-3 rounded-lg transition-all duration-200 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-3" data-section="intro" aria-label="Introduction">
           <span class="w-6 h-6 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center text-xs font-bold text-blue-600 dark:text-blue-300">1</span>
           <span>Introduction</span>
         </button>
-        <button onclick="APP.navigateTo('internet')" class="nav-btn w-full text-left px-4 py-3 rounded-lg transition-all duration-200 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-3" data-section="internet">
+        <button onclick="APP.navigateTo('internet')" class="nav-btn w-full text-left px-4 py-3 rounded-lg transition-all duration-200 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-3" data-section="internet" aria-label="Internet et Web">
           <span class="w-6 h-6 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center text-xs font-bold text-blue-600 dark:text-blue-300">2</span>
           <span>Internet & Web</span>
         </button>
-        <button onclick="APP.navigateTo('html')" class="nav-btn w-full text-left px-4 py-3 rounded-lg transition-all duration-200 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-3" data-section="html">
+        <button onclick="APP.navigateTo('html')" class="nav-btn w-full text-left px-4 py-3 rounded-lg transition-all duration-200 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-3" data-section="html" aria-label="HTML">
           <span class="w-6 h-6 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center text-xs font-bold text-blue-600 dark:text-blue-300">3</span>
           <span>HTML</span>
         </button>
-        <button onclick="APP.navigateTo('css')" class="nav-btn w-full text-left px-4 py-3 rounded-lg transition-all duration-200 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-3" data-section="css">
+        <button onclick="APP.navigateTo('css')" class="nav-btn w-full text-left px-4 py-3 rounded-lg transition-all duration-200 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-3" data-section="css" aria-label="CSS">
           <span class="w-6 h-6 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center text-xs font-bold text-blue-600 dark:text-blue-300">4</span>
           <span>CSS</span>
         </button>
-        <button onclick="APP.navigateTo('box')" class="nav-btn w-full text-left px-4 py-3 rounded-lg transition-all duration-200 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-3" data-section="box">
+        <button onclick="APP.navigateTo('box')" class="nav-btn w-full text-left px-4 py-3 rounded-lg transition-all duration-200 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-3" data-section="box" aria-label="Box Model">
           <span class="w-6 h-6 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center text-xs font-bold text-blue-600 dark:text-blue-300">5</span>
           <span>Box Model</span>
         </button>
-        <button onclick="APP.navigateTo('flex')" class="nav-btn w-full text-left px-4 py-3 rounded-lg transition-all duration-200 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-3" data-section="flex">
+        <button onclick="APP.navigateTo('flex')" class="nav-btn w-full text-left px-4 py-3 rounded-lg transition-all duration-200 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-3" data-section="flex" aria-label="Flexbox">
           <span class="w-6 h-6 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center text-xs font-bold text-blue-600 dark:text-blue-300">6</span>
           <span>Flexbox</span>
         </button>
-        <button onclick="APP.navigateTo('responsive')" class="nav-btn w-full text-left px-4 py-3 rounded-lg transition-all duration-200 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-3" data-section="responsive">
+        <button onclick="APP.navigateTo('responsive')" class="nav-btn w-full text-left px-4 py-3 rounded-lg transition-all duration-200 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-3" data-section="responsive" aria-label="Responsive Design">
           <span class="w-6 h-6 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center text-xs font-bold text-blue-600 dark:text-blue-300">7</span>
           <span>Responsive</span>
         </button>
-        <button onclick="APP.navigateTo('forms')" class="nav-btn w-full text-left px-4 py-3 rounded-lg transition-all duration-200 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-3" data-section="forms">
+        <button onclick="APP.navigateTo('forms')" class="nav-btn w-full text-left px-4 py-3 rounded-lg transition-all duration-200 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-3" data-section="forms" aria-label="Formulaires HTML">
           <span class="w-6 h-6 bg-red-100 dark:bg-red-900 rounded-full flex items-center justify-center text-xs font-bold text-red-600 dark:text-red-300">8</span>
           <span>Formulaires</span>
         </button>
-        <button onclick="APP.navigateTo('tables')" class="nav-btn w-full text-left px-4 py-3 rounded-lg transition-all duration-200 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-3" data-section="tables">
+        <button onclick="APP.navigateTo('tables')" class="nav-btn w-full text-left px-4 py-3 rounded-lg transition-all duration-200 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-3" data-section="tables" aria-label="Listes et Tableaux">
           <span class="w-6 h-6 bg-indigo-100 dark:bg-indigo-900 rounded-full flex items-center justify-center text-xs font-bold text-indigo-600 dark:text-indigo-300">9</span>
           <span>Tableaux</span>
         </button>
-        <button onclick="APP.navigateTo('js')" class="nav-btn w-full text-left px-4 py-3 rounded-lg transition-all duration-200 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-3" data-section="js">
+        <button onclick="APP.navigateTo('js')" class="nav-btn w-full text-left px-4 py-3 rounded-lg transition-all duration-200 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-3" data-section="js" aria-label="JavaScript">
           <span class="w-6 h-6 bg-yellow-100 dark:bg-yellow-900 rounded-full flex items-center justify-center text-xs font-bold text-yellow-600 dark:text-yellow-300">10</span>
           <span>JavaScript</span>
         </button>
-        <button onclick="APP.navigateTo('projects')" class="nav-btn w-full text-left px-4 py-3 rounded-lg transition-all duration-200 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-3" data-section="projects">
+        <button onclick="APP.navigateTo('projects')" class="nav-btn w-full text-left px-4 py-3 rounded-lg transition-all duration-200 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-3" data-section="projects" aria-label="Mini-Projets">
           <span class="w-6 h-6 bg-purple-100 dark:bg-purple-900 rounded-full flex items-center justify-center text-xs font-bold text-purple-600 dark:text-purple-300">11</span>
           <span>Mini-Projets</span>
         </button>
-        <button onclick="APP.navigateTo('exercises')" class="nav-btn w-full text-left px-4 py-3 rounded-lg transition-all duration-200 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-3" data-section="exercises">
+        <button onclick="APP.navigateTo('exercises')" class="nav-btn w-full text-left px-4 py-3 rounded-lg transition-all duration-200 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-3" data-section="exercises" aria-label="Exercices Pratiques">
           <span class="w-6 h-6 bg-rose-100 dark:bg-rose-900 rounded-full flex items-center justify-center text-xs font-bold text-rose-600 dark:text-rose-300">✎</span>
           <span>Exercices</span>
         </button>
-        <button onclick="APP.navigateTo('editor')" class="nav-btn w-full text-left px-4 py-3 rounded-lg transition-all duration-200 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-3" data-section="editor">
+        <button onclick="APP.navigateTo('editor')" class="nav-btn w-full text-left px-4 py-3 rounded-lg transition-all duration-200 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-3" data-section="editor" aria-label="Éditeur de Code">
           <span class="w-6 h-6 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center text-xs font-bold text-green-600 dark:text-green-300">▶</span>
           <span>Éditeur Code</span>
         </button>
@@ -493,7 +504,12 @@
             </button>
             <div class="collapsible-content">
               <div class="p-4 space-y-4">
-                <pre class="bg-gray-900 text-green-400 p-4 rounded-lg overflow-x-auto text-sm"><code>&lt;!DOCTYPE html&gt;
+                <div class="code-block relative">
+                  <button onclick="APP.copyCodeBlock(this)" class="copy-btn bg-gray-700 text-gray-300 px-2 py-1 rounded text-xs hover:bg-gray-600 transition-colors" aria-label="Copier le code">
+                    <svg class="w-4 h-4 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                    Copier
+                  </button>
+                  <pre class="bg-gray-900 text-green-400 p-4 rounded-lg overflow-x-auto text-sm"><code>&lt;!DOCTYPE html&gt;
 &lt;html lang="fr"&gt;
 &lt;head&gt;
   &lt;meta charset="UTF-8"&gt;
@@ -505,6 +521,7 @@
   &lt;p&gt;Bienvenue sur ma première page.&lt;/p&gt;
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
+                </div>
                 <div class="space-y-2 text-sm">
                   <div class="bg-blue-50 dark:bg-blue-900/30 p-3 rounded-lg"><code class="text-blue-600 dark:text-blue-400">&lt;!DOCTYPE html&gt;</code> → Indique HTML5</div>
                   <div class="bg-green-50 dark:bg-green-900/30 p-3 rounded-lg"><code class="text-green-600 dark:text-green-400">&lt;html lang="fr"&gt;</code> → Racine, langue FR</div>
@@ -693,7 +710,12 @@
             </button>
             <div class="collapsible-content">
               <div class="p-4">
-                <pre class="bg-gray-900 text-green-400 p-4 rounded-lg overflow-x-auto text-sm"><code>div {
+                <div class="code-block relative">
+                  <button onclick="APP.copyCodeBlock(this)" class="copy-btn bg-gray-700 text-gray-300 px-2 py-1 rounded text-xs hover:bg-gray-600 transition-colors" aria-label="Copier le code">
+                    <svg class="w-4 h-4 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                    Copier
+                  </button>
+                  <pre class="bg-gray-900 text-green-400 p-4 rounded-lg overflow-x-auto text-sm"><code>div {
   padding: 20px;           /* Tous les côtés */
   padding: 10px 20px;      /* Haut/Bas Gauche/Droite */
   padding: 5px 10px 15px 20px; /* Haut Droit Bas Gauche */
@@ -702,6 +724,7 @@
   
   margin: 10px;            /* Tous les côtés */
 }</code></pre>
+                </div>
               </div>
             </div>
           </div>
@@ -766,12 +789,12 @@
               </button>
               <div class="collapsible-content">
                 <div class="p-4 space-y-3">
-                  <div class="flex gap-2 justify-center bg-gray-100 dark:bg-gray-700 p-2 rounded"><div class="w-8 h-8 bg-blue-500 rounded"></div><div class="w-8 h-8 bg-blue-500 rounded"></div><div class="w-8 h-8 bg-blue-500 rounded"></div></div>
+                  <div id="justifyDemo" class="flex gap-2 justify-center bg-gray-100 dark:bg-gray-700 p-2 rounded min-h-16"><div class="w-8 h-8 bg-blue-500 rounded flex items-center justify-center text-white text-xs font-bold">1</div><div class="w-8 h-8 bg-blue-500 rounded flex items-center justify-center text-white text-xs font-bold">2</div><div class="w-8 h-8 bg-blue-500 rounded flex items-center justify-center text-white text-xs font-bold">3</div></div>
                   <div class="grid grid-cols-4 gap-2 text-sm">
-                    <code class="bg-gray-200 dark:bg-gray-600 p-2 rounded text-center">flex-start</code>
-                    <code class="bg-gray-200 dark:bg-gray-600 p-2 rounded text-center">center</code>
-                    <code class="bg-gray-200 dark:bg-gray-600 p-2 rounded text-center">flex-end</code>
-                    <code class="bg-gray-200 dark:bg-gray-600 p-2 rounded text-center">space-between</code>
+                    <button onclick="APP.changeJustify('flex-start')" class="bg-gray-200 dark:bg-gray-600 p-2 rounded text-center hover:bg-blue-100 dark:hover:bg-blue-900 transition-colors">flex-start</button>
+                    <button onclick="APP.changeJustify('center')" class="bg-gray-200 dark:bg-gray-600 p-2 rounded text-center hover:bg-blue-100 dark:hover:bg-blue-900 transition-colors">center</button>
+                    <button onclick="APP.changeJustify('flex-end')" class="bg-gray-200 dark:bg-gray-600 p-2 rounded text-center hover:bg-blue-100 dark:hover:bg-blue-900 transition-colors">flex-end</button>
+                    <button onclick="APP.changeJustify('space-between')" class="bg-gray-200 dark:bg-gray-600 p-2 rounded text-center hover:bg-blue-100 dark:hover:bg-blue-900 transition-colors">space-between</button>
                   </div>
                 </div>
               </div>
@@ -784,11 +807,11 @@
               </button>
               <div class="collapsible-content">
                 <div class="p-4 space-y-3">
-                  <div class="flex items-center gap-2 bg-gray-100 dark:bg-gray-700 p-2 rounded h-20"><div class="w-8 h-12 bg-green-500 rounded"></div><div class="w-8 h-16 bg-green-500 rounded"></div><div class="w-8 h-10 bg-green-500 rounded"></div></div>
+                  <div id="alignDemo" class="flex items-center gap-2 bg-gray-100 dark:bg-gray-700 p-2 rounded h-24"><div class="w-8 h-12 bg-green-500 rounded flex items-center justify-center text-white text-xs font-bold">1</div><div class="w-8 h-16 bg-green-500 rounded flex items-center justify-center text-white text-xs font-bold">2</div><div class="w-8 h-10 bg-green-500 rounded flex items-center justify-center text-white text-xs font-bold">3</div></div>
                   <div class="grid grid-cols-3 gap-2 text-sm">
-                    <code class="bg-gray-200 dark:bg-gray-600 p-2 rounded text-center">flex-start</code>
-                    <code class="bg-gray-200 dark:bg-gray-600 p-2 rounded text-center">center</code>
-                    <code class="bg-gray-200 dark:bg-gray-600 p-2 rounded text-center">flex-end</code>
+                    <button onclick="APP.changeAlign('flex-start')" class="bg-gray-200 dark:bg-gray-600 p-2 rounded text-center hover:bg-green-100 dark:hover:bg-green-900 transition-colors">flex-start</button>
+                    <button onclick="APP.changeAlign('center')" class="bg-gray-200 dark:bg-gray-600 p-2 rounded text-center hover:bg-green-100 dark:hover:bg-green-900 transition-colors">center</button>
+                    <button onclick="APP.changeAlign('flex-end')" class="bg-gray-200 dark:bg-gray-600 p-2 rounded text-center hover:bg-green-100 dark:hover:bg-green-900 transition-colors">flex-end</button>
                   </div>
                 </div>
               </div>
@@ -802,13 +825,19 @@
             </button>
             <div class="collapsible-content">
               <div class="p-4">
-                <pre class="bg-gray-900 text-green-400 p-4 rounded-lg overflow-x-auto text-sm"><code>.container {
+                <div class="code-block relative">
+                  <button onclick="APP.copyCodeBlock(this)" class="copy-btn bg-gray-700 text-gray-300 px-2 py-1 rounded text-xs hover:bg-gray-600 transition-colors" aria-label="Copier le code">
+                    <svg class="w-4 h-4 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                    Copier
+                  </button>
+                  <pre class="bg-gray-900 text-green-400 p-4 rounded-lg overflow-x-auto text-sm"><code>.container {
   display: flex;
   justify-content: center;  /* Horizontal */
   align-items: center;       /* Vertical */
   gap: 20px;                /* Espace entre items */
   flex-wrap: wrap;          /* Retour à la ligne */
 }</code></pre>
+                </div>
               </div>
             </div>
           </div>
@@ -1153,7 +1182,7 @@ body { background: blue; }
       <section id="js" class="fade-in bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden">
         <div class="bg-gradient-to-r from-yellow-500 to-amber-500 p-6 text-white">
           <div class="flex items-center gap-2 text-yellow-200 text-sm mb-2">
-            <span>Chapitre 8</span>
+            <span>Chapitre 10</span>
             <span>•</span>
             <span>25 min</span>
           </div>
@@ -1174,7 +1203,12 @@ body { background: blue; }
             </button>
             <div class="collapsible-content">
               <div class="p-4 space-y-4">
-                <pre class="bg-gray-900 text-green-400 p-4 rounded-lg overflow-x-auto text-sm"><code>// Déclarer une variable
+                <div class="code-block relative">
+                  <button onclick="APP.copyCodeBlock(this)" class="copy-btn bg-gray-700 text-gray-300 px-2 py-1 rounded text-xs hover:bg-gray-600 transition-colors" aria-label="Copier le code">
+                    <svg class="w-4 h-4 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                    Copier
+                  </button>
+                  <pre class="bg-gray-900 text-green-400 p-4 rounded-lg overflow-x-auto text-sm"><code>// Déclarer une variable
 let nom = "Marie";      // Peut changer
 const age = 25;          // Ne peut pas changer
 
@@ -1184,6 +1218,7 @@ let nombre = 42;         // Number
 let estVrai = true;      // Boolean
 let rien = null;         // Null
 let indefini;            // Undefined</code></pre>
+                </div>
                 <div class="bg-blue-50 dark:bg-blue-900/30 p-4 rounded-lg text-sm">
                   <p><strong>let</strong> = variable modifiable</p>
                   <p><strong>const</strong> = constante (ne change jamais)</p>
@@ -1199,7 +1234,12 @@ let indefini;            // Undefined</code></pre>
             </button>
             <div class="collapsible-content">
               <div class="p-4 space-y-4">
-                <pre class="bg-gray-900 text-green-400 p-4 rounded-lg overflow-x-auto text-sm"><code>// Fonction classique
+                <div class="code-block relative">
+                  <button onclick="APP.copyCodeBlock(this)" class="copy-btn bg-gray-700 text-gray-300 px-2 py-1 rounded text-xs hover:bg-gray-600 transition-colors" aria-label="Copier le code">
+                    <svg class="w-4 h-4 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                    Copier
+                  </button>
+                  <pre class="bg-gray-900 text-green-400 p-4 rounded-lg overflow-x-auto text-sm"><code>// Fonction classique
 function direBonjour(nom) {
   return "Bonjour " + nom + " !";
 }
@@ -1211,8 +1251,7 @@ const direAurevoir = (nom) => {
 
 // Utilisation
 direBonjour("Marie");  // "Bonjour Marie !"</code></pre>
-              </div>
-            </div>
+                </div>
           </div>
 
           <div class="collapsible">
@@ -1248,7 +1287,12 @@ bouton.addEventListener('click', () => {
             </button>
             <div class="collapsible-content">
               <div class="p-4 space-y-4">
-                <pre class="bg-gray-900 text-green-400 p-4 rounded-lg overflow-x-auto text-sm"><code>// Sélectionner un élément
+                <div class="code-block relative">
+                  <button onclick="APP.copyCodeBlock(this)" class="copy-btn bg-gray-700 text-gray-300 px-2 py-1 rounded text-xs hover:bg-gray-600 transition-colors" aria-label="Copier le code">
+                    <svg class="w-4 h-4 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                    Copier
+                  </button>
+                  <pre class="bg-gray-900 text-green-400 p-4 rounded-lg overflow-x-auto text-sm"><code>// Sélectionner un élément
 const titre = document.getElementById('titre');
 const boutons = document.querySelectorAll('.btn');
 
@@ -1260,8 +1304,7 @@ titre.innerHTML = "<strong>Gras</strong>";
 titre.style.color = "red";
 titre.classList.add('actif');
 titre.classList.toggle('cache');</code></pre>
-              </div>
-            </div>
+                </div>
           </div>
 
           <div class="bg-gray-50 dark:bg-gray-700/50 p-5 rounded-xl">
@@ -1290,7 +1333,7 @@ titre.classList.toggle('cache');</code></pre>
       <section id="projects" class="fade-in bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden">
         <div class="bg-gradient-to-r from-purple-600 to-indigo-600 p-6 text-white">
           <div class="flex items-center gap-2 text-purple-200 text-sm mb-2">
-            <span>Chapitre 9</span>
+            <span>Chapitre 11</span>
             <span>•</span>
             <span>Pratique</span>
           </div>
@@ -1491,11 +1534,11 @@ titre.classList.toggle('cache');</code></pre>
             </div>
             <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">Comment sélectionner un élément par son ID ?</p>
             <div class="space-y-1">
-              <button onclick="APP.checkJSQuiz(this, false, 1)" class="quiz-js-1 w-full text-left p-2 bg-white dark:bg-gray-600 rounded hover:bg-green-50 transition-colors text-sm">A. document.querySelectorAll('.id')</button>
-              <button onclick="APP.checkJSQuiz(this, false, 1)" class="quiz-js-1 w-full text-left p-2 bg-white dark:bg-gray-600 rounded hover:bg-green-50 transition-colors text-sm">B. document.getElementByClassName('id')</button>
-              <button onclick="APP.checkJSQuiz(this, true, 1)" class="quiz-js-1 w-full text-left p-2 bg-white dark:bg-gray-600 rounded hover:bg-green-50 transition-colors text-sm">C. document.getElementById('id')</button>
+              <button onclick="APP.checkJSQuiz(this, false, 6)" class="quiz-js-6 w-full text-left p-2 bg-white dark:bg-gray-600 rounded hover:bg-green-50 transition-colors text-sm">A. document.querySelectorAll('.id')</button>
+              <button onclick="APP.checkJSQuiz(this, false, 6)" class="quiz-js-6 w-full text-left p-2 bg-white dark:bg-gray-600 rounded hover:bg-green-50 transition-colors text-sm">B. document.getElementByClassName('id')</button>
+              <button onclick="APP.checkJSQuiz(this, true, 6)" class="quiz-js-6 w-full text-left p-2 bg-white dark:bg-gray-600 rounded hover:bg-green-50 transition-colors text-sm">C. document.getElementById('id')</button>
             </div>
-            <p id="result-js-quiz-1" class="mt-2 text-sm font-semibold"></p>
+            <p id="result-js-quiz-6" class="mt-2 text-sm font-semibold"></p>
           </div>
 
           <!-- Exercice 7 -->
@@ -1507,11 +1550,11 @@ titre.classList.toggle('cache');</code></pre>
             </div>
             <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">Que fait l'attribut "required" ?</p>
             <div class="space-y-1">
-              <button onclick="APP.checkFormQuiz(this, false)" class="quiz-form w-full text-left p-2 bg-white dark:bg-gray-600 rounded hover:bg-green-50 transition-colors text-sm">A. Rend le champ en lecture seule</button>
-              <button onclick="APP.checkFormQuiz(this, true)" class="quiz-form w-full text-left p-2 bg-white dark:bg-gray-600 rounded hover:bg-green-50 transition-colors text-sm">B. Empêche l'envoi si le champ est vide</button>
-              <button onclick="APP.checkFormQuiz(this, false)" class="quiz-form w-full text-left p-2 bg-white dark:bg-gray-600 rounded hover:bg-green-50 transition-colors text-sm">C. Cache le champ du formulaire</button>
+              <button onclick="APP.checkFormQuiz(this, false, 'ex7')" class="quiz-form-ex7 w-full text-left p-2 bg-white dark:bg-gray-600 rounded hover:bg-green-50 transition-colors text-sm">A. Rend le champ en lecture seule</button>
+              <button onclick="APP.checkFormQuiz(this, true, 'ex7')" class="quiz-form-ex7 w-full text-left p-2 bg-white dark:bg-gray-600 rounded hover:bg-green-50 transition-colors text-sm">B. Empêche l'envoi si le champ est vide</button>
+              <button onclick="APP.checkFormQuiz(this, false, 'ex7')" class="quiz-form-ex7 w-full text-left p-2 bg-white dark:bg-gray-600 rounded hover:bg-green-50 transition-colors text-sm">C. Cache le champ du formulaire</button>
             </div>
-            <p id="result-form-quiz" class="mt-2 text-sm font-semibold"></p>
+            <p id="result-form-quiz-ex7" class="mt-2 text-sm font-semibold"></p>
           </div>
 
           <!-- Exercice 8 -->
@@ -1523,11 +1566,11 @@ titre.classList.toggle('cache');</code></pre>
             </div>
             <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">Quelle balise définit un en-tête de colonne ?</p>
             <div class="space-y-1">
-              <button onclick="APP.checkTableQuiz(this, false)" class="quiz-table w-full text-left p-2 bg-white dark:bg-gray-600 rounded hover:bg-green-50 transition-colors text-sm">A. &lt;td&gt;</button>
-              <button onclick="APP.checkTableQuiz(this, true)" class="quiz-table w-full text-left p-2 bg-white dark:bg-gray-600 rounded hover:bg-green-50 transition-colors text-sm">B. &lt;th&gt;</button>
-              <button onclick="APP.checkTableQuiz(this, false)" class="quiz-table w-full text-left p-2 bg-white dark:bg-gray-600 rounded hover:bg-green-50 transition-colors text-sm">C. &lt;header&gt;</button>
+              <button onclick="APP.checkTableQuiz(this, false, 'ex8')" class="quiz-table-ex8 w-full text-left p-2 bg-white dark:bg-gray-600 rounded hover:bg-green-50 transition-colors text-sm">A. &lt;td&gt;</button>
+              <button onclick="APP.checkTableQuiz(this, true, 'ex8')" class="quiz-table-ex8 w-full text-left p-2 bg-white dark:bg-gray-600 rounded hover:bg-green-50 transition-colors text-sm">B. &lt;th&gt;</button>
+              <button onclick="APP.checkTableQuiz(this, false, 'ex8')" class="quiz-table-ex8 w-full text-left p-2 bg-white dark:bg-gray-600 rounded hover:bg-green-50 transition-colors text-sm">C. &lt;header&gt;</button>
             </div>
-            <p id="result-table-quiz" class="mt-2 text-sm font-semibold"></p>
+            <p id="result-table-quiz-ex8" class="mt-2 text-sm font-semibold"></p>
           </div>
 
           <!-- Exercice 9 -->
@@ -1565,7 +1608,7 @@ titre.classList.toggle('cache');</code></pre>
           <!-- Score Final -->
           <div class="bg-gradient-to-r from-purple-100 to-pink-100 dark:from-purple-900/30 dark:to-pink-900/30 p-5 rounded-xl text-center mt-6">
             <h3 class="font-bold mb-2">🎯 Score Final</h3>
-            <div class="text-5xl font-bold text-purple-600 dark:text-purple-400" id="exerciseScoreDisplay">0/10</div>
+            <div class="text-5xl font-bold text-purple-600 dark:text-purple-400" id="exerciseScoreDisplay">0/15</div>
             <p class="text-sm text-gray-500 mt-2" id="scoreMessage">Commencez les exercices !</p>
             <div class="mt-4 flex justify-center gap-2 flex-wrap">
               <span class="px-2 py-1 bg-green-100 dark:bg-green-900 rounded text-xs">⭐ Facile</span>
@@ -1592,11 +1635,19 @@ titre.classList.toggle('cache');</code></pre>
           
           <div class="grid lg:grid-cols-2 gap-4">
             <div class="bg-gray-900 rounded-xl overflow-hidden">
-              <div class="bg-gray-800 px-4 py-2 flex items-center gap-2">
-                <div class="flex gap-1.5"><div class="w-3 h-3 bg-red-500 rounded-full"></div><div class="w-3 h-3 bg-yellow-500 rounded-full"></div><div class="w-3 h-3 bg-green-500 rounded-full"></div></div>
-                <span class="text-gray-400 text-sm ml-2">Code</span>
+              <div class="bg-gray-800 px-4 py-2 flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                  <div class="flex gap-1.5"><div class="w-3 h-3 bg-red-500 rounded-full"></div><div class="w-3 h-3 bg-yellow-500 rounded-full"></div><div class="w-3 h-3 bg-green-500 rounded-full"></div></div>
+                  <span class="text-gray-400 text-sm">Code</span>
+                </div>
+                <button onclick="APP.copyCode()" class="text-xs bg-gray-700 text-gray-300 px-2 py-1 rounded hover:bg-gray-600 transition-colors flex items-center gap-1" aria-label="Copier le code">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                  Copier
+                </button>
               </div>
-              <textarea id="codeEditor" oninput="APP.runCode()" class="w-full h-64 bg-gray-900 text-green-400 p-4 font-mono text-sm resize-none focus:outline-none">&lt;h1&gt;Hello World!&lt;/h1&gt;
+              <div class="flex">
+                <div id="lineNumbers" class="text-right pr-4 pl-4 pt-4 pb-4 text-gray-500 text-sm select-none bg-gray-900 border-r border-gray-700" style="min-width: 40px;"></div>
+                <textarea id="codeEditor" oninput="APP.runCode(); APP.updateLineNumbers()" class="w-full h-64 bg-gray-900 text-green-400 p-4 pt-4 font-mono text-sm resize-none focus:outline-none" spellcheck="false">&lt;h1&gt;Hello World!&lt;/h1&gt;
 &lt;p&gt;Bienvenue sur ma page !&lt;/p&gt;
 &lt;style&gt;
   body {
@@ -1613,20 +1664,21 @@ titre.classList.toggle('cache');</code></pre>
   h1 { font-size: 3rem; }
   p { font-size: 1.2rem; opacity: 0.9; }
 &lt;/style&gt;</textarea>
+              </div>
             </div>
 
             <div class="bg-white dark:bg-gray-900 rounded-xl overflow-hidden border-2 border-gray-200 dark:border-gray-700">
               <div class="bg-gray-100 dark:bg-gray-800 px-4 py-2 flex items-center justify-between">
                 <span class="text-gray-500 text-sm">Aperçu</span>
-                <button onclick="APP.openInNewTab()" class="text-xs bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 transition-colors">↗️ Plein écran</button>
+                <button onclick="APP.openInNewTab()" class="text-xs bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 transition-colors" aria-label="Ouvrir en plein écran">↗️ Plein écran</button>
               </div>
-              <iframe id="previewFrame" class="w-full h-64 bg-white"></iframe>
+              <iframe id="previewFrame" class="w-full h-64 bg-white" title="Aperçu du code"></iframe>
             </div>
           </div>
 
           <div class="flex gap-3">
-            <button onclick="APP.runCode()" class="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition-colors font-semibold flex items-center gap-2">▶️ Exécuter</button>
-            <button onclick="APP.resetCode()" class="bg-gray-200 dark:bg-gray-700 px-6 py-3 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors">🔄 Réinitialiser</button>
+            <button onclick="APP.runCode()" class="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition-colors font-semibold flex items-center gap-2" aria-label="Exécuter le code">▶️ Exécuter</button>
+            <button onclick="APP.resetCode()" class="bg-gray-200 dark:bg-gray-700 px-6 py-3 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors" aria-label="Réinitialiser le code">🔄 Réinitialiser</button>
           </div>
 
           <div class="mt-6">
