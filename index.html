@@ -29,8 +29,9 @@
     .code-editor textarea:focus { outline: none; }
     .collapsible-content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; }
     .collapsible-content.open { max-height: 5000px; }
-    .fade-in { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
-    .fade-in.visible { opacity: 1; transform: translateY(0); }
+    .fade-in { opacity: 1; transform: translateY(0); }
+    .fade-in.visible { animation: fadeInUp 0.6s ease forwards; }
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
     .nav-btn.active { background: linear-gradient(90deg, #3B82F6 0%, #8B5CF6 100%); color: white; }
     .progress-fill { transition: width 0.5s ease; }
     .correct-answer { animation: pulse 0.5s ease; }
@@ -87,6 +88,12 @@
         <div class="search-result p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer flex items-center gap-3" data-section="responsive" onclick="APP.navigateTo('responsive'); APP.closeSearch();">
           <span>📱</span><span>Responsive Design</span>
         </div>
+        <div class="search-result p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer flex items-center gap-3" data-section="forms" onclick="APP.navigateTo('forms'); APP.closeSearch();">
+          <span>📝</span><span>Formulaires HTML</span>
+        </div>
+        <div class="search-result p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer flex items-center gap-3" data-section="tables" onclick="APP.navigateTo('tables'); APP.closeSearch();">
+          <span>📊</span><span>Listes & Tableaux</span>
+        </div>
         <div class="search-result p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer flex items-center gap-3" data-section="js" onclick="APP.navigateTo('js'); APP.closeSearch();">
           <span>⚡</span><span>JavaScript</span>
         </div>
@@ -134,6 +141,11 @@
         <button onclick="APP.navigateTo('internet')" class="w-full text-left p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">🌐 Internet & Web</button>
         <button onclick="APP.navigateTo('html')" class="w-full text-left p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">🏗️ HTML</button>
         <button onclick="APP.navigateTo('css')" class="w-full text-left p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">🎨 CSS</button>
+        <button onclick="APP.navigateTo('box')" class="w-full text-left p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">📦 Box Model</button>
+        <button onclick="APP.navigateTo('flex')" class="w-full text-left p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">📐 Flexbox</button>
+        <button onclick="APP.navigateTo('responsive')" class="w-full text-left p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">📱 Responsive</button>
+        <button onclick="APP.navigateTo('forms')" class="w-full text-left p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">📝 Formulaires</button>
+        <button onclick="APP.navigateTo('tables')" class="w-full text-left p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">📊 Tableaux</button>
         <button onclick="APP.navigateTo('js')" class="w-full text-left p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">⚡ JavaScript</button>
         <button onclick="APP.navigateTo('projects')" class="w-full text-left p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">🏆 Projets</button>
         <button onclick="APP.navigateTo('exercises')" class="w-full text-left p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">✏️ Exercices</button>
@@ -208,12 +220,20 @@
           <span class="w-6 h-6 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center text-xs font-bold text-blue-600 dark:text-blue-300">7</span>
           <span>Responsive</span>
         </button>
+        <button onclick="APP.navigateTo('forms')" class="nav-btn w-full text-left px-4 py-3 rounded-lg transition-all duration-200 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-3" data-section="forms">
+          <span class="w-6 h-6 bg-red-100 dark:bg-red-900 rounded-full flex items-center justify-center text-xs font-bold text-red-600 dark:text-red-300">8</span>
+          <span>Formulaires</span>
+        </button>
+        <button onclick="APP.navigateTo('tables')" class="nav-btn w-full text-left px-4 py-3 rounded-lg transition-all duration-200 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-3" data-section="tables">
+          <span class="w-6 h-6 bg-indigo-100 dark:bg-indigo-900 rounded-full flex items-center justify-center text-xs font-bold text-indigo-600 dark:text-indigo-300">9</span>
+          <span>Tableaux</span>
+        </button>
         <button onclick="APP.navigateTo('js')" class="nav-btn w-full text-left px-4 py-3 rounded-lg transition-all duration-200 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-3" data-section="js">
-          <span class="w-6 h-6 bg-yellow-100 dark:bg-yellow-900 rounded-full flex items-center justify-center text-xs font-bold text-yellow-600 dark:text-yellow-300">8</span>
+          <span class="w-6 h-6 bg-yellow-100 dark:bg-yellow-900 rounded-full flex items-center justify-center text-xs font-bold text-yellow-600 dark:text-yellow-300">10</span>
           <span>JavaScript</span>
         </button>
         <button onclick="APP.navigateTo('projects')" class="nav-btn w-full text-left px-4 py-3 rounded-lg transition-all duration-200 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-3" data-section="projects">
-          <span class="w-6 h-6 bg-purple-100 dark:bg-purple-900 rounded-full flex items-center justify-center text-xs font-bold text-purple-600 dark:text-purple-300">9</span>
+          <span class="w-6 h-6 bg-purple-100 dark:bg-purple-900 rounded-full flex items-center justify-center text-xs font-bold text-purple-600 dark:text-purple-300">11</span>
           <span>Mini-Projets</span>
         </button>
         <button onclick="APP.navigateTo('exercises')" class="nav-btn w-full text-left px-4 py-3 rounded-lg transition-all duration-200 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-3" data-section="exercises">
@@ -876,6 +896,259 @@ body { background: blue; }
         </div>
       </section>
 
+      <!-- ==================== FORMULAIRES ==================== -->
+      <section id="forms" class="fade-in bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden">
+        <div class="bg-gradient-to-r from-red-500 to-pink-500 p-6 text-white">
+          <div class="flex items-center gap-2 text-red-200 text-sm mb-2">
+            <span>Chapitre 8</span>
+            <span>•</span>
+            <span>20 min</span>
+          </div>
+          <h1 class="text-3xl font-bold">📝 Formulaires HTML</h1>
+        </div>
+        
+        <div class="p-6 space-y-6">
+          <div class="bg-gradient-to-r from-red-50 to-pink-50 dark:from-red-900/20 dark:to-pink-900/20 p-5 rounded-xl border border-red-200 dark:border-red-800">
+            <h3 class="font-bold text-red-800 dark:text-red-300 mb-3 flex items-center gap-2">📖 Définition</h3>
+            <p class="text-red-700 dark:text-red-400">Les <strong>formulaires</strong> permettent aux utilisateurs d'<strong>envoyer des données</strong> (inscription, connexion, contact...).</p>
+            <p class="text-red-600 dark:text-red-500 mt-2 text-sm">💡 C'est comme un <strong>formulaire papier</strong> : champs à remplir, boutons à cocher, et un bouton "Envoyer".</p>
+          </div>
+
+          <div class="collapsible">
+            <button onclick="APP.toggleCollapsible(this)" class="w-full flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+              <span class="font-semibold">🏗️ Structure de base</span>
+              <svg class="w-5 h-5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+            </button>
+            <div class="collapsible-content">
+              <div class="p-4 space-y-4">
+                <pre class="bg-gray-900 text-green-400 p-4 rounded-lg overflow-x-auto text-sm"><code>&lt;form action="/submit" method="POST"&gt;
+  &lt;label for="nom"&gt;Nom :&lt;/label&gt;
+  &lt;input type="text" id="nom" name="nom" required&gt;
+  
+  &lt;label for="email"&gt;Email :&lt;/label&gt;
+  &lt;input type="email" id="email" name="email"&gt;
+  
+  &lt;button type="submit"&gt;Envoyer&lt;/button&gt;
+&lt;/form&gt;</code></pre>
+                <div class="grid md:grid-cols-2 gap-3 text-sm">
+                  <div class="bg-red-50 dark:bg-red-900/30 p-3 rounded-lg">
+                    <code class="text-red-600">action="/submit"</code>
+                    <p class="text-xs mt-1">URL de destination</p>
+                  </div>
+                  <div class="bg-red-50 dark:bg-red-900/30 p-3 rounded-lg">
+                    <code class="text-red-600">method="POST"</code>
+                    <p class="text-xs mt-1">Méthode d'envoi</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="collapsible">
+            <button onclick="APP.toggleCollapsible(this)" class="w-full flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+              <span class="font-semibold">📋 Types d'inputs</span>
+              <svg class="w-5 h-5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+            </button>
+            <div class="collapsible-content">
+              <div class="p-4">
+                <table class="w-full text-sm">
+                  <thead><tr class="bg-gray-100 dark:bg-gray-700"><th class="p-3 text-left">Type</th><th class="p-3 text-left">Description</th><th class="p-3 text-left">Exemple</th></tr></thead>
+                  <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+                    <tr><td class="p-3 font-mono text-blue-600">text</td><td class="p-3">Texte court</td><td class="p-3"><input type="text" placeholder="Nom" class="border rounded px-2 py-1 text-sm"></td></tr>
+                    <tr><td class="p-3 font-mono text-blue-600">email</td><td class="p-3">Email</td><td class="p-3"><input type="email" placeholder="email@exemple.com" class="border rounded px-2 py-1 text-sm"></td></tr>
+                    <tr><td class="p-3 font-mono text-blue-600">password</td><td class="p-3">Mot de passe</td><td class="p-3"><input type="password" placeholder="••••••" class="border rounded px-2 py-1 text-sm"></td></tr>
+                    <tr><td class="p-3 font-mono text-blue-600">number</td><td class="p-3">Nombre</td><td class="p-3"><input type="number" placeholder="42" class="border rounded px-2 py-1 text-sm"></td></tr>
+                    <tr><td class="p-3 font-mono text-blue-600">checkbox</td><td class="p-3">Case à cocher</td><td class="p-3"><input type="checkbox" class="w-5 h-5"></td></tr>
+                    <tr><td class="p-3 font-mono text-blue-600">radio</td><td class="p-3">Bouton radio</td><td class="p-3"><input type="radio" name="test" class="w-5 h-5"></td></tr>
+                    <tr><td class="p-3 font-mono text-blue-600">textarea</td><td class="p-3">Zone de texte</td><td class="p-3"><textarea rows="2" class="border rounded px-2 py-1 text-sm w-32"></textarea></td></tr>
+                    <tr><td class="p-3 font-mono text-blue-600">submit</td><td class="p-3">Bouton envoi</td><td class="p-3"><button type="submit" class="bg-blue-500 text-white px-3 py-1 rounded text-sm">Envoyer</button></td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="collapsible">
+            <button onclick="APP.toggleCollapsible(this)" class="w-full flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+              <span class="font-semibold">✅ Validation HTML5</span>
+              <svg class="w-5 h-5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+            </button>
+            <div class="collapsible-content">
+              <div class="p-4 space-y-4">
+                <div class="bg-green-50 dark:bg-green-900/30 p-4 rounded-lg">
+                  <h4 class="font-bold text-green-700 dark:text-green-400 mb-2">Attributs de validation</h4>
+                  <div class="grid grid-cols-2 gap-2 text-sm">
+                    <code class="bg-gray-100 dark:bg-gray-700 p-2 rounded">required</code>
+                    <code class="bg-gray-100 dark:bg-gray-700 p-2 rounded">placeholder="..."</code>
+                    <code class="bg-gray-100 dark:bg-gray-700 p-2 rounded">minlength="5"</code>
+                    <code class="bg-gray-100 dark:bg-gray-700 p-2 rounded">maxlength="100"</code>
+                    <code class="bg-gray-100 dark:bg-gray-700 p-2 rounded">pattern="[A-Za-z]"</code>
+                    <code class="bg-gray-100 dark:bg-gray-700 p-2 rounded">disabled</code>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-gray-50 dark:bg-gray-700/50 p-5 rounded-xl">
+            <h3 class="font-bold mb-3 flex items-center gap-2">🧠 Quiz Formulaires</h3>
+            <p class="text-sm mb-3">Quel attribut rend un champ obligatoire ?</p>
+            <div class="space-y-2 mb-3">
+              <button onclick="APP.checkFormQuiz(this, false)" class="quiz-form w-full text-left p-3 bg-white dark:bg-gray-600 rounded-lg hover:bg-gray-100 transition-colors text-sm">placeholder</button>
+              <button onclick="APP.checkFormQuiz(this, true)" class="quiz-form w-full text-left p-3 bg-white dark:bg-gray-600 rounded-lg hover:bg-gray-100 transition-colors text-sm">required</button>
+              <button onclick="APP.checkFormQuiz(this, false)" class="quiz-form w-full text-left p-3 bg-white dark:bg-gray-600 rounded-lg hover:bg-gray-100 transition-colors text-sm">type="text"</button>
+            </div>
+            <p id="result-form-quiz" class="text-sm font-semibold"></p>
+          </div>
+
+          <div class="border-t dark:border-gray-700 pt-4">
+            <button onclick="APP.toggleNotes('forms')" id="notes-btn-forms" class="notes-btn flex items-center gap-2 text-sm text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
+              📝 Notes personnelles
+            </button>
+            <div id="notes-panel-forms" class="notes-panel hidden mt-3">
+              <textarea id="note-forms" onblur="APP.saveNote('forms')" placeholder="Ajoutez vos notes ici..." class="w-full h-24 p-3 border rounded-lg dark:bg-gray-700 dark:border-gray-600 text-sm resize-none"></textarea>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== LISTES & TABLEAUX ==================== -->
+      <section id="tables" class="fade-in bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden">
+        <div class="bg-gradient-to-r from-indigo-500 to-purple-500 p-6 text-white">
+          <div class="flex items-center gap-2 text-indigo-200 text-sm mb-2">
+            <span>Chapitre 9</span>
+            <span>•</span>
+            <span>15 min</span>
+          </div>
+          <h1 class="text-3xl font-bold">📊 Listes & Tableaux</h1>
+        </div>
+        
+        <div class="p-6 space-y-6">
+          <div class="bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-indigo-900/20 dark:to-purple-900/20 p-5 rounded-xl border border-indigo-200 dark:border-indigo-800">
+            <h3 class="font-bold text-indigo-800 dark:text-indigo-300 mb-3 flex items-center gap-2">📖 Définition</h3>
+            <p class="text-indigo-700 dark:text-indigo-400">Les <strong>listes</strong> et <strong>tableaux</strong> permettent d'organiser les données de manière structurée.</p>
+            <p class="text-indigo-600 dark:text-indigo-500 mt-2 text-sm">💡 Listes = pour les énumérations, Tableaux = pour les données tabulaires.</p>
+          </div>
+
+          <div class="collapsible">
+            <button onclick="APP.toggleCollapsible(this)" class="w-full flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+              <span class="font-semibold">📝 Types de Listes</span>
+              <svg class="w-5 h-5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+            </button>
+            <div class="collapsible-content">
+              <div class="p-4 space-y-4">
+                <div class="grid md:grid-cols-3 gap-4">
+                  <div class="bg-gray-100 dark:bg-gray-700 p-4 rounded-lg">
+                    <h4 class="font-bold text-blue-600 mb-2">Liste non-ordonnée</h4>
+                    <pre class="bg-gray-800 text-green-400 p-2 rounded text-xs"><code>&lt;ul&gt;
+  &lt;li&gt;Item 1&lt;/li&gt;
+  &lt;li&gt;Item 2&lt;/li&gt;
+&lt;/ul&gt;</code></pre>
+                    <ul class="list-disc ml-4 mt-2 text-sm">
+                      <li>Item 1</li>
+                      <li>Item 2</li>
+                    </ul>
+                  </div>
+                  <div class="bg-gray-100 dark:bg-gray-700 p-4 rounded-lg">
+                    <h4 class="font-bold text-green-600 mb-2">Liste ordonnée</h4>
+                    <pre class="bg-gray-800 text-green-400 p-2 rounded text-xs"><code>&lt;ol&gt;
+  &lt;li&gt;Étape 1&lt;/li&gt;
+  &lt;li&gt;Étape 2&lt;/li&gt;
+&lt;/ol&gt;</code></pre>
+                    <ol class="list-decimal ml-4 mt-2 text-sm">
+                      <li>Étape 1</li>
+                      <li>Étape 2</li>
+                    </ol>
+                  </div>
+                  <div class="bg-gray-100 dark:bg-gray-700 p-4 rounded-lg">
+                    <h4 class="font-bold text-purple-600 mb-2">Liste de définition</h4>
+                    <pre class="bg-gray-800 text-green-400 p-2 rounded text-xs"><code>&lt;dl&gt;
+  &lt;dt&gt;Terme&lt;/dt&gt;
+  &lt;dd&gt;Définition&lt;/dd&gt;
+&lt;/dl&gt;</code></pre>
+                    <dl class="mt-2 text-sm">
+                      <dt class="font-bold">HTML</dt>
+                      <dd class="ml-4">Langage de balisage</dd>
+                    </dl>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="collapsible">
+            <button onclick="APP.toggleCollapsible(this)" class="w-full flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+              <span class="font-semibold">📊 Créer un Tableau</span>
+              <svg class="w-5 h-5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+            </button>
+            <div class="collapsible-content">
+              <div class="p-4 space-y-4">
+                <pre class="bg-gray-900 text-green-400 p-4 rounded-lg overflow-x-auto text-sm"><code>&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;Nom&lt;/th&gt;
+      &lt;th&gt;Age&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Marie&lt;/td&gt;
+      &lt;td&gt;25&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;</code></pre>
+                <table class="w-full text-sm border-collapse">
+                  <thead><tr class="bg-gray-200 dark:bg-gray-700"><th class="border p-2 text-left">Nom</th><th class="border p-2 text-left">Age</th></tr></thead>
+                  <tbody>
+                    <tr><td class="border p-2">Marie</td><td class="border p-2">25</td></tr>
+                    <tr><td class="border p-2">Jean</td><td class="border p-2">30</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="collapsible">
+            <button onclick="APP.toggleCollapsible(this)" class="w-full flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+              <span class="font-semibold">🔗 Fusionner les Cellules</span>
+              <svg class="w-5 h-5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+            </button>
+            <div class="collapsible-content">
+              <div class="p-4 space-y-4">
+                <div class="bg-gray-900 text-green-400 p-4 rounded-lg font-mono text-sm">
+                  <div>&lt;td <span class="text-yellow-400">colspan="2"</span>&gt;...</div>
+                  <div>&lt;td <span class="text-yellow-400">rowspan="3"</span>&gt;...</div>
+                </div>
+                <div class="bg-blue-50 dark:bg-blue-900/30 p-3 rounded-lg text-sm">
+                  <strong>colspan</strong> = fusionner horizontalement<br>
+                  <strong>rowspan</strong> = fusionner verticalement
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-gray-50 dark:bg-gray-700/50 p-5 rounded-xl">
+            <h3 class="font-bold mb-3 flex items-center gap-2">🧠 Quiz Tableaux</h3>
+            <p class="text-sm mb-3">Quelle balise contient les lignes du tableau ?</p>
+            <div class="space-y-2 mb-3">
+              <button onclick="APP.checkTableQuiz(this, true)" class="quiz-table w-full text-left p-3 bg-white dark:bg-gray-600 rounded-lg hover:bg-gray-100 transition-colors text-sm">&lt;tbody&gt;</button>
+              <button onclick="APP.checkTableQuiz(this, false)" class="quiz-table w-full text-left p-3 bg-white dark:bg-gray-600 rounded-lg hover:bg-gray-100 transition-colors text-sm">&lt;head&gt;</button>
+              <button onclick="APP.checkTableQuiz(this, false)" class="quiz-table w-full text-left p-3 bg-white dark:bg-gray-600 rounded-lg hover:bg-gray-100 transition-colors text-sm">&lt;footer&gt;</button>
+            </div>
+            <p id="result-table-quiz" class="text-sm font-semibold"></p>
+          </div>
+
+          <div class="border-t dark:border-gray-700 pt-4">
+            <button onclick="APP.toggleNotes('tables')" id="notes-btn-tables" class="notes-btn flex items-center gap-2 text-sm text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
+              📝 Notes personnelles
+            </button>
+            <div id="notes-panel-tables" class="notes-panel hidden mt-3">
+              <textarea id="note-tables" onblur="APP.saveNote('tables')" placeholder="Ajoutez vos notes ici..." class="w-full h-24 p-3 border rounded-lg dark:bg-gray-700 dark:border-gray-600 text-sm resize-none"></textarea>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <!-- ==================== JAVASCRIPT ==================== -->
       <section id="js" class="fade-in bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden">
         <div class="bg-gradient-to-r from-yellow-500 to-amber-500 p-6 text-white">
@@ -1110,90 +1383,194 @@ titre.classList.toggle('cache');</code></pre>
       <!-- ==================== EXERCICES ==================== -->
       <section id="exercises" class="fade-in bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden">
         <div class="bg-gradient-to-r from-rose-600 to-pink-600 p-6 text-white">
-          <div class="flex items-center gap-2 text-rose-200 text-sm mb-2">
-            <span>Pratique</span>
-            <span>•</span>
-            <span>Exercices</span>
+          <div class="flex items-center justify-between">
+            <div>
+              <div class="flex items-center gap-2 text-rose-200 text-sm mb-2">
+                <span>Pratique</span>
+                <span>•</span>
+                <span>Exercices</span>
+              </div>
+              <h1 class="text-3xl font-bold">✏️ Exercices Pratiques</h1>
+            </div>
+            <div class="bg-white/20 px-4 py-2 rounded-lg text-center">
+              <div class="text-2xl font-bold" id="exerciseScore">0/15</div>
+              <div class="text-xs opacity-80">Score</div>
+            </div>
           </div>
-          <h1 class="text-3xl font-bold">✏️ Exercices Pratiques</h1>
         </div>
         
-        <div class="p-6 space-y-6">
+        <div class="p-6 space-y-4 max-h-[600px] overflow-y-auto">
+          <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">Cliquez sur la réponse correcte pour valider chaque exercice.</p>
+
           <!-- Exercice 1 -->
-          <div class="bg-gray-50 dark:bg-gray-700/50 p-5 rounded-xl">
-            <div class="flex items-center gap-2 mb-3">
-              <span class="bg-rose-500 text-white w-6 h-6 rounded-full flex items-center justify-center text-sm font-bold">1</span>
-              <h3 class="font-bold">Créer un titre HTML</h3>
-              <span class="text-xs bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 px-2 py-1 rounded-full">Facile</span>
+          <div class="bg-gray-50 dark:bg-gray-700/50 p-4 rounded-xl border-l-4 border-green-500">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="bg-green-500 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold">1</span>
+              <h3 class="font-semibold">Créer un titre principal</h3>
+              <span class="text-xs bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 px-2 py-0.5 rounded-full">⭐ Facile</span>
             </div>
-            <p class="text-sm mb-3">Écrivez "Bienvenue" comme titre principal :</p>
-            <div class="bg-gray-100 dark:bg-gray-800 p-3 rounded-lg mb-3">
-              <span class="text-gray-400">&lt;h1&gt;</span><input type="text" id="ex-html-1" class="bg-transparent w-24 text-center border-b-2 border-blue-500 focus:outline-none dark:text-white" placeholder="?"><span class="text-gray-400">&lt;/h1&gt;</span>
+            <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">Quel texte affiche "Bienvenue" comme titre ?</p>
+            <div class="space-y-1">
+              <button onclick="APP.checkExHTML(1)" class="w-full text-left p-2 bg-white dark:bg-gray-600 rounded hover:bg-green-50 dark:hover:bg-green-900/30 transition-colors text-sm">A. &lt;h2&gt;Bienvenue&lt;/h2&gt;</button>
+              <button onclick="APP.checkExHTML(1)" class="w-full text-left p-2 bg-white dark:bg-gray-600 rounded hover:bg-green-50 dark:hover:bg-green-900/30 transition-colors text-sm">B. &lt;h1&gt;Bienvenue&lt;/h1&gt;</button>
+              <button onclick="APP.checkExHTML(1)" class="w-full text-left p-2 bg-white dark:bg-gray-600 rounded hover:bg-green-50 dark:hover:bg-green-900/30 transition-colors text-sm">C. &lt;p&gt;Bienvenue&lt;/p&gt;</button>
             </div>
-            <button onclick="APP.checkExHTML(1)" class="bg-rose-600 text-white px-4 py-2 rounded-lg hover:bg-rose-700 transition-colors text-sm font-semibold">Vérifier</button>
             <p id="result-ex-html-1" class="mt-2 text-sm font-semibold"></p>
           </div>
 
           <!-- Exercice 2 -->
-          <div class="bg-gray-50 dark:bg-gray-700/50 p-5 rounded-xl">
-            <div class="flex items-center gap-2 mb-3">
-              <span class="bg-rose-500 text-white w-6 h-6 rounded-full flex items-center justify-center text-sm font-bold">2</span>
-              <h3 class="font-bold">Propriété couleur CSS</h3>
-              <span class="text-xs bg-yellow-100 dark:bg-yellow-900 text-yellow-700 dark:text-yellow-300 px-2 py-1 rounded-full">Moyen</span>
+          <div class="bg-gray-50 dark:bg-gray-700/50 p-4 rounded-xl border-l-4 border-green-500">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="bg-green-500 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold">2</span>
+              <h3 class="font-semibold">Insérer une image</h3>
+              <span class="text-xs bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 px-2 py-0.5 rounded-full">⭐ Facile</span>
             </div>
-            <p class="text-sm mb-3">Quelle propriété change la couleur du texte ?</p>
-            <div class="space-y-2 mb-3">
-              <button onclick="APP.checkCSSQuiz(this, false, 1)" class="quiz-css-1 w-full text-left p-3 bg-white dark:bg-gray-600 rounded-lg hover:bg-gray-100 transition-colors text-sm">background-color</button>
-              <button onclick="APP.checkCSSQuiz(this, true, 1)" class="quiz-css-1 w-full text-left p-3 bg-white dark:bg-gray-600 rounded-lg hover:bg-gray-100 transition-colors text-sm">color</button>
-              <button onclick="APP.checkCSSQuiz(this, false, 1)" class="quiz-css-1 w-full text-left p-3 bg-white dark:bg-gray-600 rounded-lg hover:bg-gray-100 transition-colors text-sm">font-weight</button>
+            <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">Quelle balise insère une image ?</p>
+            <div class="space-y-1">
+              <button onclick="APP.checkImgQuiz(this, false)" class="quiz-img w-full text-left p-2 bg-white dark:bg-gray-600 rounded hover:bg-green-50 transition-colors text-sm">A. &lt;image src="photo.jpg"&gt;</button>
+              <button onclick="APP.checkImgQuiz(this, true)" class="quiz-img w-full text-left p-2 bg-white dark:bg-gray-600 rounded hover:bg-green-50 transition-colors text-sm">B. &lt;img src="photo.jpg" alt="Description"&gt;</button>
+              <button onclick="APP.checkImgQuiz(this, false)" class="quiz-img w-full text-left p-2 bg-white dark:bg-gray-600 rounded hover:bg-green-50 transition-colors text-sm">C. &lt;photo src="photo.jpg"&gt;</button>
             </div>
-            <p id="result-css-quiz-1" class="text-sm font-semibold"></p>
+            <p id="result-img-quiz" class="mt-2 text-sm font-semibold"></p>
           </div>
 
           <!-- Exercice 3 -->
-          <div class="bg-gray-50 dark:bg-gray-700/50 p-5 rounded-xl">
-            <div class="flex items-center gap-2 mb-3">
-              <span class="bg-rose-500 text-white w-6 h-6 rounded-full flex items-center justify-center text-sm font-bold">3</span>
-              <h3 class="font-bold">Box Model</h3>
-              <span class="text-xs bg-yellow-100 dark:bg-yellow-900 text-yellow-700 dark:text-yellow-300 px-2 py-1 rounded-full">Moyen</span>
+          <div class="bg-gray-50 dark:bg-gray-700/50 p-4 rounded-xl border-l-4 border-yellow-500">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="bg-yellow-500 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold">3</span>
+              <h3 class="font-semibold">Propriété couleur CSS</h3>
+              <span class="text-xs bg-yellow-100 dark:bg-yellow-900 text-yellow-700 dark:text-yellow-300 px-2 py-0.5 rounded-full">⭐⭐ Moyen</span>
             </div>
-            <p class="text-sm mb-3">Espace À L'INTÉRIEUR de la bordure ?</p>
-            <div class="space-y-2 mb-3">
-              <button onclick="APP.checkBoxQuiz(this, false, 1)" class="quiz-box-1 w-full text-left p-3 bg-white dark:bg-gray-600 rounded-lg hover:bg-gray-100 transition-colors text-sm">margin</button>
-              <button onclick="APP.checkBoxQuiz(this, true, 1)" class="quiz-box-1 w-full text-left p-3 bg-white dark:bg-gray-600 rounded-lg hover:bg-gray-100 transition-colors text-sm">padding</button>
+            <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">Quelle propriété change la couleur du texte ?</p>
+            <div class="space-y-1">
+              <button onclick="APP.checkCSSQuiz(this, false, 1)" class="quiz-css-1 w-full text-left p-2 bg-white dark:bg-gray-600 rounded hover:bg-green-50 transition-colors text-sm">A. background-color</button>
+              <button onclick="APP.checkCSSQuiz(this, true, 1)" class="quiz-css-1 w-full text-left p-2 bg-white dark:bg-gray-600 rounded hover:bg-green-50 transition-colors text-sm">B. color</button>
+              <button onclick="APP.checkCSSQuiz(this, false, 1)" class="quiz-css-1 w-full text-left p-2 bg-white dark:bg-gray-600 rounded hover:bg-green-50 transition-colors text-sm">C. font-weight</button>
             </div>
-            <p id="result-box-quiz-1" class="text-sm font-semibold"></p>
+            <p id="result-css-quiz-1" class="mt-2 text-sm font-semibold"></p>
           </div>
 
           <!-- Exercice 4 -->
-          <div class="bg-gray-50 dark:bg-gray-700/50 p-5 rounded-xl">
-            <div class="flex items-center gap-2 mb-3">
-              <span class="bg-rose-500 text-white w-6 h-6 rounded-full flex items-center justify-center text-sm font-bold">4</span>
-              <h3 class="font-bold">Flexbox</h3>
-              <span class="text-xs bg-yellow-100 dark:bg-yellow-900 text-yellow-700 dark:text-yellow-300 px-2 py-1 rounded-full">Moyen</span>
+          <div class="bg-gray-50 dark:bg-gray-700/50 p-4 rounded-xl border-l-4 border-yellow-500">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="bg-yellow-500 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold">4</span>
+              <h3 class="font-semibold">Box Model - Padding vs Margin</h3>
+              <span class="text-xs bg-yellow-100 dark:bg-yellow-900 text-yellow-700 dark:text-yellow-300 px-2 py-0.5 rounded-full">⭐⭐ Moyen</span>
             </div>
-            <p class="text-sm mb-3">Quelle propriété active Flexbox sur un conteneur ?</p>
-            <div class="space-y-2 mb-3">
-              <button onclick="APP.checkFlexQuiz(this, true, 1)" class="quiz-flex-1 w-full text-left p-3 bg-white dark:bg-gray-600 rounded-lg hover:bg-gray-100 transition-colors text-sm">display: flex</button>
-              <button onclick="APP.checkFlexQuiz(this, false, 1)" class="quiz-flex-1 w-full text-left p-3 bg-white dark:bg-gray-600 rounded-lg hover:bg-gray-100 transition-colors text-sm">flex-direction: row</button>
-              <button onclick="APP.checkFlexQuiz(this, false, 1)" class="quiz-flex-1 w-full text-left p-3 bg-white dark:bg-gray-600 rounded-lg hover:bg-gray-100 transition-colors text-sm">align-items: center</button>
+            <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">Qu'est-ce que le padding ?</p>
+            <div class="space-y-1">
+              <button onclick="APP.checkBoxQuiz(this, false, 1)" class="quiz-box-1 w-full text-left p-2 bg-white dark:bg-gray-600 rounded hover:bg-green-50 transition-colors text-sm">A. L'espace entre les éléments</button>
+              <button onclick="APP.checkBoxQuiz(this, true, 1)" class="quiz-box-1 w-full text-left p-2 bg-white dark:bg-gray-600 rounded hover:bg-green-50 transition-colors text-sm">B. L'espace intérieur (entre le contenu et la bordure)</button>
+              <button onclick="APP.checkBoxQuiz(this, false, 1)" class="quiz-box-1 w-full text-left p-2 bg-white dark:bg-gray-600 rounded hover:bg-green-50 transition-colors text-sm">C. La bordure de l'élément</button>
             </div>
-            <p id="result-flex-quiz-1" class="text-sm font-semibold"></p>
+            <p id="result-box-quiz-1" class="mt-2 text-sm font-semibold"></p>
           </div>
 
-          <!-- Score -->
-          <div class="bg-gradient-to-r from-purple-100 to-pink-100 dark:from-purple-900/30 dark:to-pink-900/30 p-5 rounded-xl text-center">
-            <h3 class="font-bold mb-2">Score des Exercices</h3>
-            <div class="text-4xl font-bold text-purple-600 dark:text-purple-400" id="exerciseScore">0/15</div>
+          <!-- Exercice 5 -->
+          <div class="bg-gray-50 dark:bg-gray-700/50 p-4 rounded-xl border-l-4 border-yellow-500">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="bg-yellow-500 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold">5</span>
+              <h3 class="font-semibold">Flexbox</h3>
+              <span class="text-xs bg-yellow-100 dark:bg-yellow-900 text-yellow-700 dark:text-yellow-300 px-2 py-0.5 rounded-full">⭐⭐ Moyen</span>
+            </div>
+            <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">Quelle propriété active Flexbox ?</p>
+            <div class="space-y-1">
+              <button onclick="APP.checkFlexQuiz(this, true, 1)" class="quiz-flex-1 w-full text-left p-2 bg-white dark:bg-gray-600 rounded hover:bg-green-50 transition-colors text-sm">A. display: flex</button>
+              <button onclick="APP.checkFlexQuiz(this, false, 1)" class="quiz-flex-1 w-full text-left p-2 bg-white dark:bg-gray-600 rounded hover:bg-green-50 transition-colors text-sm">B. flex-direction: row</button>
+              <button onclick="APP.checkFlexQuiz(this, false, 1)" class="quiz-flex-1 w-full text-left p-2 bg-white dark:bg-gray-600 rounded hover:bg-green-50 transition-colors text-sm">C. align-items: center</button>
+            </div>
+            <p id="result-flex-quiz-1" class="mt-2 text-sm font-semibold"></p>
+          </div>
+
+          <!-- Exercice 6 -->
+          <div class="bg-gray-50 dark:bg-gray-700/50 p-4 rounded-xl border-l-4 border-orange-500">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="bg-orange-500 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold">6</span>
+              <h3 class="font-semibold">JavaScript - Sélection</h3>
+              <span class="text-xs bg-orange-100 dark:bg-orange-900 text-orange-700 dark:text-orange-300 px-2 py-0.5 rounded-full">⭐⭐⭐ Difficile</span>
+            </div>
+            <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">Comment sélectionner un élément par son ID ?</p>
+            <div class="space-y-1">
+              <button onclick="APP.checkJSQuiz(this, false, 1)" class="quiz-js-1 w-full text-left p-2 bg-white dark:bg-gray-600 rounded hover:bg-green-50 transition-colors text-sm">A. document.querySelectorAll('.id')</button>
+              <button onclick="APP.checkJSQuiz(this, false, 1)" class="quiz-js-1 w-full text-left p-2 bg-white dark:bg-gray-600 rounded hover:bg-green-50 transition-colors text-sm">B. document.getElementByClassName('id')</button>
+              <button onclick="APP.checkJSQuiz(this, true, 1)" class="quiz-js-1 w-full text-left p-2 bg-white dark:bg-gray-600 rounded hover:bg-green-50 transition-colors text-sm">C. document.getElementById('id')</button>
+            </div>
+            <p id="result-js-quiz-1" class="mt-2 text-sm font-semibold"></p>
+          </div>
+
+          <!-- Exercice 7 -->
+          <div class="bg-gray-50 dark:bg-gray-700/50 p-4 rounded-xl border-l-4 border-yellow-500">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="bg-yellow-500 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold">7</span>
+              <h3 class="font-semibold">Formulaire - Attribut required</h3>
+              <span class="text-xs bg-yellow-100 dark:bg-yellow-900 text-yellow-700 dark:text-yellow-300 px-2 py-0.5 rounded-full">⭐⭐ Moyen</span>
+            </div>
+            <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">Que fait l'attribut "required" ?</p>
+            <div class="space-y-1">
+              <button onclick="APP.checkFormQuiz(this, false)" class="quiz-form w-full text-left p-2 bg-white dark:bg-gray-600 rounded hover:bg-green-50 transition-colors text-sm">A. Rend le champ en lecture seule</button>
+              <button onclick="APP.checkFormQuiz(this, true)" class="quiz-form w-full text-left p-2 bg-white dark:bg-gray-600 rounded hover:bg-green-50 transition-colors text-sm">B. Empêche l'envoi si le champ est vide</button>
+              <button onclick="APP.checkFormQuiz(this, false)" class="quiz-form w-full text-left p-2 bg-white dark:bg-gray-600 rounded hover:bg-green-50 transition-colors text-sm">C. Cache le champ du formulaire</button>
+            </div>
+            <p id="result-form-quiz" class="mt-2 text-sm font-semibold"></p>
+          </div>
+
+          <!-- Exercice 8 -->
+          <div class="bg-gray-50 dark:bg-gray-700/50 p-4 rounded-xl border-l-4 border-yellow-500">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="bg-yellow-500 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold">8</span>
+              <h3 class="font-semibold">Tableaux - Balise d'en-tête</h3>
+              <span class="text-xs bg-yellow-100 dark:bg-yellow-900 text-yellow-700 dark:text-yellow-300 px-2 py-0.5 rounded-full">⭐⭐ Moyen</span>
+            </div>
+            <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">Quelle balise définit un en-tête de colonne ?</p>
+            <div class="space-y-1">
+              <button onclick="APP.checkTableQuiz(this, false)" class="quiz-table w-full text-left p-2 bg-white dark:bg-gray-600 rounded hover:bg-green-50 transition-colors text-sm">A. &lt;td&gt;</button>
+              <button onclick="APP.checkTableQuiz(this, true)" class="quiz-table w-full text-left p-2 bg-white dark:bg-gray-600 rounded hover:bg-green-50 transition-colors text-sm">B. &lt;th&gt;</button>
+              <button onclick="APP.checkTableQuiz(this, false)" class="quiz-table w-full text-left p-2 bg-white dark:bg-gray-600 rounded hover:bg-green-50 transition-colors text-sm">C. &lt;header&gt;</button>
+            </div>
+            <p id="result-table-quiz" class="mt-2 text-sm font-semibold"></p>
+          </div>
+
+          <!-- Exercice 9 -->
+          <div class="bg-gray-50 dark:bg-gray-700/50 p-4 rounded-xl border-l-4 border-orange-500">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="bg-orange-500 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold">9</span>
+              <h3 class="font-semibold">Responsive - Breakpoint</h3>
+              <span class="text-xs bg-orange-100 dark:bg-orange-900 text-orange-700 dark:text-orange-300 px-2 py-0.5 rounded-full">⭐⭐⭐ Difficile</span>
+            </div>
+            <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">À partir de quelle largeur commence "md:" dans Tailwind ?</p>
+            <div class="space-y-1">
+              <button onclick="APP.checkResponsiveQuiz(this, false)" class="quiz-responsive w-full text-left p-2 bg-white dark:bg-gray-600 rounded hover:bg-green-50 transition-colors text-sm">A. 640px</button>
+              <button onclick="APP.checkResponsiveQuiz(this, true)" class="quiz-responsive w-full text-left p-2 bg-white dark:bg-gray-600 rounded hover:bg-green-50 transition-colors text-sm">B. 768px</button>
+              <button onclick="APP.checkResponsiveQuiz(this, false)" class="quiz-responsive w-full text-left p-2 bg-white dark:bg-gray-600 rounded hover:bg-green-50 transition-colors text-sm">C. 1024px</button>
+            </div>
+            <p id="result-responsive-quiz" class="mt-2 text-sm font-semibold"></p>
+          </div>
+
+          <!-- Exercice 10 -->
+          <div class="bg-gray-50 dark:bg-gray-700/50 p-4 rounded-xl border-l-4 border-orange-500">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="bg-orange-500 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold">10</span>
+              <h3 class="font-semibold">JavaScript - Event Listener</h3>
+              <span class="text-xs bg-orange-100 dark:bg-orange-900 text-orange-700 dark:text-orange-300 px-2 py-0.5 rounded-full">⭐⭐⭐ Difficile</span>
+            </div>
+            <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">Comment écouter un clic sur un bouton ?</p>
+            <div class="space-y-1">
+              <button onclick="APP.checkEventQuiz(this, false)" class="quiz-event w-full text-left p-2 bg-white dark:bg-gray-600 rounded hover:bg-green-50 transition-colors text-sm">A. bouton.onClick(function(){})</button>
+              <button onclick="APP.checkEventQuiz(this, true)" class="quiz-event w-full text-left p-2 bg-white dark:bg-gray-600 rounded hover:bg-green-50 transition-colors text-sm">B. bouton.addEventListener('click', function(){})</button>
+              <button onclick="APP.checkEventQuiz(this, false)" class="quiz-event w-full text-left p-2 bg-white dark:bg-gray-600 rounded hover:bg-green-50 transition-colors text-sm">C. bouton.click(function(){})</button>
+            </div>
+            <p id="result-event-quiz" class="mt-2 text-sm font-semibold"></p>
+          </div>
+
+          <!-- Score Final -->
+          <div class="bg-gradient-to-r from-purple-100 to-pink-100 dark:from-purple-900/30 dark:to-pink-900/30 p-5 rounded-xl text-center mt-6">
+            <h3 class="font-bold mb-2">🎯 Score Final</h3>
+            <div class="text-5xl font-bold text-purple-600 dark:text-purple-400" id="exerciseScoreDisplay">0/10</div>
             <p class="text-sm text-gray-500 mt-2" id="scoreMessage">Commencez les exercices !</p>
-          </div>
-
-          <div class="border-t dark:border-gray-700 pt-4">
-            <button onclick="APP.toggleNotes('exercises')" id="notes-btn-exercises" class="notes-btn flex items-center gap-2 text-sm text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
-              📝 Notes personnelles
-            </button>
-            <div id="notes-panel-exercises" class="notes-panel hidden mt-3">
-              <textarea id="note-exercises" onblur="APP.saveNote('exercises')" placeholder="Ajoutez vos notes ici..." class="w-full h-24 p-3 border rounded-lg dark:bg-gray-700 dark:border-gray-600 text-sm resize-none"></textarea>
+            <div class="mt-4 flex justify-center gap-2 flex-wrap">
+              <span class="px-2 py-1 bg-green-100 dark:bg-green-900 rounded text-xs">⭐ Facile</span>
+              <span class="px-2 py-1 bg-yellow-100 dark:bg-yellow-900 rounded text-xs">⭐⭐ Moyen</span>
+              <span class="px-2 py-1 bg-orange-100 dark:bg-orange-900 rounded text-xs">⭐⭐⭐ Difficile</span>
             </div>
           </div>
         </div>
