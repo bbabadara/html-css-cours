@@ -308,7 +308,8 @@ const APP = {
     const answer = document.getElementById('exo1-answer');
     if (!input || !result) return;
     const value = input.value.trim();
-    if (value.toLowerCase() === 'mon site' || value.toLowerCase() === 'Bienvenue') {
+    const lower = value.toLowerCase();
+    if (lower === 'mon site' || lower === 'bienvenue') {
       result.textContent = '✅ Correct !';
       result.className = 'mt-2 text-sm font-semibold text-green-600';
       if (answer) answer.textContent = value;
