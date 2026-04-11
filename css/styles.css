@@ -1,0 +1,272 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+body { 
+  font-family: 'Inter', sans-serif; 
+}
+
+.collapsible-content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; }
+.collapsible-content.open { max-height: 5000px; }
+
+.fade-in { opacity: 1; transform: translateY(0); }
+.fade-in.visible { animation: fadeInUp 0.6s ease forwards; }
+
+@keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+.nav-btn { background: transparent; }
+.nav-btn:hover { background: rgba(59, 130, 246, 0.1); }
+.nav-btn.active { background: linear-gradient(90deg, #3B82F6 0%, #8B5CF6 100%); color: white; font-weight: 600; }
+.nav-btn.active span { background: rgba(255,255,255,0.2) !important; color: white !important; font-weight: 600; }
+.dark .nav-btn:hover { background: rgba(255, 255, 255, 0.1); }
+
+.progress-fill { transition: width 0.5s ease; }
+
+.correct-answer { animation: pulse 0.5s ease; }
+@keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+
+.shake { animation: shake 0.5s ease; }
+@keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
+
+.scrollbar-thin::-webkit-scrollbar { width: 6px; height: 6px; }
+.scrollbar-thin::-webkit-scrollbar-track { background: transparent; }
+.scrollbar-thin::-webkit-scrollbar-thumb { background: #9CA3AF; border-radius: 3px; }
+
+.badge-item { transition: all 0.2s ease; }
+.badge-item:hover { transform: scale(1.1); }
+
+.code-block { position: relative; }
+.code-block .copy-btn { position: absolute; top: 8px; right: 8px; opacity: 0; transition: opacity 0.2s; }
+.code-block:hover .copy-btn { opacity: 1; }
+.code-block .copy-btn.copied { color: #22c55e; }
+
+@keyframes badgeUnlock { 0% { transform: scale(1); } 50% { transform: scale(1.3); } 100% { transform: scale(1); } }
+.badge-unlock-anim { animation: badgeUnlock 0.6s ease; }
+
+.notes-panel textarea:focus { outline: 2px solid #3B82F6; outline-offset: 2px; }
+
+.notes-btn.has-note { color: #f59e0b; }
+
+/* Reading Mode - Full Screen */
+body.reading-mode { 
+  background: #faf8f5;
+  width: 100vw;
+  height: 100vh;
+  overflow-x: hidden;
+}
+body.reading-mode .bg-white, body.reading-mode .dark\:bg-gray-800 { background: #fff !important; }
+body.reading-mode #sidebar { 
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  bottom: 0 !important;
+  width: 16rem !important;
+  height: 100vh !important;
+  z-index: 1000 !important;
+  transform: translateX(-100%);
+  transition: transform 0.3s ease;
+}
+body.reading-mode #sidebar:hover,
+body.reading-mode #sidebar.visible {
+  transform: translateX(0);
+}
+
+/* Sidebar indicator in reading mode */
+body.reading-mode::before {
+  content: '';
+  position: fixed;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 60px;
+  background: linear-gradient(180deg, #3B82F6, #8B5CF6);
+  border-radius: 0 3px 3px 0;
+  z-index: 999;
+  transition: all 0.3s ease;
+  box-shadow: 2px 0 8px rgba(59, 130, 246, 0.3);
+}
+
+body.reading-mode:hover::before {
+  width: 4px;
+  box-shadow: 3px 0 12px rgba(59, 130, 246, 0.4);
+}
+body.reading-mode #mobileMenu { display: none !important; }
+body.reading-mode nav { display: none !important; }
+
+/* Dark mode reading mode improvements */
+body.dark.reading-mode { 
+  background: #1a1a1a;
+}
+body.dark.reading-mode .bg-white, body.dark.reading-mode .dark\:bg-gray-800 { 
+  background: #2d2d2d !important; 
+  color: #e5e7eb !important;
+}
+body.dark.reading-mode section { 
+  border: 1px solid #404040; 
+}
+body.dark.reading-mode .text-gray-600 { 
+  color: #d1d5db !important; 
+}
+body.dark.reading-mode .text-gray-700 { 
+  color: #e5e7eb !important; 
+}
+body.dark.reading-mode .text-gray-800 { 
+  color: #f3f4f6 !important; 
+}
+body.dark.reading-mode .text-gray-900 { 
+  color: #ffffff !important; 
+}
+body.dark.reading-mode .text-blue-800 { 
+  color: #60a5fa !important; 
+}
+body.dark.reading-mode .text-blue-300 { 
+  color: #93c5fd !important; 
+}
+body.dark.reading-mode .text-blue-700 { 
+  color: #60a5fa !important; 
+}
+body.dark.reading-mode .text-blue-400 { 
+  color: #93c5fd !important; 
+}
+body.reading-mode main { 
+  max-width: none;
+  width: 100%;
+  margin: 0;
+  padding: 1rem;
+  padding-top: 2rem;
+}
+body.reading-mode #main-content { 
+  margin-left: 0 !important;
+  max-width: none;
+  width: 100%;
+}
+body.reading-mode section { 
+  box-shadow: none; 
+  border: 1px solid #e5e7eb; 
+  margin-bottom: 2rem;
+  max-width: none;
+  width: 100%;
+}
+body.reading-mode .code-block { border-radius: 8px; }
+
+/* Reading mode menu toggle button */
+#readingModeMenuToggle {
+  transition: all 0.3s ease;
+}
+
+#readingModeMenuToggle:not(.hidden) {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+#readingModeMenuToggle:hover {
+  background: #374151 !important;
+  transform: scale(1.05);
+}
+
+/* Full screen reading mode */
+body.reading-mode.fullscreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9999;
+}
+
+/* Skip Link */
+.skip-link { position: absolute; top: -40px; left: 0; background: #1e40af; color: white; padding: 8px 16px; z-index: 100; transition: top 0.3s; font-weight: 600; text-decoration: none; }
+.skip-link:focus { top: 0; outline: 2px solid #fbbf24; outline-offset: 2px; }
+
+/* Focus Visible */
+*:focus-visible { outline: 2px solid #3B82F6; outline-offset: 2px; }
+
+/* Chapter Progress */
+.chapter-progress { height: 4px; border-radius: 2px; background: #e5e7eb; overflow: hidden; }
+.chapter-progress-fill { height: 100%; border-radius: 2px; transition: width 0.5s ease; }
+
+/* Syntax Highlighting - Prism Customization */
+.code-block pre, pre[class*="language-"] {
+  background: #1e1e1e !important;
+  border-radius: 0.75rem;
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.7;
+}
+
+.code-block code, code[class*="language-"] {
+  font-family: 'Fira Code', 'JetBrains Mono', 'Monaco', 'Consolas', monospace !important;
+  background: transparent !important;
+}
+
+.token.comment, .token.prolog, .token.doctype, .token.cdata { color: #6a9955; }
+.token.punctuation { color: #d4d4d4; }
+.token.property, .token.tag, .token.boolean, .token.number, .token.constant, .token.symbol { color: #b5cea8; }
+.token.selector, .token.attr-name, .token.string, .token.char, .token.builtin { color: #ce9178; }
+.token.operator, .token.entity, .token.url, .language-css .token.string { color: #d4d4d4; }
+.token.atrule, .token.attr-value, .token.keyword { color: #569cd6; }
+.token.function, .token.class-name { color: #dcdcaa; }
+.token.regex, .token.important, .token.variable { color: #d16969; }
+
+/* Bookmarks star */
+.bookmark-btn { transition: all 0.2s; }
+.bookmark-btn:hover { transform: scale(1.1); }
+
+/* Toast animation */
+.toast-enter { animation: toastIn 0.3s ease; }
+@keyframes toastIn { from { opacity: 0; transform: translateX(50px); } to { opacity: 1; transform: translateX(0); } }
+
+/* Sidebar - ALWAYS FIXED on desktop */
+#sidebar {
+  position: fixed !important;
+  top: 3.5rem !important;
+  left: 0 !important;
+  bottom: auto !important;
+  width: 16rem !important;
+  height: calc(100vh - 3.5rem) !important;
+  z-index: 30 !important;
+  overflow-y: auto !important;
+}
+
+/* Fixed Top Navbar */
+nav.fixed.top-0 { padding-top: 0; }
+
+/* Main content spacing with fixed navbar */
+main { padding-top: 1rem; }
+
+/* Main content with sidebar offset on desktop */
+#main-content {
+  margin-left: 16rem !important;
+}
+
+/* Mobile Navigation bottom bar */
+@media (max-width: 1023px) {
+  /* Hide sidebar on mobile */
+  #sidebar { display: none !important; }
+  
+  /* Remove sidebar margin on mobile */
+  #main-content { margin-left: 0 !important; }
+  
+  /* Add padding for mobile nav */
+  main { padding-bottom: 5rem !important; }
+  
+  /* Reading mode hides mobile nav */
+  body.reading-mode nav.fixed.bottom-0 { display: none !important; }
+}
+
+/* Desktop: flex layout for full width usage */
+@media (min-width: 1024px) {
+  #main-content { 
+    flex: 1;
+    width: calc(100% - 16rem);
+    max-width: none;
+  }
+  
+  /* Make sections occupy full width */
+  #main-content section {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+/* Mobile menu click to close */
+#mobileMenu > div { padding-top: 3.5rem; }

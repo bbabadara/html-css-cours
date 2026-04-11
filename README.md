@@ -1,222 +1,200 @@
-# Formation HTML & CSS Professionnelle
-
-Une plateforme de formation interactive et moderne pour apprendre le développement web (HTML, CSS, JavaScript).
+# Formation Web Complète - HTML, CSS & JavaScript
 
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
+![PWA](https://img.shields.io/badge/PWA-Support-brightgreen?style=for-the-badge)
+![Version](https://img.shields.io/badge/Version-6.0-blue?style=for-the-badge)
 
-##  Fonctionnalités
+Plateforme de formation interactive pour apprendre le développement web moderne.
 
-###  Contenu Pédagogique
-- **13 chapitres progressifs** : De l'introduction à JavaScript
-- **Explications détaillées** avec analogies simples
-- **Exemples de code** commentés ligne par ligne
-- **Erreurs fréquentes** à éviter
-- **Bonnes pratiques** recommandées
+## 📊 Statistiques
 
-###  Chapitres
-1. Introduction à la formation
-2. Internet & Le Web
-3. HTML - Le squelette du Web
-4. CSS - Le style du Web
-5. Le Box Model
-6. Flexbox
-7. Design Responsive
-8. **Formulaires HTML** (nouveau)
-9. **Listes & Tableaux** (nouveau)
-10. **JavaScript**
-11. **Mini-Projets**
-12. Exercices Pratiques
-13. Éditeur de Code Live
+| Métrique | Valeur |
+|----------|--------|
+| Sections | 27 |
+| Chapitres | 6 |
+| Quiz | 12 |
+| Badges | 18 |
+| Durée | ~7h |
 
-### ✨ Fonctionnalités UX
-- **📝 Notes personnelles** - Ajoutez vos notes par chapitre
-- **🏆 Système de badges** - Récompenses pour votre progression
-- **🔍 Recherche rapide** (Ctrl+K ou /)
-- **📊 Barres de progression** - Visualisez votre avancement
-- **💾 Sauvegarde automatique** - LocalStorage (progression, notes, badges)
-- **🌙 Mode sombre** - Confort visuel
-- **📖 Mode lecture de nuit** - Réduction de la fatigue oculaire
+## 📚 Modules
+
+| Module | Sections | Durée | Description |
+|--------|----------|-------|-------------|
+| **Introduction** | 2 | 15 min | Présentation et concepts de base |
+| **HTML5** | 9 | ~2h | Structure et sémantique des pages |
+| **CSS3** | 11 | ~3h | Design, layout, flexbox et animations |
+| **Médias & Formulaires** | 3 | 45 min | Images, audio, vidéo, tables, formulaires |
+| **Responsive** | 1 | 30 min | Media queries et design adaptatif |
+| **JavaScript** | 1 | 45 min | Interactivité et manipulation DOM |
+
+## ✨ Fonctionnalités
+
+### 🤖 Apprentissage Intelligent
+- **📝 Notes personnelles** - Annotations par section
+- **🏆 Système de badges** - 18 récompenses à débloquer
+- **📊 Progression** - Suivi visuel par chapitre
+- **📤 Export** - Téléchargement notes (JSON/TXT)
+
+### 🎨 Interface
+- **📖 Mode lecture** - Interface épurée immersive
+- **🌙 Mode sombre** - Confort visuel nocturne
+- **⭐ Favoris** - Marquez vos sections importantes
+- **🔍 recherche** - Navigation rapide (/ ou Ctrl+K)
 
 ### ⌨️ Raccourcis Clavier
-| Raccourci | Action |
-|-----------|--------|
-| `Ctrl+K` ou `/` | Ouvrir la recherche |
-| `←` / `→` | Navigation précédent/suivant |
-| `Alt+N` | Toggle mode nuit |
-| `ESC` | Fermer la recherche |
 
-### 🎨 Design
-- **UI moderne** inspirée d'OpenClassrooms et Grafikart
-- **Tailwind CSS** pour un style cohérent
-- **Animations fluides** (fade-in, hover, transitions)
-- **Confettis** pour célébrer vos succès
-- **Responsive design** - Fonctionne sur tous les appareils
-- **Navigation mobile** optimisée
-
-### 🏆 Badges Disponibles
-| Badge | Condition |
-|-------|-----------|
-| 🚀 Premier Pas | Compléter 1 section |
-| 🏗️ Maître HTML | Terminer HTML + Internet |
-| 🎨 Artiste CSS | Terminer CSS + Box Model |
-| 📐 Magicien Flexbox | Terminer Flexbox |
-| 📱 Guru Responsive | Terminer Responsive |
-| 📝 Formulaire Pro | Terminer Formulaires |
-| 📊 Tableaux Expert | Terminer Tableaux |
-| ⚡ Novice JavaScript | Terminer JavaScript |
-| 🏆 Bâtisseur de Projets | Terminer les Mini-Projets |
-| ⭐ Perfectionniste | Score 8/10 aux exercices |
-| 🎓 Diplômé | Compléter tous les chapitres |
-
-### 💻 Éditeur de Code
-- **Live preview** - Voyez vos modifications en temps réel
-- **5 exemples préchargés** : Carte, Layout, Button, Navbar, Form
-- **Export** vers une nouvelle fenêtre
-- **Reset** pour recommencer
+| Touche | Action |
+|--------|--------|
+| `/` | Ouvrir la recherche |
+| `B` | Marquer en favoris |
+| `R` | Toggle mode lecture |
+| `D` | Toggle mode sombre |
+| `?` | Afficher l'aide |
+| `←` / `→` | Navigation section |
 
 ## 📁 Structure du Projet
 
 ```
 html/
-├── index.html      # Page principale
-├── app.js          # JavaScript de l'application
-├── README.md       # Documentation
-└── manifest.json   # PWA manifest (optionnel)
+├── index.html           # Page principale (formation)
+├── manifest.json        # PWA manifest
+├── sw.js               # Service Worker (offline)
+├── css/
+│   └── styles.css      # Styles personnalisés
+├── js/
+│   ├── config.js       # Configuration (sections, badges)
+│   ├── navigation.js   # Navigation et scroll spy
+│   ├── quiz.js        # Fonctions de quiz
+│   ├── progress.js     # Progression et badges
+│   ├── notes.js        # Notes personnelles
+│   └── app.js         # Orchestrateur principal
+└── README.md           # Documentation
 ```
 
 ## 🚀 Installation
 
-1. **Cloner ou télécharger** le projet
-2. **Ouvrir `index.html`** dans votre navigateur
-3. **Commencer à apprendre !**
-
 ```bash
-# Optionnel : Utiliser un serveur local
+# Optionnel : Serveur local
 npx serve .
-# ou
+
+# ou avec Python
 python -m http.server 8000
 ```
 
-## 🎓 Contenu Détaillé
+Puis ouvrez `index.html` dans votre navigateur.
 
-### Chapitre 3 : HTML
-- Qu'est-ce qu'une balise ?
-- Balises principales (`<h1>`, `<p>`, `<a>`, `<img>`, etc.)
-- Structure d'une page HTML5
+## 📖 Chapitres Détaillés
+
+### Chapitre 2 : HTML5
+- Balises et attributs
+- Structure HTML5 (`<!DOCTYPE>`, `<head>`, `<body>`)
 - Bonnes pratiques
-- Erreurs fréquentes
+- Textes et formatage (`<h1>` à `<h6>`, `<p>`, `<br>`, `<strong>`, `<em>`)
+- Listes (ordonnées `<ol>`, non-ordonnées `<ul>`, définitions `<dl>`)
+- Liens (`<a href="">`, `_blank`, `rel`)
 
-### Chapitre 4 : CSS
-- Syntaxe CSS (sélecteur, propriété, valeur)
-- Les sélecteurs (balise, classe, ID)
-- Propriétés courantes
-- Bonnes pratiques
+### Chapitre 3 : CSS3
+- Sélecteurs (balise, classe `.`, ID `#`, avancé `>`, `+`, `~`)
+- Où écrire CSS (inline, `<style>`, externe)
+- Commentaires CSS
+- div & span (block vs inline)
+- Propriétés de texte (`text-align`, `text-decoration`, `text-transform`)
+- Box Model (`content`, `padding`, `border`, `margin`)
+- Display (`block`, `inline`, `flex`, `grid`)
+- Position (`static`, `relative`, `absolute`, `fixed`, `sticky`)
+- Background (couleurs, images, dégradés)
+- Héritage CSS
 
-### Chapitre 5 : Box Model
-- Content, Padding, Border, Margin
-- Visualisation interactive
-- Erreurs fréquentes
+### Chapitre 4 : Médias & Formulaires
+- Images (`<img>`, `<figure>`, `<figcaption>`)
+- Audio (`<audio controls>`)
+- Vidéo (`<video controls>`)
+- Tableaux (`<table>`, `<thead>`, `<tbody>`, `<tr>`, `<td>`, `colspan`, `rowspan`)
+- Formulaires (`<form>`, `<input>`, `<label>`, `<textarea>`, validation HTML5)
 
-### Chapitre 6 : Flexbox
-- Principe container/items
-- `justify-content` (axe horizontal)
-- `align-items` (axe vertical)
-- Démonstrations visuelles
-
-### Chapitre 7 : Responsive
+### Chapitre 5 : Responsive
 - Meta viewport
-- Media queries
-- Breakpoints Tailwind
-- Mobile-first approach
+- Media queries (`@media`)
+- Breakpoints
+- Mobile-first
 
-### Chapitre 8 : Formulaires HTML
-- `<form>`, `<input>`, `<label>`, `<textarea>`
-- Types d'inputs (text, email, password, checkbox, radio)
-- Attributs (required, placeholder, disabled)
-- Validation HTML5
-
-### Chapitre 9 : Listes & Tableaux
-- Listes ordonnées `<ol>`, non-ordonnées `<ul>`
-- Tableaux `<table>`, `<thead>`, `<tbody>`
-- Fusion de cellules (colspan, rowspan)
-
-### Chapitre 10 : JavaScript
+### Chapitre 6 : JavaScript
 - Variables (`let`, `const`)
 - Types de données
 - Fonctions
-- Événements
-- Manipulation du DOM
+- Arrow functions
+- Événements (`click`, `mouseenter`, `keypress`)
+- Conditions et boucles
+- Manipulation DOM
+- LocalStorage
 
-### Chapitre 11 : Mini-Projets
-1. **Carte de Profil** - Photo, nom, liens sociaux
-2. **Barre de Navigation** - Header responsive
-3. **Formulaire de Contact** - Avec validation visuelle
+## 🏆 Badges
 
-## 🔧 Technologies Utilisées
+| Badge | Condition |
+|-------|-----------|
+| 🚀 Premier Pas | Compléter 1 section |
+| 🏗️ Bases HTML | Balises + Structure |
+| 📝 Formatage Texte | Titres + Formatage |
+| 📋 Maître des Listes | Listes + Listes imbriquées |
+| 🔗 Expert Liens | Liens |
+| 🎨 Bases CSS | Sélecteurs + Où écrire |
+| 📦 Éléments CSS | div & span |
+| 🔮 Sélecteurs Avancés | Avancé + Héritage |
+| 🔤 Fonts & Texte | Fonts + Texte |
+| 📊 Box Model | Box Model |
+| 📐 Display | Display & Position |
+| 🎨 Background | Background |
+| 🖼️ Médias | Médias |
+| 📊 Tableaux | Tableaux |
+| 📝 Formulaires | Formulaires |
+| 📱 Responsive | Responsive |
+| ⚡ JavaScript | JS |
+| 🎓 Diplômé | 100% complété |
 
-- **HTML5** - Structure des pages
+## 🔧 Technologies
+
+- **HTML5** - Structure sémantique
 - **CSS3** - Styles et animations
-- **Tailwind CSS** - Framework CSS utilitaire
-- **JavaScript ES6+** - Interactivité
+- **Tailwind CSS** - Framework utilitaire
+- **JavaScript ES6+** - Interactivité modulaire
 - **LocalStorage** - Persistance des données
-- **Highlight.js** - Coloration syntaxique
+- **Prism.js** - Coloration syntaxique
+- **Service Worker** - Support offline PWA
 
-## 📱 Responsive Design
+## 📱 Responsive
 
 | Appareil | Breakpoint |
 |----------|------------|
-| Mobile | < 768px |
-| Tablette | 768px - 1023px |
+| Mobile | < 640px |
+| Tablette | 640px - 1023px |
 | Desktop | ≥ 1024px |
 
-## 🎯 Exercices
+## 💡 Conseils
 
-La formation inclut **10 exercices interactifs** avec 3 niveaux de difficulté :
+1. **Pratiquez régulièrement** - 15-30 min par jour suffisent
+2. **Utilisez les notes** - Personnalisez votre apprentissage
+3. **Faites les quiz** - Validez vos connaissances
+4. **Marquez vos favoris** - Accédez rapidement aux sections importantes
+5. **Exportez vos notes** - Sauvegardez régulièrement
 
-| # | Exercice | Chapitre | Difficulté |
-|---|----------|----------|------------|
-| 1 | Titre principal | HTML | ⭐ Facile |
-| 2 | Insérer une image | HTML | ⭐ Facile |
-| 3 | Propriété couleur | CSS | ⭐⭐ Moyen |
-| 4 | Box Model | CSS | ⭐⭐ Moyen |
-| 5 | Flexbox | Flexbox | ⭐⭐ Moyen |
-| 6 | JavaScript sélection | JS | ⭐⭐⭐ Difficile |
-| 7 | Formulaire required | Forms | ⭐⭐ Moyen |
-| 8 | Tableau en-tête | Tables | ⭐⭐ Moyen |
-| 9 | Breakpoint responsive | Responsive | ⭐⭐⭐ Difficile |
-| 10 | Event Listener | JS | ⭐⭐⭐ Difficile |
+## 🤝 Contribuer
 
-### Système de score
-- Chaque exercice réussi = +1 point
-- Score maximum = 10/10
-- Sauvegarde automatique de la progression
-
-## 💡 Tips
-
-1. **Utilisez les notes** pour personnaliser votre apprentissage
-2. **Faites les exercices** pour renforcer vos connaissances
-3. **Expérimentez** dans l'éditeur de code
-4. **Pratiquez régulièrement** pour progresser
-5. **Débloquez tous les badges** pour valider votre expertise
-
-## 🤝 Contribution
-
-Ce projet est open source. N'hésitez pas à :
+Suggestions bienvenues :
 - Signaler des bugs
 - Proposer des améliorations
 - Ajouter des exercices
-- Traduire dans d'autres langues
+- Corriger les contenus
 
 ## 📄 Licence
 
-MIT License - Libre d'utilisation et de modification.
+MIT License - Libre d'utilisation.
 
-## 🙏 Remerciements
+## 🙏 Crédits
 
-Inspiré par les meilleures plateformes de formation en ligne :
+Inspiré par les meilleures plateformes :
 - [OpenClassrooms](https://openclassrooms.com)
 - [Grafikart](https://grafikart.fr)
 - [MDN Web Docs](https://developer.mozilla.org)
@@ -225,5 +203,3 @@ Inspiré par les meilleures plateformes de formation en ligne :
 ---
 
 **Bonne formation ! 🚀**
-
-*N'hésitez pas à star ⭐ ce projet si vous l'appréciez !*
