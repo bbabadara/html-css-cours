@@ -264,18 +264,64 @@ const Navigation = {
 
   openSearch() {
     const modal = document.getElementById('searchModal');
-    if (modal) {
-      modal.classList.remove('hidden');
-      document.getElementById('searchInput').focus();
+    if (!modal) return;
+    if (!modal.classList.contains('hidden')) {
+      document.getElementById('searchInput')?.focus();
+      return;
     }
+    this._searchPreviousFocus = document.activeElement;
+    modal.classList.remove('hidden');
+    modal.setAttribute('aria-hidden', 'false');
+    const input = document.getElementById('searchInput');
+    if (input) {
+      input.focus();
+      input.select();
+    }
+    this._onSearchTabTrap = (e) => {
+      if (e.key !== 'Tab') return;
+      const panel = document.getElementById('searchModalPanel');
+      if (!panel || !modal.contains(document.activeElement)) return;
+      const focusables = [...panel.querySelectorAll('button:not([disabled]), input:not([disabled])')];
+      if (focusables.length < 2) return;
+      const first = focusables[0];
+      const last = focusables[focusables.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    };
+    document.addEventListener('keydown', this._onSearchTabTrap, true);
   },
 
   closeSearch() {
+    if (this._onSearchTabTrap) {
+      document.removeEventListener('keydown', this._onSearchTabTrap, true);
+      this._onSearchTabTrap = null;
+    }
     const modal = document.getElementById('searchModal');
     if (modal) {
       modal.classList.add('hidden');
+      modal.setAttribute('aria-hidden', 'true');
       const input = document.getElementById('searchInput');
       if (input) input.value = '';
+      document.querySelectorAll('.search-result').forEach(el => el.classList.remove('hidden'));
+    }
+    const prev = this._searchPreviousFocus;
+    this._searchPreviousFocus = null;
+    if (prev && typeof prev.focus === 'function') {
+      try {
+        prev.focus();
+      } catch (_) { /* ignore */ }
+    }
+  },
+
+  setupSearch() {
+    const searchInput = document.getElementById('searchInput');
+    if (searchInput) {
+      searchInput.addEventListener('input', (e) => this.filterSections(e.target.value));
     }
   },
 

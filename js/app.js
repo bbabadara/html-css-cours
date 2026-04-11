@@ -32,6 +32,7 @@ const APP = {
     this.setupBackToTop();
     this.initFirstVisit();
     this.buildNavigation();
+    Navigation.setupSearch();
     this.setupShortcutsButton();
     this.highlightCode();
   },
@@ -57,11 +58,11 @@ const APP = {
   saveBadges: () => Progress.saveBadges(),
 
   initFirstVisit() {
-    const visited = localStorage.getItem('visited');
+    const visited = SafeStorage.get('visited');
     if (!visited) {
       setTimeout(() => {
         this.showWelcome();
-        localStorage.setItem('visited', 'true');
+        SafeStorage.set('visited', 'true');
       }, 500);
     }
     const darkIcon = document.getElementById('darkIcon');
@@ -93,8 +94,8 @@ const APP = {
   },
 
   setupDarkMode() {
-    if (localStorage.getItem('darkMode') === 'true' || 
-        (!localStorage.getItem('darkMode') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+    if (SafeStorage.get('darkMode') === 'true' ||
+        (!SafeStorage.get('darkMode') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
       document.documentElement.classList.add('dark');
     }
   },
@@ -102,7 +103,7 @@ const APP = {
   toggleDark() {
     document.documentElement.classList.toggle('dark');
     const isDark = document.documentElement.classList.contains('dark');
-    localStorage.setItem('darkMode', isDark);
+    SafeStorage.set('darkMode', isDark);
     const darkIcon = document.getElementById('darkIcon');
     if (darkIcon) {
       if (isDark) {
@@ -254,12 +255,12 @@ const APP = {
 
   // Bookmarks
   loadBookmarks() {
-    const saved = localStorage.getItem('courseBookmarks');
-    if (saved) this.bookmarks = new Set(JSON.parse(saved));
+    const arr = SafeStorage.parseJSON('courseBookmarks', null);
+    if (Array.isArray(arr)) this.bookmarks = new Set(arr);
   },
 
   saveBookmarks() {
-    localStorage.setItem('courseBookmarks', JSON.stringify([...this.bookmarks]));
+    SafeStorage.set('courseBookmarks', JSON.stringify([...this.bookmarks]));
   },
 
   toggleBookmark(sectionId) {
@@ -318,14 +319,13 @@ const APP = {
     // Ensure sidebar is properly hidden in reading mode
     const sidebar = document.getElementById('sidebar');
     const mobileMenu = document.getElementById('mobileMenu');
-    const nav = document.querySelector('nav');
+    const topNav = document.getElementById('topNav');
     const menuToggle = document.getElementById('readingModeMenuToggle');
     
     if (this.readingMode) {
-      // Hide all navigation elements
       if (sidebar) sidebar.style.display = 'none';
       if (mobileMenu) mobileMenu.style.display = 'none';
-      if (nav) nav.style.display = 'none';
+      if (topNav) topNav.style.display = 'none';
       
       // Add fullscreen class for immersive experience
       document.body.classList.add('fullscreen');
@@ -338,10 +338,9 @@ const APP = {
         }, 100);
       }
     } else {
-      // Restore navigation elements
       if (sidebar) sidebar.style.display = '';
       if (mobileMenu) mobileMenu.style.display = '';
-      if (nav) nav.style.display = '';
+      if (topNav) topNav.style.display = '';
       
       // Remove fullscreen class
       document.body.classList.remove('fullscreen');
@@ -363,16 +362,15 @@ const APP = {
     const menuToggle = document.getElementById('readingModeMenuToggle');
     const sidebar = document.getElementById('sidebar');
     const mobileMenu = document.getElementById('mobileMenu');
-    const nav = document.querySelector('nav');
+    const topNav = document.getElementById('topNav');
     
     if (menuToggle.classList.contains('hidden')) {
-      // Show menu and restore navigation
       menuToggle.classList.remove('hidden');
       menuToggle.classList.remove('opacity-0', 'pointer-events-none');
       
       if (sidebar) sidebar.style.display = '';
       if (mobileMenu) mobileMenu.style.display = '';
-      if (nav) nav.style.display = '';
+      if (topNav) topNav.style.display = '';
       
       this.showToast('Menu restauré');
     } else {
@@ -382,7 +380,7 @@ const APP = {
       
       if (sidebar) sidebar.style.display = 'none';
       if (mobileMenu) mobileMenu.style.display = 'none';
-      if (nav) nav.style.display = 'none';
+      if (topNav) topNav.style.display = 'none';
       
       this.showToast('Menu masqué');
     }

@@ -25,7 +25,7 @@ Plateforme de formation interactive pour apprendre le développement web moderne
 |--------|----------|-------|-------------|
 | **Introduction** | 2 | 15 min | Présentation et concepts de base |
 | **HTML5** | 9 | ~2h | Structure et sémantique des pages |
-| **CSS3** | 11 | ~3h | Design, layout, flexbox et animations |
+| **CSS3** | 11 | ~3h | Sélecteurs, box model, typographie, display, position, backgrounds |
 | **Médias & Formulaires** | 3 | 45 min | Images, audio, vidéo, tables, formulaires |
 | **Responsive** | 1 | 30 min | Media queries et design adaptatif |
 | **JavaScript** | 1 | 45 min | Interactivité et manipulation DOM |
@@ -42,7 +42,7 @@ Plateforme de formation interactive pour apprendre le développement web moderne
 - **📖 Mode lecture** - Interface épurée immersive
 - **🌙 Mode sombre** - Confort visuel nocturne
 - **⭐ Favoris** - Marquez vos sections importantes
-- **🔍 recherche** - Navigation rapide (/ ou Ctrl+K)
+- **🔍 Recherche** — Navigation rapide (`/` ou `Ctrl+K`)
 
 ### ⌨️ Raccourcis Clavier
 
@@ -65,6 +65,7 @@ html/
 ├── css/
 │   └── styles.css      # Styles personnalisés
 ├── js/
+│   ├── storage.js      # Accès localStorage sécurisé
 │   ├── config.js       # Configuration (sections, badges)
 │   ├── navigation.js   # Navigation et scroll spy
 │   ├── quiz.js        # Fonctions de quiz

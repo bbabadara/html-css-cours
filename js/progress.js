@@ -1,24 +1,27 @@
 // Progress & Badges Module
 const Progress = {
   load() {
-    const saved = localStorage.getItem('courseProgress');
-    if (saved) APP.completedSections = new Set(JSON.parse(saved));
-    const savedSection = localStorage.getItem('currentSection');
-    if (savedSection) APP.currentSection = parseInt(savedSection);
+    const progress = SafeStorage.parseJSON('courseProgress', null);
+    if (Array.isArray(progress)) APP.completedSections = new Set(progress);
+    const savedSection = SafeStorage.get('currentSection');
+    if (savedSection != null && savedSection !== '') {
+      const n = parseInt(savedSection, 10);
+      if (!Number.isNaN(n)) APP.currentSection = n;
+    }
   },
 
   save() {
-    localStorage.setItem('courseProgress', JSON.stringify([...APP.completedSections]));
-    localStorage.setItem('currentSection', APP.currentSection.toString());
+    SafeStorage.set('courseProgress', JSON.stringify([...APP.completedSections]));
+    SafeStorage.set('currentSection', APP.currentSection.toString());
   },
 
   loadBadges() {
-    const saved = localStorage.getItem('courseBadges');
-    if (saved) APP.badges = JSON.parse(saved);
+    const data = SafeStorage.parseJSON('courseBadges', null);
+    if (Array.isArray(data)) APP.badges = data;
   },
 
   saveBadges() {
-    localStorage.setItem('courseBadges', JSON.stringify(APP.badges));
+    SafeStorage.set('courseBadges', JSON.stringify(APP.badges));
   },
 
   update() {
@@ -33,6 +36,13 @@ const Progress = {
     if (top) top.style.width = progress + '%';
     if (percent) percent.textContent = Math.round(progress) + '%';
     if (percentTop) percentTop.textContent = Math.round(progress) + '%';
+    const rounded = Math.round(progress);
+    const bar = document.getElementById('progressBar');
+    if (bar) {
+      bar.setAttribute('aria-valuenow', String(rounded));
+      bar.setAttribute('aria-valuemin', '0');
+      bar.setAttribute('aria-valuemax', '100');
+    }
   },
 
   checkBadges() {
@@ -92,7 +102,7 @@ const Progress = {
 
   reset() {
     if (confirm('Êtes-vous sûr de vouloir réinitialiser votre progression ?')) {
-      localStorage.clear();
+      SafeStorage.clear();
       location.reload();
     }
   }

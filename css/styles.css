@@ -90,7 +90,11 @@ body.reading-mode:hover::before {
   box-shadow: 3px 0 12px rgba(59, 130, 246, 0.4);
 }
 body.reading-mode #mobileMenu { display: none !important; }
-body.reading-mode nav { display: none !important; }
+/* Barre du haut et nav mobile bas uniquement — ne pas cibler #sidebarNav */
+body.reading-mode #topNav,
+body.reading-mode #mobileBottomNav {
+  display: none !important;
+}
 
 /* Dark mode reading mode improvements */
 body.dark.reading-mode { 

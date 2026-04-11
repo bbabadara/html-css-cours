@@ -34,7 +34,7 @@
   <a href="#main-content" class="skip-link">Aller au contenu principal</a>
 
   <!-- Progress Bar -->
-  <div id="progressBar" class="fixed top-0 left-0 w-full h-1 bg-gray-300 dark:bg-gray-700 z-50" role="progressbar" aria-label="Progression">
+  <div id="progressBar" class="fixed top-0 left-0 w-full h-1 bg-gray-300 dark:bg-gray-700 z-50" role="progressbar" aria-label="Progression du cours" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
     <div id="progressFill" class="progress-fill h-full bg-gradient-to-r from-primary to-secondary" style="width: 0%"></div>
   </div>
 
@@ -49,13 +49,15 @@
   </button>
 
   <!-- Search Modal -->
-  <div id="searchModal" class="fixed inset-0 bg-black/50 z-50 hidden">
-    <div class="max-w-lg mx-auto mt-20 bg-white dark:bg-gray-800 rounded-2xl shadow-2xl overflow-hidden">
+  <div id="searchModal" class="fixed inset-0 bg-black/50 z-50 hidden" aria-hidden="true" onclick="if (event.target === this) APP.closeSearch()">
+    <div id="searchModalPanel" role="dialog" aria-modal="true" aria-labelledby="searchModalTitle" class="max-w-lg mx-auto mt-20 bg-white dark:bg-gray-800 rounded-2xl shadow-2xl overflow-hidden" onclick="event.stopPropagation()">
+      <h2 id="searchModalTitle" class="sr-only">Rechercher dans le cours</h2>
       <div class="p-4 border-b dark:border-gray-700">
         <div class="flex items-center gap-3">
-          <span class="text-gray-400">🔍</span>
-          <input type="text" id="searchInput" placeholder="Rechercher..." class="flex-1 bg-transparent border-none outline-none text-lg">
-          <kbd class="px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded text-xs">ESC</kbd>
+          <span class="text-gray-400" aria-hidden="true">🔍</span>
+          <input type="text" id="searchInput" placeholder="Rechercher..." class="flex-1 bg-transparent border-none outline-none text-lg" autocomplete="off" aria-controls="searchResults">
+          <button type="button" id="searchModalClose" onclick="APP.closeSearch()" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-300 shrink-0" aria-label="Fermer la recherche">✕</button>
+          <kbd class="px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded text-xs hidden sm:inline" aria-hidden="true">ESC</kbd>
         </div>
       </div>
       <div class="p-2 max-h-80 overflow-y-auto scrollbar-thin" id="searchResults"></div>
@@ -63,7 +65,7 @@
   </div>
 
   <!-- Fixed Top Navbar -->
-  <nav class="fixed top-0 left-0 right-0 z-50 bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm border-b border-gray-200 dark:border-gray-700 shadow-sm">
+  <nav id="topNav" class="fixed top-0 left-0 right-0 z-50 bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm border-b border-gray-200 dark:border-gray-700 shadow-sm">
     <div class="max-w-7xl mx-auto px-4 h-14 flex items-center justify-between">
       <!-- Left: Logo & Menu Toggle -->
       <div class="flex items-center gap-3">
@@ -343,7 +345,7 @@
           <div class="flex items-center gap-2 text-cyan-200 text-sm mb-2">
             <span>Introduction</span><span>•</span><span>10 min</span>
           </div>
-          <h1 class="text-3xl font-bold">🌐 Internet & Le Web</h1>
+          <h2 class="text-3xl font-bold">🌐 Internet & Le Web</h2>
         </div>
         <div class="p-6 space-y-6">
           <div class="bg-gradient-to-r from-cyan-50 to-blue-50 dark:from-cyan-900/20 dark:to-blue-900/20 p-5 rounded-xl border border-cyan-200">
@@ -394,7 +396,7 @@
           <div class="flex items-center gap-2 text-orange-200 text-sm mb-2">
             <span>Chapitre 2.1.1</span><span>•</span><span>15 min</span>
           </div>
-          <h1 class="text-3xl font-bold">🏗️ Éléments, Balises et Attributs</h1>
+          <h2 class="text-3xl font-bold">🏗️ Éléments, Balises et Attributs</h2>
         </div>
         <div class="p-6 space-y-6">
           <div class="bg-gradient-to-r from-orange-50 to-red-50 dark:from-orange-900/20 dark:to-red-900/20 p-5 rounded-xl border border-orange-200">
@@ -497,7 +499,7 @@
           <div class="flex items-center gap-2 text-teal-200 text-sm mb-2">
             <span>Chapitre 2.1.2</span><span>•</span><span>10 min</span>
           </div>
-          <h1 class="text-3xl font-bold">🏛️ Structure de Base HTML5</h1>
+          <h2 class="text-3xl font-bold">🏛️ Structure de Base HTML5</h2>
         </div>
         <div class="p-6 space-y-6">
           <div class="code-block relative">
@@ -564,13 +566,13 @@
         </div>
       </section>
 
-      <!-- ==================== CHAPITRE 2.1.4: BONNES PRATIQUES ==================== -->
+      <!-- ==================== CHAPITRE 2.1.3: BONNES PRATIQUES ==================== -->
       <section id="html-best-practices" class="fade-in bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden mb-8">
         <div class="bg-gradient-to-r from-violet-600 to-purple-600 p-6 text-white">
           <div class="flex items-center gap-2 text-violet-200 text-sm mb-2">
-            <span>Chapitre 2.1.4</span><span>•</span><span>15 min</span>
+            <span>Chapitre 2.1.3</span><span>•</span><span>15 min</span>
           </div>
-          <h1 class="text-3xl font-bold">✨ Bonnes Pratiques et Commentaires</h1>
+          <h2 class="text-3xl font-bold">✨ Bonnes Pratiques et Commentaires</h2>
         </div>
         <div class="p-6 space-y-6">
           <div class="collapsible">
@@ -580,7 +582,7 @@
             </button>
             <div class="collapsible-content">
               <div class="p-4">
-                <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">Les commentaires sont invisibles dans le navigateur mais aids à comprendre le code.</p>
+                <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">Les commentaires sont invisibles dans le navigateur mais aident à comprendre le code.</p>
                 <div class="code-block relative">
                   <button onclick="APP.copyCodeBlock(this)" class="copy-btn bg-gray-700 text-gray-300 px-2 py-1 rounded text-xs hover:bg-gray-600">Copier</button>
                   <pre class="bg-gray-900 text-green-400 p-4 rounded-lg text-sm"><code>&lt;!-- Ceci est un commentaire --&gt;
@@ -629,13 +631,13 @@
         </div>
       </section>
 
-      <!-- ==================== CHAPITRE 2.1.5: HEADING, PARAGRAPH, BREAK ==================== -->
+      <!-- ==================== CHAPITRE 2.1.4: HEADING, PARAGRAPH, BREAK ==================== -->
       <section id="html-text" class="fade-in bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden mb-8">
         <div class="bg-gradient-to-r from-rose-600 to-pink-600 p-6 text-white">
           <div class="flex items-center gap-2 text-rose-200 text-sm mb-2">
-            <span>Chapitre 2.1.5</span><span>•</span><span>10 min</span>
+            <span>Chapitre 2.1.4</span><span>•</span><span>10 min</span>
           </div>
-          <h1 class="text-3xl font-bold">📝 Heading, Paragraph et Break</h1>
+          <h2 class="text-3xl font-bold">📝 Heading, Paragraph et Break</h2>
         </div>
         <div class="p-6 space-y-6">
           <div class="collapsible">
@@ -713,13 +715,13 @@ Ligne 3&lt;/p&gt;</code></pre>
         </div>
       </section>
 
-      <!-- ==================== CHAPITRE 2.1.6: STRONG, EMPHASIS, MARK ==================== -->
+      <!-- ==================== CHAPITRE 2.1.5: STRONG, EMPHASIS, MARK ==================== -->
       <section id="html-formatting" class="fade-in bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden mb-8">
         <div class="bg-gradient-to-r from-emerald-600 to-green-600 p-6 text-white">
           <div class="flex items-center gap-2 text-emerald-200 text-sm mb-2">
-            <span>Chapitre 2.1.6</span><span>•</span><span>10 min</span>
+            <span>Chapitre 2.1.5</span><span>•</span><span>10 min</span>
           </div>
-          <h1 class="text-3xl font-bold">🎨 Strong, Emphasis et Mark</h1>
+          <h2 class="text-3xl font-bold">🎨 Strong, Emphasis et Mark</h2>
         </div>
         <div class="p-6 space-y-6">
           <div class="grid md:grid-cols-3 gap-4">
@@ -766,13 +768,13 @@ Ligne 3&lt;/p&gt;</code></pre>
         </div>
       </section>
 
-      <!-- ==================== CHAPITRE 2.1.7: LISTES ==================== -->
+      <!-- ==================== CHAPITRE 2.1.6: LISTES ==================== -->
       <section id="html-lists" class="fade-in bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden mb-8">
         <div class="bg-gradient-to-r from-indigo-600 to-blue-600 p-6 text-white">
           <div class="flex items-center gap-2 text-indigo-200 text-sm mb-2">
-            <span>Chapitre 2.1.7</span><span>•</span><span>15 min</span>
+            <span>Chapitre 2.1.6</span><span>•</span><span>15 min</span>
           </div>
-          <h1 class="text-3xl font-bold">📋 Listes Ordonnées et Non-Ordonnées</h1>
+          <h2 class="text-3xl font-bold">📋 Listes Ordonnées et Non-Ordonnées</h2>
         </div>
         <div class="p-6 space-y-6">
           <div class="grid md:grid-cols-2 gap-4">
@@ -849,13 +851,13 @@ Ligne 3&lt;/p&gt;</code></pre>
         </div>
       </section>
 
-      <!-- ==================== CHAPITRE 2.1.8: LISTES DE DÉFINITIONS ==================== -->
+      <!-- ==================== CHAPITRE 2.1.7: LISTES DE DÉFINITIONS ==================== -->
       <section id="html-definition-lists" class="fade-in bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden mb-8">
         <div class="bg-gradient-to-r from-amber-600 to-orange-600 p-6 text-white">
           <div class="flex items-center gap-2 text-amber-200 text-sm mb-2">
-            <span>Chapitre 2.1.8</span><span>•</span><span>10 min</span>
+            <span>Chapitre 2.1.7</span><span>•</span><span>10 min</span>
           </div>
-          <h1 class="text-3xl font-bold">📖 Listes de Définitions</h1>
+          <h2 class="text-3xl font-bold">📖 Listes de Définitions</h2>
         </div>
         <div class="p-6 space-y-6">
           <p class="text-gray-600 dark:text-gray-400">Les listes de définitions affichent des termes suivis de leur définition, comme un dictionnaire.</p>
@@ -890,13 +892,13 @@ Ligne 3&lt;/p&gt;</code></pre>
         </div>
       </section>
 
-      <!-- ==================== CHAPITRE 2.1.9: LISTES IMBRIQUÉES ==================== -->
+      <!-- ==================== CHAPITRE 2.1.8: LISTES IMBRIQUÉES ==================== -->
       <section id="html-nested-lists" class="fade-in bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden mb-8">
         <div class="bg-gradient-to-r from-slate-600 to-gray-600 p-6 text-white">
           <div class="flex items-center gap-2 text-slate-200 text-sm mb-2">
-            <span>Chapitre 2.1.9</span><span>•</span><span>10 min</span>
+            <span>Chapitre 2.1.8</span><span>•</span><span>10 min</span>
           </div>
-          <h1 class="text-3xl font-bold">🔀 Listes Imbriquées</h1>
+          <h2 class="text-3xl font-bold">🔀 Listes Imbriquées</h2>
         </div>
         <div class="p-6 space-y-6">
           <p class="text-gray-600 dark:text-gray-400">Vous pouvez imbriquer des listes pour créer des hiérarchies (menus, plans, etc.).</p>
@@ -936,13 +938,13 @@ Ligne 3&lt;/p&gt;</code></pre>
         </div>
       </section>
 
-      <!-- ==================== CHAPITRE 2.1.10: LIENS ==================== -->
+      <!-- ==================== CHAPITRE 2.1.9: LIENS ==================== -->
       <section id="html-links" class="fade-in bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden mb-8">
         <div class="bg-gradient-to-r from-cyan-600 to-teal-600 p-6 text-white">
           <div class="flex items-center gap-2 text-cyan-200 text-sm mb-2">
-            <span>Chapitre 2.1.10</span><span>•</span><span>15 min</span>
+            <span>Chapitre 2.1.9</span><span>•</span><span>15 min</span>
           </div>
-          <h1 class="text-3xl font-bold">🔗 Liens Internes et Externes</h1>
+          <h2 class="text-3xl font-bold">🔗 Liens Internes et Externes</h2>
         </div>
         <div class="p-6 space-y-6">
           <p class="text-gray-600 dark:text-gray-400">Les liens (<code class="bg-gray-200 dark:bg-gray-600 px-1 rounded">&lt;a&gt;</code>) permettent de naviguer entre les pages et sections.</p>
@@ -1017,7 +1019,7 @@ Ligne 3&lt;/p&gt;</code></pre>
           <div class="flex items-center gap-2 text-pink-200 text-sm mb-2">
             <span>Chapitre 2.2.1</span><span>•</span><span>15 min</span>
           </div>
-          <h1 class="text-3xl font-bold">🎯 Sélecteurs, Propriétés et Valeurs</h1>
+          <h2 class="text-3xl font-bold">🎯 Sélecteurs, Propriétés et Valeurs</h2>
         </div>
         <div class="p-6 space-y-6">
           <div class="bg-gradient-to-r from-pink-50 to-rose-50 dark:from-pink-900/20 dark:to-rose-900/20 p-5 rounded-xl border border-pink-200">
@@ -1091,7 +1093,7 @@ p {
           <div class="flex items-center gap-2 text-violet-200 text-sm mb-2">
             <span>Chapitre 2.2.2</span><span>•</span><span>15 min</span>
           </div>
-          <h1 class="text-3xl font-bold">📍 Où Écrire le CSS ?</h1>
+          <h2 class="text-3xl font-bold">📍 Où Écrire le CSS ?</h2>
         </div>
         <div class="p-6 space-y-6">
           <p class="text-gray-600 dark:text-gray-400">Il existe 3 manières d'ajouter du CSS.</p>
@@ -1136,7 +1138,7 @@ p {
           <div class="flex items-center gap-2 text-gray-200 text-sm mb-2">
             <span>Chapitre 2.2.3</span><span>•</span><span>5 min</span>
           </div>
-          <h1 class="text-3xl font-bold">💬 Les Commentaires en CSS</h1>
+          <h2 class="text-3xl font-bold">💬 Les Commentaires en CSS</h2>
         </div>
         <div class="p-6 space-y-6">
           <p class="text-gray-600 dark:text-gray-400">Les commentaires CSS permettent d'ajouter des notes ignorées par le navigateur.</p>
@@ -1168,7 +1170,7 @@ p {
           <div class="flex items-center gap-2 text-teal-200 text-sm mb-2">
             <span>Chapitre 2.2.4-2.2.6</span><span>•</span><span>15 min</span>
           </div>
-          <h1 class="text-3xl font-bold">📦 Les Éléments div, span et Types Block/Inline</h1>
+          <h2 class="text-3xl font-bold">📦 Les Éléments div, span et Types Block/Inline</h2>
         </div>
         <div class="p-6 space-y-6">
           <div class="grid md:grid-cols-2 gap-4">
@@ -1215,7 +1217,7 @@ p {
           <div class="flex items-center gap-2 text-fuchsia-200 text-sm mb-2">
             <span>Chapitre 2.2.7</span><span>•</span><span>20 min</span>
           </div>
-          <h1 class="text-3xl font-bold">🔮 Les Sélecteurs Avancés</h1>
+          <h2 class="text-3xl font-bold">🔮 Les Sélecteurs Avancés</h2>
         </div>
         <div class="p-6 space-y-6">
           <div class="grid gap-3">
@@ -1262,7 +1264,7 @@ h2 + p { font-weight: bold; }</code></pre>
           <div class="flex items-center gap-2 text-lime-200 text-sm mb-2">
             <span>Chapitre 2.2.8</span><span>•</span><span>10 min</span>
           </div>
-          <h1 class="text-3xl font-bold">🧬 La Notion d'Héritage</h1>
+          <h2 class="text-3xl font-bold">🧬 La Notion d'Héritage</h2>
         </div>
         <div class="p-6 space-y-6">
           <p class="text-gray-600 dark:text-gray-400">Les éléments enfants héritent certaines propriétés de leurs parents.</p>
@@ -1304,7 +1306,7 @@ div {
           <div class="flex items-center gap-2 text-red-200 text-sm mb-2">
             <span>Chapitre 3.1</span><span>•</span><span>20 min</span>
           </div>
-          <h1 class="text-3xl font-bold">🔤 Propriétés de Type « Font »</h1>
+          <h2 class="text-3xl font-bold">🔤 Propriétés de Type « Font »</h2>
         </div>
         <div class="p-6 space-y-6">
           <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -1370,7 +1372,7 @@ div {
           <div class="flex items-center gap-2 text-purple-200 text-sm mb-2">
             <span>Chapitre 3.2</span><span>•</span><span>20 min</span>
           </div>
-          <h1 class="text-3xl font-bold">📝 Propriétés de Type « Text »</h1>
+          <h2 class="text-3xl font-bold">📝 Propriétés de Type « Text »</h2>
         </div>
         <div class="p-6 space-y-6">
           <div class="grid md:grid-cols-2 gap-4">
@@ -1431,7 +1433,7 @@ div {
           <div class="flex items-center gap-2 text-blue-200 text-sm mb-2">
             <span>Chapitre 3.3</span><span>•</span><span>25 min</span>
           </div>
-          <h1 class="text-3xl font-bold">📦 Le Modèle des Boîtes (Box Model)</h1>
+          <h2 class="text-3xl font-bold">📦 Le Modèle des Boîtes (Box Model)</h2>
         </div>
         <div class="p-6 space-y-6">
           <div class="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 p-5 rounded-xl border border-blue-200">
@@ -1515,7 +1517,7 @@ box-sizing: border-box;</code></pre>
           <div class="flex items-center gap-2 text-cyan-200 text-sm mb-2">
             <span>Chapitre 3.3.7-3.3.9</span><span>•</span><span>25 min</span>
           </div>
-          <h1 class="text-3xl font-bold">📐 Display & Position</h1>
+          <h2 class="text-3xl font-bold">📐 Display & Position</h2>
         </div>
         <div class="p-6 space-y-6">
           <div class="grid md:grid-cols-3 gap-4">
@@ -1588,7 +1590,7 @@ box-sizing: border-box;</code></pre>
           <div class="flex items-center gap-2 text-pink-200 text-sm mb-2">
             <span>Chapitre 4.1</span><span>•</span><span>20 min</span>
           </div>
-          <h1 class="text-3xl font-bold">🎨 Gestion du Background</h1>
+          <h2 class="text-3xl font-bold">🎨 Gestion du Background</h2>
         </div>
         <div class="p-6 space-y-6">
           <div class="grid md:grid-cols-2 gap-4">
@@ -1643,7 +1645,7 @@ background-position: center;</code></pre>
           <div class="flex items-center gap-2 text-green-200 text-sm mb-2">
             <span>Chapitre 4.2</span><span>•</span><span>20 min</span>
           </div>
-          <h1 class="text-3xl font-bold">🖼️ Images, Audio et Vidéo</h1>
+          <h2 class="text-3xl font-bold">🖼️ Images, Audio et Vidéo</h2>
         </div>
         <div class="p-6 space-y-6">
           <div class="collapsible">
@@ -1734,7 +1736,7 @@ background-position: center;</code></pre>
           <div class="flex items-center gap-2 text-indigo-200 text-sm mb-2">
             <span>Chapitre 4.3</span><span>•</span><span>20 min</span>
           </div>
-          <h1 class="text-3xl font-bold">📊 Tableaux HTML</h1>
+          <h2 class="text-3xl font-bold">📊 Tableaux HTML</h2>
         </div>
         <div class="p-6 space-y-6">
           <div class="code-block relative">
@@ -1803,7 +1805,7 @@ background-position: center;</code></pre>
           <div class="flex items-center gap-2 text-red-200 text-sm mb-2">
             <span>Chapitre 4.4</span><span>•</span><span>25 min</span>
           </div>
-          <h1 class="text-3xl font-bold">📝 Les Formulaires HTML</h1>
+          <h2 class="text-3xl font-bold">📝 Les Formulaires HTML</h2>
         </div>
         <div class="p-6 space-y-6">
           <div class="code-block relative">
@@ -1863,7 +1865,7 @@ background-position: center;</code></pre>
           <div class="flex items-center gap-2 text-violet-200 text-sm mb-2">
             <span>Chapitre 5</span><span>•</span><span>30 min</span>
           </div>
-          <h1 class="text-3xl font-bold">🚀 Aller Plus Loin</h1>
+          <h2 class="text-3xl font-bold">🚀 Aller Plus Loin</h2>
         </div>
         <div class="p-6 space-y-6">
           <div class="grid md:grid-cols-3 gap-4">
@@ -2011,7 +2013,7 @@ li:nth-child(odd) {
           <div class="flex items-center gap-2 text-yellow-100 text-sm mb-2">
             <span>Chapitre 6</span><span>•</span><span>45 min</span>
           </div>
-          <h1 class="text-3xl font-bold">⚡ Introduction à JavaScript</h1>
+          <h2 class="text-3xl font-bold">⚡ Introduction à JavaScript</h2>
         </div>
         <div class="p-6 space-y-6">
           <div class="grid md:grid-cols-3 gap-4">
@@ -2397,7 +2399,6 @@ const userData = JSON.parse(localStorage.getItem('user'));</code></pre>
       </div>
 
     </main>
-  </div>
 
   <!-- Mobile Bottom Navigation -->
   <nav id="mobileBottomNav" class="md:hidden fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 shadow-lg border-t dark:border-gray-700 z-40">
@@ -2423,6 +2424,7 @@ const userData = JSON.parse(localStorage.getItem('user'));</code></pre>
 
   <!-- JavaScript Modules -->
   <script src="js/config.js"></script>
+  <script src="js/storage.js"></script>
   <script src="js/progress.js"></script>
   <script src="js/notes.js"></script>
   <script src="js/navigation.js"></script>

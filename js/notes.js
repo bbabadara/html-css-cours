@@ -1,12 +1,12 @@
 // Notes Module
 const Notes = {
   load() {
-    const saved = localStorage.getItem('courseNotes');
-    if (saved) APP.notes = JSON.parse(saved);
+    const data = SafeStorage.parseJSON('courseNotes', null);
+    if (data && typeof data === 'object' && !Array.isArray(data)) APP.notes = data;
   },
 
   save() {
-    localStorage.setItem('courseNotes', JSON.stringify(APP.notes));
+    SafeStorage.set('courseNotes', JSON.stringify(APP.notes));
   },
 
   setup() {
